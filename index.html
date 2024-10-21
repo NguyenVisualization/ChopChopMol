@@ -10,6 +10,7 @@
             margin: 0;
             overflow: hidden;
             background-color: black;
+            user-select: none;
         }
 
         #fileInput {
@@ -51,9 +52,11 @@
     </script>
 </head>
 <body>
-  
+    
     <label for="fileInput" class="file-label">Choose File</label>
     <input type="file" id="fileInput" accept=".xyz">
+
+    <script src="atom.js"></script>
     <script type="module" src="script.js"></script>
 </body>
 </html>
