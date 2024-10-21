@@ -5,9 +5,11 @@ let positionsX=[]
 let positionsY=[]
 let positionsZ=[]
 
+const w=window.innerWidth
+const h=window.innerHeight
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 10000);
-camera.position.set(0,0,10)
+const camera = new THREE.PerspectiveCamera(10, w/h, 0.1, 10000)
+camera.position.set(80,80,80)
 camera.lookAt(0,0,0)
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 const controls = new OrbitControls(camera, renderer.domElement);
