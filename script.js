@@ -11,7 +11,7 @@ const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(10, w/h, 0.1, 10000)
 camera.position.set(80,80,80)
 camera.lookAt(0,0,0)
-const renderer = new THREE.WebGLRenderer({ antialias: true });
+const renderer = new THREE.WebGLRenderer({ antialias: false });
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping=true
 controls.enablePan=false
@@ -137,18 +137,19 @@ function addToVisualizer(allAtomsSymbols, atomicData){
         let colorH
         console.log(mySymbol)
         let radius
+        let scalar=0.6
         switch(mySymbol[0]) {
             case 'O':
                 colorH='red'
-                radius=2
+                radius=2*scalar
                 break;
             case 'H':
                 colorH='lightgray'
-                radius=1
+                radius=1*scalar
                 break
             case 'C':
                 colorH='gray'
-                radius=2.5
+                radius=2.5*scalar
                 break;
             default:
                 colorH='green'
