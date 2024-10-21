@@ -1,6 +1,10 @@
 import * as THREE from 'three';
 import {OrbitControls} from 'jsm/controls/OrbitControls.js'
 
+let positionsX=[]
+let positionsY=[]
+let positionsZ=[]
+
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 10000);
 camera.position.set(0,0,10)
@@ -24,7 +28,6 @@ scene.add(lights)
 scene.add(ambiLights)
 
 
-
 // Listen for file selection
 document.getElementById('fileInput').addEventListener('change', function(event) {
     const file = event.target.files[0];
@@ -37,6 +40,8 @@ document.getElementById('fileInput').addEventListener('change', function(event) 
             console.log(allAtomsSymbols); // Log all atom symbols to the console
             addToVisualizer(allAtomsSymbols, atomicData)
             console.log(atomVisuals)
+            createBond()
+
         };  
         reader.readAsText(file);
     }
@@ -129,24 +134,27 @@ function addToVisualizer(allAtomsSymbols, atomicData){
         const mySymbol=atomicData[i].atomicSymbol
         let colorH
         console.log(mySymbol)
-        let atomGeo
+        let radius
         switch(mySymbol[0]) {
             case 'O':
                 colorH='red'
-                atomGeo = new THREE.IcosahedronGeometry(2, 10); // Atom geometry
+                radius=2
                 break;
             case 'H':
                 colorH='lightgray'
-                atomGeo = new THREE.IcosahedronGeometry(1, 10); // Atom geometry
+                radius=1
                 break
             case 'C':
                 colorH='gray'
-                atomGeo = new THREE.IcosahedronGeometry(2.5, 10); // Atom geometry
+                radius=2.5
                 break;
             default:
                 colorH='green'
         }
-        const atomMat = new THREE.MeshPhongMaterial({color: colorH, shininess: 50}); // Atom material
+
+        const atomMat = new THREE.MeshPhongMaterial({color: colorH, shininess: 200}); // Atom material
+        const atomGeo = new THREE.IcosahedronGeometry(radius, 10); // Atom geometry
+
         const atomMesh = new THREE.Mesh(atomGeo, atomMat); // Create mesh from geometry and material
         
         // Set atom position using atomicData (uncomment this to use the coordinates from the data)
@@ -188,7 +196,62 @@ function clearScene() {
     atomVisuals = [];
     allAtomsSymbols = [];
 
-    console.log('Scene cleared');
+    console.log(atomicData);
+}
+
+function getAtomPositions(atomicData){
+
+    for(let i=0; i<atomicData.length; i++){
+        positionsX.push(atomicData[i].coordinates.x)
+        positionsY.push(atomicData[i].coordinates.y)
+        positionsZ.push(atomicData[i].coordinates.z)
+    }
+    console.log(positionsX)
+}
+
+
+function createBond(){
+    getAtomPositions(atomicData)
+    let currentAtomNum=0
+    let myPositionX
+    let myPositionY
+    let myPositionZ
+    
+    let points=[]
+
+    let otherPositionX
+    let otherPositionY
+    let otherPositionZ
+    let distance
+    let checks=0
+    const bondThreshold=1.5
+
+    for(let i=0;i<atomVisuals.length;i++){
+        points=[]
+        myPositionX=positionsX[currentAtomNum]
+        myPositionY=positionsY[currentAtomNum]
+        myPositionZ=positionsZ[currentAtomNum]
+        for(let j=0;j<atomVisuals.length;j++){
+            if(j!==currentAtomNum){
+                checks++
+                otherPositionX=positionsX[j]
+                otherPositionY=positionsY[j]
+                otherPositionZ=positionsZ[j]
+                distance=Math.hypot((myPositionX-otherPositionX),(myPositionY-otherPositionY),(myPositionZ-otherPositionZ))
+                if(distance<bondThreshold){
+                    points.push(new THREE.Vector3(myPositionX*4, myPositionY*4, myPositionZ*4))
+                    points.push(new THREE.Vector3(otherPositionX*4, otherPositionY*4, otherPositionZ*4))
+                    const geometry = new THREE.BufferGeometry().setFromPoints(points);
+                    const material = new THREE.LineBasicMaterial({ color: 0xff0000, linewidth: 10 });
+                    const line = new THREE.Line(geometry, material);
+                    scene.add(line);
+                }
+            }
+        }
+        currentAtomNum++
+    }
+    console.log(checks)
+
 }
 
 
