@@ -1,0 +1,7 @@
+{
+    "O": { "color": "red", "radius": 2 },
+    "C": { "color": "gray", "radius": 2.5 },
+    "H": { "color": "lightgray", "radius": 1 },
+    "Si": { "color": "darkgray", "radius": 3.5 },
+    "N": { "color": "blue", "radius": 1.3 }
+}

@@ -1,10 +1,12 @@
 import * as THREE from 'three';
 import {OrbitControls} from 'jsm/controls/OrbitControls.js'
+import getAtom from './atom.js';
 
 let positionsX=[]
 let positionsY=[]
 let positionsZ=[]
 
+let atomOptions
 const w=window.innerWidth
 const h=window.innerHeight
 const scene = new THREE.Scene();
@@ -29,6 +31,15 @@ const ambiLights=new THREE.AmbientLight(0xffffff, 0.5)
 scene.add(lights)
 scene.add(ambiLights)
 
+fetch('options.json')
+  .then(response => response.json())  // Parse the JSON file
+  .then(data => {
+    atomOptions=data;  // Use the data here
+    console.log(data)
+  })
+  .catch(error => {
+    console.error('Error loading the JSON file:', error);
+});
 
 // Listen for file selection
 document.getElementById('fileInput').addEventListener('change', function(event) {
@@ -131,25 +142,35 @@ function animate(){
     
 }
 
+
+
 function addToVisualizer(allAtomsSymbols, atomicData){
     for(let i=0; i<allAtomsSymbols.length; i++){
         const mySymbol=atomicData[i].atomicSymbol
         let colorH
-        console.log(mySymbol)
+        // console.log(mySymbol)
         let radius
         let scalar=0.6
         switch(mySymbol[0]) {
             case 'O':
-                colorH='red'
-                radius=2*scalar
+                colorH=atomOptions.O.color
+                radius=atomOptions.O.radius*scalar
                 break;
             case 'H':
-                colorH='lightgray'
-                radius=1*scalar
+                colorH=atomOptions.H.color
+                radius=atomOptions.H.radius*scalar
                 break
             case 'C':
-                colorH='gray'
-                radius=2.5*scalar
+                colorH=atomOptions.C.color
+                radius=atomOptions.C.radius*scalar
+                break;
+            case 'N':
+                colorH=atomOptions.N.color
+                radius=atomOptions.N.radius*scalar
+                break;
+            case 'Si':
+                colorH=atomOptions.Si.color
+                radius=atomOptions.Si.radius*scalar
                 break;
             default:
                 colorH='green'
@@ -160,6 +181,7 @@ function addToVisualizer(allAtomsSymbols, atomicData){
 
         const atomMesh = new THREE.Mesh(atomGeo, atomMat); // Create mesh from geometry and material
         
+        const atom=getAtom(mySymbol[0], )
         // Set atom position using atomicData (uncomment this to use the coordinates from the data)
         atomMesh.position.x = atomicData[i].coordinates.x * 4;
         atomMesh.position.y = atomicData[i].coordinates.y * 4;
@@ -172,7 +194,7 @@ function addToVisualizer(allAtomsSymbols, atomicData){
         atomVisuals.push(atomMesh);
     }
     
-    console.log(scene);
+    // console.log(scene);
 }
 
 function clearScene() {
