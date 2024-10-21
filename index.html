@@ -1,33 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Display Atoms</title>
     <link rel="stylesheet" href="style.css">
     <style>
-      body {
-        margin: 0;
-        overflow: hidden;
-        background-color: black;
-      }
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: black;
+        }
 
-      #fileInput{
-        color: aliceblue;
-      }
+        #fileInput {
+            display: none; /* Hide the default file input */
+        }
+
+        /* Style the label to look like a button */
+        .file-label {
+            position: absolute;
+            top: 5%;
+            left: 5%;
+
+            display: inline-block;
+            padding: 5px 10px;
+            background-color: #007BFF; /* Bootstrap primary color */
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 10px;
+            transition: all 0.3s ease;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Change the background color on hover */
+        .file-label:hover {
+            background-color: #000dff;
+            font-size: 15px;
+          
+        }
     </style>
     <script type="importmap">
-			{
-				"imports": {
-					"three": "https://cdn.jsdelivr.net/npm/three@0.161/build/three.module.js",
-          "jsm/": "https://cdn.jsdelivr.net/npm/three@0.161/examples/jsm/"
+        {
+            "imports": {
+                "three": "https://cdn.jsdelivr.net/npm/three@0.161/build/three.module.js",
+                "jsm/": "https://cdn.jsdelivr.net/npm/three@0.161/examples/jsm/"
+            }
         }
-			}
-		</script>
-  </head>
-  <body>
+    </script>
+</head>
+<body>
+    <label for="fileInput" class="file-label">Choose File</label>
     <input type="file" id="fileInput" accept=".xyz">
     <script type="module" src="script.js"></script>
-  </body>
+</body>
 </html>
-

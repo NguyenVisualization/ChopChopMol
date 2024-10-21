@@ -242,7 +242,7 @@ function createBond(){
                     points.push(new THREE.Vector3(myPositionX*4, myPositionY*4, myPositionZ*4))
                     points.push(new THREE.Vector3(otherPositionX*4, otherPositionY*4, otherPositionZ*4))
                     const geometry = new THREE.BufferGeometry().setFromPoints(points);
-                    const material = new THREE.LineBasicMaterial({ color: 0xff0000, linewidth: 10 });
+                    const material = new THREE.LineBasicMaterial({ color: 0xff0000 });
                     const line = new THREE.Line(geometry, material);
                     scene.add(line);
                 }
@@ -260,6 +260,13 @@ window.addEventListener('keydown', function(e){
         clearScene()
     }
 })
+
+window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
 
 animate()
 
