@@ -59,8 +59,8 @@ document.getElementById('fileInput').addEventListener('change', function(event) 
             getAllAtoms(atomicData); // Call function to get all atom symbols after data is extracted
             console.log(allAtomsSymbols); // Log all atom symbols to the console
             addToVisualizer(allAtomsSymbols, atomicData)
-            console.log(atomVisuals)
-            createBond()
+            console.log(atomicData)
+            createBond(atomicData)
 
         };  
         reader.readAsText(file);
@@ -155,11 +155,11 @@ function addToVisualizer(allAtomsSymbols, atomicData){
     centerMolecule(atomicData);
 
     for(let i=0; i<allAtomsSymbols.length; i++){
-        const mySymbol = atomicData[i].atomicSymbol;
+        const mySymbol =(atomicData[i].atomicSymbol).replace(/[^a-zA-Z]/g, '');
         let colorH;
         let radius;
 
-        switch(mySymbol[0]) {
+        switch(mySymbol) {
             case 'O':
                 colorH = atomOptions.O.color;
                 radius = atomOptions.O.radius * scalar; // Apply updated scalar
@@ -252,18 +252,26 @@ function getAtomPositions(atomicData){
 }
 
 
-function createBond(){
+function createBond(atomicData){
     getAtomPositions(atomicData)
     let currentAtomNum=0
     let myPositionX
     let myPositionY
     let myPositionZ
+    let myAtomSymbol
+    let myAtomRadius
     
     let points=[]
 
     let otherPositionX
     let otherPositionY
     let otherPositionZ
+    let otherAtomSymbol
+    let otherAtomRadius
+    let atomNumberDynamic
+
+    let variables={}
+
     let distance
     let checks=0
     const bondThreshold=2
@@ -273,12 +281,18 @@ function createBond(){
         myPositionX=positionsX[currentAtomNum]
         myPositionY=positionsY[currentAtomNum]
         myPositionZ=positionsZ[currentAtomNum]
+        myAtomSymbol=atomicData[currentAtomNum].atomicSymbol
+        myAtomRadius=atomOptions
         for(let j=0;j<atomVisuals.length;j++){
             if(j!==currentAtomNum){
                 checks++
                 otherPositionX=positionsX[j]
                 otherPositionY=positionsY[j]
                 otherPositionZ=positionsZ[j]
+                otherAtomSymbol=atomicData[j].atomicSymbol
+
+
+
                 distance=Math.hypot((myPositionX-otherPositionX),(myPositionY-otherPositionY),(myPositionZ-otherPositionZ))
                 if(distance<bondThreshold){
                     points.push(new THREE.Vector3(myPositionX*4, myPositionY*4, myPositionZ*4))
