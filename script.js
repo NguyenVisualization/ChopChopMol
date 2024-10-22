@@ -14,6 +14,7 @@ const scalarSlider=document.getElementById('scalar')
 scalarSlider.value=0.6
 scalarSlider.addEventListener('change', function(e){
     scalar=scalarSlider.value
+    updateAtomSizes()
 })
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(10, w/h, 0.1, 10000)
@@ -151,59 +152,54 @@ function animate(){
 
 
 function addToVisualizer(allAtomsSymbols, atomicData){
-
-    centerMolecule(atomicData)
+    centerMolecule(atomicData);
 
     for(let i=0; i<allAtomsSymbols.length; i++){
-        const mySymbol=atomicData[i].atomicSymbol
-        let colorH
-        // console.log(mySymbol)
-        let radius
+        const mySymbol = atomicData[i].atomicSymbol;
+        let colorH;
+        let radius;
+
         switch(mySymbol[0]) {
             case 'O':
-                colorH=atomOptions.O.color
-                radius=atomOptions.O.radius*scalar
+                colorH = atomOptions.O.color;
+                radius = atomOptions.O.radius * scalar; // Apply updated scalar
                 break;
             case 'H':
-                colorH=atomOptions.H.color
-                radius=atomOptions.H.radius*scalar
-                break
+                colorH = atomOptions.H.color;
+                radius = atomOptions.H.radius * scalar;
+                break;
             case 'C':
-                colorH=atomOptions.C.color
-                radius=atomOptions.C.radius*scalar
+                colorH = atomOptions.C.color;
+                radius = atomOptions.C.radius * scalar;
                 break;
             case 'N':
-                colorH=atomOptions.N.color
-                radius=atomOptions.N.radius*scalar
+                colorH = atomOptions.N.color;
+                radius = atomOptions.N.radius * scalar;
                 break;
             case 'Si':
-                colorH=atomOptions.Si.color
-                radius=atomOptions.Si.radius*scalar
+                colorH = atomOptions.Si.color;
+                radius = atomOptions.Si.radius * scalar;
                 break;
             default:
-                colorH='green'
+                colorH = 'green';
         }
 
-        const atomMat = new THREE.MeshPhongMaterial({color: colorH, shininess: 200}); // Atom material
-        const atomGeo = new THREE.IcosahedronGeometry(radius, 10); // Atom geometry
+        const atomMat = new THREE.MeshPhongMaterial({color: colorH, shininess: 200});
+        const atomGeo = new THREE.IcosahedronGeometry(radius, 10);
 
-        const atomMesh = new THREE.Mesh(atomGeo, atomMat); // Create mesh from geometry and material
-        
-        const atom=getAtom(mySymbol[0], )
-        // Set atom position using atomicData (uncomment this to use the coordinates from the data)
+        const atomMesh = new THREE.Mesh(atomGeo, atomMat);
+
+        // Set atom position using atomicData
         atomMesh.position.x = atomicData[i].coordinates.x * 4;
         atomMesh.position.y = atomicData[i].coordinates.y * 4;
         atomMesh.position.z = atomicData[i].coordinates.z * 4;
-        
+
         // Add atom to the scene
         scene.add(atomMesh);
-        
-        // Store in the atomVisuals array (optional, for further use)
-        atomVisuals.push(atomMesh);
+        atomVisuals.push(atomMesh); // Store the updated atom
     }
-    
-    // console.log(scene);
 }
+
 
 function clearScene() {
     // Traverse through all children in the scene
@@ -229,8 +225,21 @@ function clearScene() {
     atomVisuals = [];
     allAtomsSymbols = [];
 
-    console.log(atomicData);
 }
+
+function updateAtomSizes() {
+    // Remove the existing atoms from the scene
+    atomVisuals.forEach(atom => {
+        scene.remove(atom); // Remove each atom from the scene
+        if (atom.geometry) atom.geometry.dispose(); // Dispose geometry
+        if (atom.material) atom.material.dispose(); // Dispose material
+    });
+    atomVisuals = []; // Clear the array
+
+    // Re-add the atoms to the scene with the updated scalar
+    addToVisualizer(allAtomsSymbols, atomicData);
+}
+
 
 function getAtomPositions(atomicData){
 
@@ -257,7 +266,7 @@ function createBond(){
     let otherPositionZ
     let distance
     let checks=0
-    const bondThreshold=1.5
+    const bondThreshold=2
 
     for(let i=0;i<atomVisuals.length;i++){
         points=[]
