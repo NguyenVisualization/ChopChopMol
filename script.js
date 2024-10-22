@@ -159,30 +159,9 @@ function addToVisualizer(allAtomsSymbols, atomicData){
         let colorH;
         let radius;
 
-        switch(mySymbol) {
-            case 'O':
-                colorH = atomOptions.O.color;
-                radius = atomOptions.O.radius * scalar; // Apply updated scalar
-                break;
-            case 'H':
-                colorH = atomOptions.H.color;
-                radius = atomOptions.H.radius * scalar;
-                break;
-            case 'C':
-                colorH = atomOptions.C.color;
-                radius = atomOptions.C.radius * scalar;
-                break;
-            case 'N':
-                colorH = atomOptions.N.color;
-                radius = atomOptions.N.radius * scalar;
-                break;
-            case 'Si':
-                colorH = atomOptions.Si.color;
-                radius = atomOptions.Si.radius * scalar;
-                break;
-            default:
-                colorH = 'green';
-        }
+        colorH = atomOptions[mySymbol].color;
+        radius = atomOptions[mySymbol].radius * scalar; // Apply updated scalar
+
 
         const atomMat = new THREE.MeshPhongMaterial({color: colorH, shininess: 200});
         const atomGeo = new THREE.IcosahedronGeometry(radius, 10);
@@ -268,7 +247,6 @@ function createBond(atomicData){
     let otherPositionZ
     let otherAtomSymbol
     let otherAtomRadius
-    let atomNumberDynamic
 
     let variables={}
 
@@ -282,7 +260,7 @@ function createBond(atomicData){
         myPositionY=positionsY[currentAtomNum]
         myPositionZ=positionsZ[currentAtomNum]
         myAtomSymbol=atomicData[currentAtomNum].atomicSymbol
-        myAtomRadius=atomOptions
+        myAtomRadius=atomOptions[myAtomSymbol].realRadius
         for(let j=0;j<atomVisuals.length;j++){
             if(j!==currentAtomNum){
                 checks++
@@ -290,11 +268,13 @@ function createBond(atomicData){
                 otherPositionY=positionsY[j]
                 otherPositionZ=positionsZ[j]
                 otherAtomSymbol=atomicData[j].atomicSymbol
+                otherAtomRadius=atomOptions[otherAtomSymbol].realRadius
+
 
 
 
                 distance=Math.hypot((myPositionX-otherPositionX),(myPositionY-otherPositionY),(myPositionZ-otherPositionZ))
-                if(distance<bondThreshold){
+                if(distance<=(myAtomRadius*4)+(otherAtomRadius*4)){
                     points.push(new THREE.Vector3(myPositionX*4, myPositionY*4, myPositionZ*4))
                     points.push(new THREE.Vector3(otherPositionX*4, otherPositionY*4, otherPositionZ*4))
                     const geometry = new THREE.BufferGeometry().setFromPoints(points);
