@@ -41,6 +41,13 @@
             font-size: 15px;
           
         }
+        #scalar{
+            position: absolute;
+            top: 5%;
+            left: 30%;
+            transform: translate(-50%, -50%);
+            
+        }
     </style>
     <script type="importmap">
         {
@@ -55,6 +62,7 @@
     
     <label for="fileInput" class="file-label">Choose File</label>
     <input type="file" id="fileInput" accept=".xyz">
+    <input type="range" id="scalar" min="0.2" max="2" step="0.01">
 
     <!-- <script src="atom.js"></script> -->
     <script type="module" src="script.js"></script>

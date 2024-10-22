@@ -9,11 +9,17 @@ let positionsZ=[]
 let atomOptions
 const w=window.innerWidth
 const h=window.innerHeight
+let scalar=0.6
+const scalarSlider=document.getElementById('scalar')
+scalarSlider.value=0.6
+scalarSlider.addEventListener('change', function(e){
+    scalar=scalarSlider.value
+})
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(10, w/h, 0.1, 10000)
 camera.position.set(80,80,80)
 camera.lookAt(0,0,0)
-const renderer = new THREE.WebGLRenderer({ antialias: false });
+const renderer = new THREE.WebGLRenderer({ antialias: true });
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping=true
 controls.enablePan=false
@@ -145,12 +151,14 @@ function animate(){
 
 
 function addToVisualizer(allAtomsSymbols, atomicData){
+
+    centerMolecule(atomicData)
+
     for(let i=0; i<allAtomsSymbols.length; i++){
         const mySymbol=atomicData[i].atomicSymbol
         let colorH
         // console.log(mySymbol)
         let radius
-        let scalar=0.6
         switch(mySymbol[0]) {
             case 'O':
                 colorH=atomOptions.O.color
@@ -267,7 +275,7 @@ function createBond(){
                     points.push(new THREE.Vector3(myPositionX*4, myPositionY*4, myPositionZ*4))
                     points.push(new THREE.Vector3(otherPositionX*4, otherPositionY*4, otherPositionZ*4))
                     const geometry = new THREE.BufferGeometry().setFromPoints(points);
-                    const material = new THREE.LineBasicMaterial({ color: 0xff0000 });
+                    const material = new THREE.LineBasicMaterial({ color: 0x999999});
                     const line = new THREE.Line(geometry, material);
                     scene.add(line);
                 }
@@ -277,6 +285,28 @@ function createBond(){
     }
     console.log(checks)
 
+}
+
+function centerMolecule(atomicData) {
+    let totalX = 0, totalY = 0, totalZ = 0;
+
+    // Calculate the centroid
+    atomicData.forEach(atom => {
+        totalX += atom.coordinates.x;
+        totalY += atom.coordinates.y;
+        totalZ += atom.coordinates.z;
+    });
+
+    const centerX = totalX / atomicData.length;
+    const centerY = totalY / atomicData.length;
+    const centerZ = totalZ / atomicData.length;
+
+    // Adjust atom positions to center the molecule at (0, 0, 0)
+    atomicData.forEach(atom => {
+        atom.coordinates.x -= centerX;
+        atom.coordinates.y -= centerY;
+        atom.coordinates.z -= centerZ;
+    });
 }
 
 
