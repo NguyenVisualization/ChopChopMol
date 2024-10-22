@@ -33,8 +33,8 @@ let atomicData = []; // Declare atomicData globally so it can be accessed
 
 let atomVisuals=[]
 
-const lights=new THREE.DirectionalLight(0xffffff, 1)
-const ambiLights=new THREE.AmbientLight(0xffffff, 0.5)
+const lights=new THREE.DirectionalLight(0xffffff, 4)
+const ambiLights=new THREE.AmbientLight(0xffffff, 2)
 scene.add(lights)
 scene.add(ambiLights)
 
@@ -163,7 +163,7 @@ function addToVisualizer(allAtomsSymbols, atomicData){
         radius = atomOptions[mySymbol].radius * scalar; // Apply updated scalar
 
 
-        const atomMat = new THREE.MeshPhongMaterial({color: colorH, shininess: 200});
+        const atomMat = new THREE.MeshStandardMaterial({color: colorH, metalness:0.9, roughness:0.1});
         const atomGeo = new THREE.IcosahedronGeometry(radius, 10);
 
         const atomMesh = new THREE.Mesh(atomGeo, atomMat);
