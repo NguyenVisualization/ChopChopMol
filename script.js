@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import {OrbitControls} from 'jsm/controls/OrbitControls.js'
 import getAtom from './atom.js';
 
+
 let positionsX=[]
 let positionsY=[]
 let positionsZ=[]
@@ -16,6 +17,21 @@ scalarSlider.addEventListener('change', function(e){
     scalar=scalarSlider.value
     updateAtomSizes()
 })
+
+const clickSound=new Audio()
+clickSound.src='click.mp3'
+
+const labelButton=document.getElementById('label')
+labelButton.addEventListener('click', function(){
+    clickSound.play()
+    if(labelButton.textContent=='Show Labels'){
+        labelButton.textContent='Hide Labels'
+    }else{
+        labelButton.textContent='Show Labels'
+    }
+})
+
+
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(10, w/h, 0.1, 10000)
 camera.position.set(80,80,80)
@@ -161,7 +177,6 @@ function addToVisualizer(allAtomsSymbols, atomicData){
 
         colorH = atomOptions[mySymbol].color;
         radius = atomOptions[mySymbol].radius * scalar; // Apply updated scalar
-
 
         const atomMat = new THREE.MeshStandardMaterial({color: colorH, metalness:0.9, roughness:0.1});
         const atomGeo = new THREE.IcosahedronGeometry(radius, 10);
