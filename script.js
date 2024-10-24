@@ -227,11 +227,12 @@ function addToVisualizer(allAtomsSymbols, atomicData){
                 const textGeometry = new TextGeometry(mySymbol, {
                     font: font,
                     size: 1,
-                    height: 0.2,          
+                    height: 0.2,
+                             
                 });
             
                 // Create a material for the text
-                const textMaterial = new THREE.MeshBasicMaterial({color: 0xffffff,});
+                const textMaterial = new THREE.MeshBasicMaterial({color: colorH,});
                 
                 // Create a mesh from the geometry and material
                 
