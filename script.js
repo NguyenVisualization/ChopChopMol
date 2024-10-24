@@ -36,6 +36,8 @@ labelButton.addEventListener('click', function(){
         labelButton.textContent='Show Labels'
         labelTrue=false
     }
+    updateAtomSizes()
+
 })
 
 
