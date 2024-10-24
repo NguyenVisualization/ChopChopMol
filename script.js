@@ -202,9 +202,17 @@ function addToVisualizer(allAtomsSymbols, atomicData){
 
         const atomGroup=new THREE.Group()
         if(labelTrue){
-            atomMat = new THREE.MeshPhysicalMaterial({color: colorH, metalness:0.9, roughness:0.1, transparent: true, opacity: 0.8});
+            atomMat = new THREE.MeshPhysicalMaterial({color: colorH, 
+                // metalness:0.9, 
+                // roughness:0.1, 
+                transparent: true, 
+                opacity: 0.8
+            });
         }else{
-            atomMat = new THREE.MeshPhysicalMaterial({color: colorH, metalness:0.9, roughness:0.1});
+            atomMat = new THREE.MeshPhysicalMaterial({color: colorH, 
+                // metalness:0.9, 
+                // roughness:0.1
+            });
         }
         const atomGeo = new THREE.IcosahedronGeometry(radius, 10);
 
