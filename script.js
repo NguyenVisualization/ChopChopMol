@@ -201,19 +201,11 @@ function addToVisualizer(allAtomsSymbols, atomicData){
         let atomMat
 
         const atomGroup=new THREE.Group()
-        if(labelTrue){
-            atomMat = new THREE.MeshPhysicalMaterial({color: colorH, 
-                // metalness:0.9, 
-                // roughness:0.1, 
-                transparent: true, 
-                opacity: 0.8
-            });
-        }else{
-            atomMat = new THREE.MeshPhysicalMaterial({color: colorH, 
-                // metalness:0.9, 
-                // roughness:0.1
-            });
-        }
+
+        atomMat = new THREE.MeshPhysicalMaterial({color: colorH, 
+            // metalness:0.9, 
+            // roughness:0.1
+        });
         const atomGeo = new THREE.IcosahedronGeometry(radius, 10);
 
         const atomMesh = new THREE.Mesh(atomGeo, atomMat);
@@ -225,13 +217,16 @@ function addToVisualizer(allAtomsSymbols, atomicData){
         atomMesh.renderOrder=0
 
         // Add atom to the scene
-        atomGroup.add(atomMesh);
+        if(!labelTrue){
+            atomGroup.add(atomMesh);
+        }
+
 
         if(labelTrue){
             loader.load('Poppins-Bold.json', function (font) {
                 const textGeometry = new TextGeometry(mySymbol, {
                     font: font,
-                    size: 0.5,
+                    size: 1,
                     height: 0.2,          
                 });
             
