@@ -2,12 +2,17 @@ import * as THREE from 'three';
 import {OrbitControls} from 'jsm/controls/OrbitControls.js'
 import getAtom from './atom.js';
 
+import {FontLoader} from 'jsm/loaders/FontLoader.js'
+import {TextGeometry} from 'jsm/geometries/TextGeometry.js'
+
+
 
 let positionsX=[]
 let positionsY=[]
 let positionsZ=[]
 
 let atomOptions
+let labelTrue=false
 const w=window.innerWidth
 const h=window.innerHeight
 let scalar=0.6
@@ -26,12 +31,15 @@ labelButton.addEventListener('click', function(){
     clickSound.play()
     if(labelButton.textContent=='Show Labels'){
         labelButton.textContent='Hide Labels'
+        labelTrue=true
     }else{
         labelButton.textContent='Show Labels'
+        labelTrue=false
     }
 })
 
 
+const loader = new FontLoader();
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(10, w/h, 0.1, 10000)
 camera.position.set(80,80,80)
@@ -161,6 +169,16 @@ function animate(){
     requestAnimationFrame(animate)
     renderer.render(scene, camera)
     controls.update()
+    // textMesh.lookAt(camera.position)
+
+    for (const atomGroup of atomVisuals) {
+        for (const child of atomGroup.children) {
+            if (child.userData.isText) {
+                child.lookAt(camera.position);
+            }
+        }
+    }
+
     // console.log(atomicData)
     
 }
@@ -178,7 +196,14 @@ function addToVisualizer(allAtomsSymbols, atomicData){
         colorH = atomOptions[mySymbol].color;
         radius = atomOptions[mySymbol].radius * scalar; // Apply updated scalar
 
-        const atomMat = new THREE.MeshStandardMaterial({color: colorH, metalness:0.9, roughness:0.1});
+        let atomMat
+
+        const atomGroup=new THREE.Group()
+        if(labelTrue){
+            atomMat = new THREE.MeshPhysicalMaterial({color: colorH, metalness:0.9, roughness:0.1, transparent: true, opacity: 0.8});
+        }else{
+            atomMat = new THREE.MeshPhysicalMaterial({color: colorH, metalness:0.9, roughness:0.1});
+        }
         const atomGeo = new THREE.IcosahedronGeometry(radius, 10);
 
         const atomMesh = new THREE.Mesh(atomGeo, atomMat);
@@ -187,10 +212,42 @@ function addToVisualizer(allAtomsSymbols, atomicData){
         atomMesh.position.x = atomicData[i].coordinates.x * 4;
         atomMesh.position.y = atomicData[i].coordinates.y * 4;
         atomMesh.position.z = atomicData[i].coordinates.z * 4;
+        atomMesh.renderOrder=0
 
         // Add atom to the scene
-        scene.add(atomMesh);
-        atomVisuals.push(atomMesh); // Store the updated atom
+        atomGroup.add(atomMesh);
+
+        if(labelTrue){
+            loader.load('Poppins-Bold.json', function (font) {
+                const textGeometry = new TextGeometry(mySymbol, {
+                    font: font,
+                    size: 0.5,
+                    height: 0.2,          
+                });
+            
+                // Create a material for the text
+                const textMaterial = new THREE.MeshBasicMaterial({color: 0xffffff,});
+                
+                // Create a mesh from the geometry and material
+                
+                // Position the text
+                // textMesh.position.set(0, 0, 0);
+                
+            
+                const textMesh = new THREE.Mesh(textGeometry, textMaterial);
+                textMesh.userData.isText=true
+                textMesh.position.set(atomMesh.position.x, atomMesh.position.y, atomMesh.position.z)
+                // Add the text mesh to the scene
+                textGeometry.center()
+                textMesh.renderOrder=999
+    
+                atomGroup.add(textMesh);
+                
+            });
+        }
+
+        scene.add(atomGroup)
+        atomVisuals.push(atomGroup); // Store the updated atom
     }
 }
 
