@@ -23,6 +23,9 @@ scalarSlider.addEventListener('change', function(e){
     updateAtomSizes()
 })
 
+let mouse=new THREE.Vector2()
+let mouseDown=false
+
 const clickSound=new Audio()
 clickSound.src='click.mp3'
 
@@ -167,23 +170,14 @@ function evaluateAtoms(atomicData, atomIdentifier) {
     }
 }
 
-function animate(){
-    requestAnimationFrame(animate)
-    renderer.render(scene, camera)
-    controls.update()
-    // textMesh.lookAt(camera.position)
 
-    for (const atomGroup of atomVisuals) {
-        for (const child of atomGroup.children) {
-            if (child.userData.isText) {
-                child.lookAt(camera.position);
-            }
-        }
-    }
 
-    // console.log(atomicData)
-    
-}
+const selectGeometry=new THREE.PlaneGeometry(10,10)
+const selectMaterial=new THREE.MeshBasicMaterial({
+    color: 0xffffff,
+})
+const selectMesh=new THREE.Mesh(selectGeometry, selectMaterial)
+scene.add(selectMesh)
 
 
 
@@ -202,9 +196,18 @@ function addToVisualizer(allAtomsSymbols, atomicData){
 
         const atomGroup=new THREE.Group()
         if(labelTrue){
-            atomMat = new THREE.MeshPhysicalMaterial({color: colorH, metalness:0.9, roughness:0.1, transparent: true, opacity: 0.8});
+            atomMat = new THREE.MeshPhysicalMaterial({
+                color: colorH, 
+                // metalness:0.9,
+                // roughness:0.1, 
+                transparent: true, 
+                opacity: 0.8});
         }else{
-            atomMat = new THREE.MeshPhysicalMaterial({color: colorH, metalness:0.9, roughness:0.1});
+            atomMat = new THREE.MeshPhysicalMaterial({
+                color: colorH,
+                // metalness:0.9,
+                // roughness:0.1
+            });
         }
         const atomGeo = new THREE.IcosahedronGeometry(radius, 10);
 
@@ -386,6 +389,9 @@ function centerMolecule(atomicData) {
     });
 }
 
+const raycaster = new THREE.Raycaster()
+raycaster.setFromCamera(mouse, camera); // Create a ray from the camera through the mouse position
+
 
 window.addEventListener('keydown', function(e){
     if(e.key==' '){
@@ -393,11 +399,45 @@ window.addEventListener('keydown', function(e){
     }
 })
 
+window.addEventListener('mousedown', function(){
+    mouseDown=true
+})
+
+window.addEventListener('mouseup', function(){
+    mouseDown=false
+})
+
+window.addEventListener('mousemove', function(e){
+    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+})
+
 window.addEventListener('resize', () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
 });
+
+function animate(){
+    requestAnimationFrame(animate)
+    renderer.render(scene, camera)
+    controls.update()
+    // textMesh.lookAt(camera.position)
+
+    for (const atomGroup of atomVisuals) {
+        for (const child of atomGroup.children) {
+            if (child.userData.isText) {
+                child.lookAt(camera.position);
+            }
+        }
+    }
+
+    selectMesh.scale.set(mouse.x, mouse.y, 1)
+    selectMesh.lookAt(camera.position)
+    console.log(mouse.x, mouse.y)
+    // console.log(atomicData)
+    
+}
 
 
 animate()
