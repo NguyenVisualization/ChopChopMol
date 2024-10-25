@@ -419,12 +419,22 @@ document.body.appendChild(selectionBox);
 
 let isSelecting = false;
 let startX, startY;
+let select={
+    startX:0,
+    startY:0,
+    endX:0,
+    endY:0
+}
 
 window.addEventListener('mousedown', (event) => {
     if(selecting){
         isSelecting = true;
         startX = event.clientX;
         startY = event.clientY;
+
+        select.startX=startX
+        select.startY=startY
+
     
         selectionBox.style.left = `${startX}px`;
         selectionBox.style.top = `${startY}px`;
@@ -442,6 +452,10 @@ window.addEventListener('mousemove', (event) => {
 
     const width = currentX - startX;
     const height = currentY - startY;
+
+    select.endX=currentX
+    select.endY=currentY
+
 
     selectionBox.style.width = `${Math.abs(width)}px`;
     selectionBox.style.height = `${Math.abs(height)}px`;
