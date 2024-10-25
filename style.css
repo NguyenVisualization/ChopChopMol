@@ -70,3 +70,14 @@ body {
     background-color: #fffb00;
     font-size: 15px;
 }
+
+/* styles.css */
+#selectionBox {
+    position: absolute;
+    border: 0.5px solid rgba(21, 0, 255, 0.7);
+    background-color: rgba(17, 0, 255, 0.1);
+    display: none; /* Initially hidden */
+    pointer-events: none; /* Ignore mouse events on this box */
+    z-index: 100; /* Ensure it's above other elements */
+}
+

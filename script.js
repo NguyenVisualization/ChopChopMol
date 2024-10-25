@@ -226,7 +226,7 @@ function addToVisualizer(allAtomsSymbols, atomicData){
             loader.load('Poppins-Bold.json', function (font) {
                 const textGeometry = new TextGeometry(mySymbol, {
                     font: font,
-                    size: 1,
+                    size: radius,
                     height: 0.2,
                              
                 });
@@ -390,10 +390,20 @@ function centerMolecule(atomicData) {
     });
 }
 
+let selecting=false
 
 window.addEventListener('keydown', function(e){
     if(e.key==' '){
         clearScene()
+    }
+    if(e.key=='Control'){
+        selecting=true
+    }
+})
+
+window.addEventListener('keyup', function(e){
+    if(e.key=='Control'){
+        selecting=false
     }
 })
 
@@ -402,6 +412,70 @@ window.addEventListener('resize', () => {
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
 });
+
+const selectionBox = document.createElement('div');
+selectionBox.id = 'selectionBox';
+document.body.appendChild(selectionBox);
+
+let isSelecting = false;
+let startX, startY;
+
+window.addEventListener('mousedown', (event) => {
+    if(selecting){
+        isSelecting = true;
+        startX = event.clientX;
+        startY = event.clientY;
+    
+        selectionBox.style.left = `${startX}px`;
+        selectionBox.style.top = `${startY}px`;
+        selectionBox.style.width = '0px';
+        selectionBox.style.height = '0px';
+        selectionBox.style.display = 'block'; // Show the box
+    }
+});
+
+window.addEventListener('mousemove', (event) => {
+    if (!isSelecting) return;
+
+    const currentX = event.clientX;
+    const currentY = event.clientY;
+
+    const width = currentX - startX;
+    const height = currentY - startY;
+
+    selectionBox.style.width = `${Math.abs(width)}px`;
+    selectionBox.style.height = `${Math.abs(height)}px`;
+    selectionBox.style.left = `${width < 0 ? currentX : startX}px`;
+    selectionBox.style.top = `${height < 0 ? currentY : startY}px`;
+});
+
+window.addEventListener('mouseup', () => {
+    if (!isSelecting) return;
+    
+    isSelecting = false;
+    selectionBox.style.display = 'none'; // Hide the box
+
+    const boxBounds = selectionBox.getBoundingClientRect();
+    selectAtomsInBox(boxBounds);
+});
+
+function selectAtomsInBox(bounds) {
+    // Here you can implement the logic to check which atoms fall within the selection box
+    const atoms = atomVisuals; // Use your atom visuals array
+    atoms.forEach(atomGroup => {
+        const atomMesh = atomGroup.children[0]; // Assuming the first child is the mesh
+
+        const atomPosition = atomMesh.position.clone().project(camera);
+        // Convert from normalized device coordinates to screen coordinates
+        const x = (atomPosition.x * 0.5 + 0.5) * window.innerWidth;
+        const y = (atomPosition.y * -0.5 + 0.5) * window.innerHeight;
+
+        if (x > bounds.left && x < bounds.right && y > bounds.top && y < bounds.bottom) {
+            // Atom is within the selection box
+            atomMesh.material.color.set(0xff0000); // Change color or do something with the selection
+        }
+    });
+}
 
 
 animate()
