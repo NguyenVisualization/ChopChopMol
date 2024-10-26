@@ -61,6 +61,9 @@ let atomicData = []; // Declare atomicData globally so it can be accessed
 
 let atomVisuals=[]
 
+const rect = renderer.domElement.getBoundingClientRect();
+
+
 const lights=new THREE.DirectionalLight(0xffffff, 4)
 const ambiLights=new THREE.AmbientLight(0xffffff, 2)
 scene.add(lights)
@@ -173,24 +176,9 @@ function evaluateAtoms(atomicData, atomIdentifier) {
     }
 }
 
-function animate(){
-    requestAnimationFrame(animate)
-    renderer.render(scene, camera)
-    controls.update()
-    // textMesh.lookAt(camera.position)
 
-    for (const atomGroup of atomVisuals) {
-        for (const child of atomGroup.children) {
-            if (child.userData.isText) {
-                child.lookAt(camera.position);
-            }
-        }
-    }
 
-    // console.log(atomicData)
-    
-}
-
+const atomGroup=new THREE.Group()
 
 
 function addToVisualizer(allAtomsSymbols, atomicData){
@@ -206,11 +194,11 @@ function addToVisualizer(allAtomsSymbols, atomicData){
 
         let atomMat
 
-        const atomGroup=new THREE.Group()
 
         atomMat = new THREE.MeshPhysicalMaterial({color: colorH, 
             // metalness:0.9, 
             // roughness:0.1
+            emissive: 0x00ff00
         });
         const atomGeo = new THREE.IcosahedronGeometry(radius, 10);
 
@@ -442,8 +430,8 @@ window.addEventListener('mousedown', (event) => {
         startX = event.clientX;
         startY = event.clientY;
 
-        select.startX=startX
-        select.startY=startY
+        select.startX=((startX - rect.left) / rect.width) * 2 - 1;
+        select.startY=-((startY - rect.top) / rect.height) * 2 + 1;
 
     
         selectionBox.style.left = `${startX}px`;
@@ -463,8 +451,8 @@ window.addEventListener('mousemove', (event) => {
     const width = currentX - startX;
     const height = currentY - startY;
 
-    select.endX=currentX
-    select.endY=currentY
+    select.endX=((currentX - rect.left) / rect.width) * 2 - 1;
+    select.endY=-((currentY - rect.top) / rect.height) * 2 + 1;
 
 
     selectionBox.style.width = `${Math.abs(width)}px`;
@@ -480,7 +468,8 @@ window.addEventListener('mouseup', () => {
     selectionBox.style.display = 'none'; // Hide the box
 
     const boxBounds = selectionBox.getBoundingClientRect();
-    selectAtomsInBox(boxBounds);
+    // selectAtomsInBox(boxBounds);
+    selectAtoms()
 });
 
 function selectAtomsInBox(bounds) {
@@ -501,6 +490,34 @@ function selectAtomsInBox(bounds) {
     });
 }
 
+function animate(){
+    requestAnimationFrame(animate)
+    renderer.render(scene, camera)
+    controls.update()
+    // textMesh.lookAt(camera.position)
+
+    for (const atomGroup of atomVisuals) {
+        for (const child of atomGroup.children) {
+            if (child.userData.isText) {
+                child.lookAt(camera.position);
+            }
+        }
+    }
+
+    // console.log(atomicData)
+    
+}
+
+function selectAtoms(){
+    for(let i=0;i<positionsX.length; i++){
+        if(positionsX[i]<select.endX||positionsX[i]>select.startX){
+            if(positionsY[i]<select.endY||positionsY[i]>select.startY){
+                const atomMesh = atomGroup.children[i];
+                atomMesh.material.emissive.set(0xff0000);
+            }
+        }
+    }
+}
 
 animate()
 
