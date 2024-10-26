@@ -10,6 +10,8 @@ import {TextGeometry} from 'jsm/geometries/TextGeometry.js'
 let positionsX=[]
 let positionsY=[]
 let positionsZ=[]
+let bondVisuals = [];  // Array to store bond lines
+
 
 let atomOptions
 let labelTrue=false
@@ -82,16 +84,20 @@ document.getElementById('fileInput').addEventListener('change', function(event) 
         reader.onload = function(e) {
             const data = e.target.result;
             atomicData = extractAtomicData(data); // Save extracted atomic data globally
-            getAllAtoms(atomicData); // Call function to get all atom symbols after data is extracted
-            console.log(allAtomsSymbols); // Log all atom symbols to the console
-            addToVisualizer(allAtomsSymbols, atomicData)
-            console.log(atomicData)
-            createBond(atomicData)
+            loadNewMolecule(atomicData)
 
         };  
         reader.readAsText(file);
     }
 });
+
+function loadNewMolecule(atomicData){
+    getAllAtoms(atomicData); // Call function to get all atom symbols after data is extracted
+    console.log(allAtomsSymbols); // Log all atom symbols to the console
+    addToVisualizer(allAtomsSymbols, atomicData)
+    console.log(atomicData)
+    createBond(atomicData)
+}
 
 // Function to extract atomic data
 function extractAtomicData(input) {
@@ -259,29 +265,22 @@ function addToVisualizer(allAtomsSymbols, atomicData){
 
 
 function clearScene() {
-    // Traverse through all children in the scene
-    while (scene.children.length > 0) {
-        const object = scene.children[0]; // Get the first object
-        if (object.isMesh) {
-            // If the object is a mesh, dispose its geometry and material
-            if (object.geometry) object.geometry.dispose();
-            if (object.material) {
-                // If there are multiple materials, dispose each
-                if (Array.isArray(object.material)) {
-                    object.material.forEach(material => material.dispose());
-                } else {
-                    object.material.dispose();
-                }
+
+    clearBonds()
+    // Remove everything except lights
+    for (let i = scene.children.length - 1; i >= 0; i--) {
+        const object = scene.children[i];
+        if (object !== lights && object !== ambiLights) { // Keep the lights
+            if (object.isMesh) {
+                object.geometry.dispose();
+                object.material.dispose();
             }
+            scene.remove(object);
         }
-        // Remove the object from the scene
-        scene.remove(object);
     }
 
-    // Clear arrays holding atom visuals and symbols
     atomVisuals = [];
     allAtomsSymbols = [];
-
 }
 
 function updateAtomSizes() {
@@ -359,6 +358,7 @@ function createBond(atomicData){
                     const material = new THREE.LineBasicMaterial({ color: 0x999999});
                     const line = new THREE.Line(geometry, material);
                     scene.add(line);
+                    bondVisuals.push(line)
                 }
             }
         }
@@ -367,6 +367,16 @@ function createBond(atomicData){
     console.log(checks)
 
 }
+
+function clearBonds() {
+    bondVisuals.forEach(bond => {
+        scene.remove(bond);  // Remove the bond from the scene
+        bond.geometry.dispose();  // Dispose geometry
+        bond.material.dispose();  // Dispose material
+    });
+    bondVisuals = [];  // Clear the bond array
+}
+
 
 function centerMolecule(atomicData) {
     let totalX = 0, totalY = 0, totalZ = 0;
