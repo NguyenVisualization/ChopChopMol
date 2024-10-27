@@ -508,16 +508,42 @@ function animate(){
     
 }
 
-function selectAtoms(){
-    for(let i=0;i<positionsX.length; i++){
-        if(positionsX[i]<select.endX||positionsX[i]>select.startX){
-            if(positionsY[i]<select.endY||positionsY[i]>select.startY){
-                const atomMesh = atomGroup.children[i];
-                atomMesh.material.emissive.set(0xff0000);
-            }
+function selectAtoms() {
+    // Convert selection box from NDC to screen coordinates
+    const selectStartX = (select.startX * 0.5 + 0.5) * window.innerWidth;
+    const selectEndX = (select.endX * 0.5 + 0.5) * window.innerWidth;
+    const selectStartY = (-select.startY * 0.5 + 0.5) * window.innerHeight;
+    const selectEndY = (-select.endY * 0.5 + 0.5) * window.innerHeight;
+
+    for (let i = 0; i < atomicData.length; i++) {
+        // Get the projected position of the atom
+        const atomPosition = new THREE.Vector3(positionsX[i], positionsY[i], positionsZ[i]);
+        const projectedPosition = atomPosition.project(camera);
+
+        // Convert normalized device coordinates to screen coordinates
+        const x = (projectedPosition.x * 0.5 + 0.5) * window.innerWidth;
+        const y = (-projectedPosition.y * 0.5 + 0.5) * window.innerHeight;
+
+        // Debug logs for checking the selection box and projected coordinates
+        console.log(`Projected Position: (${x}, ${y}) for atom ${i}`);
+        console.log(`Selection box: (${selectStartX}, ${selectStartY}) to (${selectEndX}, ${selectEndY})`);
+
+        // Check if the atom's screen position is within the selection box
+        if (
+            x >= selectStartX && x <= selectEndX &&
+            y >= selectStartY && y <= selectEndY
+        ) {
+            const atomMesh = atomVisuals[i].children[0]; // Assuming the first child is the atom mesh
+            atomMesh.material.color.set(0x00ff00); // Change color or do something with the selection
+            console.log(`Selected atom ${i}`); // Log selected atoms
         }
     }
 }
+
+
+
+
+
 
 animate()
 
