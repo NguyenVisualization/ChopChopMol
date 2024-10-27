@@ -192,7 +192,6 @@ function animate(){
 }
 
 
-
 function addToVisualizer(allAtomsSymbols, atomicData){
     centerMolecule(atomicData);
 
@@ -206,7 +205,10 @@ function addToVisualizer(allAtomsSymbols, atomicData){
 
         let atomMat
 
+        
         const atomGroup=new THREE.Group()
+
+
 
         atomMat = new THREE.MeshPhysicalMaterial({color: colorH, 
             // metalness:0.9, 
@@ -480,27 +482,20 @@ window.addEventListener('mouseup', () => {
     selectionBox.style.display = 'none'; // Hide the box
 
     const boxBounds = selectionBox.getBoundingClientRect();
-    selectAtomsInBox(boxBounds);
+    selectAtoms()
 });
 
-function selectAtomsInBox(bounds) {
-    // Here you can implement the logic to check which atoms fall within the selection box
-    const atoms = atomVisuals; // Use your atom visuals array
-    atoms.forEach(atomGroup => {
-        const atomMesh = atomGroup.children[0]; // Assuming the first child is the mesh
 
-        const atomPosition = atomMesh.position.clone().project(camera);
-        // Convert from normalized device coordinates to screen coordinates
-        const x = (atomPosition.x * 0.5 + 0.5) * window.innerWidth;
-        const y = (atomPosition.y * -0.5 + 0.5) * window.innerHeight;
-
-        if (x > bounds.left && x < bounds.right && y > bounds.top && y < bounds.bottom) {
-            // Atom is within the selection box
-            atomMesh.material.color.set(0xff0000); // Change color or do something with the selection
+function selectAtoms(){
+    for(let i=0;i<positionsX.length; i++){
+        if(positionsX[i]<select.endX||positionsX[i]>select.startX){
+            if(positionsY[i]<select.endY||positionsY[i]>select.startY){
+                const atomMesh = atomGroup.children[i];
+                atomMesh.material.color.set(0x00ff00);
+            }
         }
-    });
+    }
 }
-
 
 animate()
 
