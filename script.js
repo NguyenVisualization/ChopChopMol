@@ -494,13 +494,18 @@ window.addEventListener('mouseup', () => {
 
 
 function animate(){
-    requestAnimationFrame(animate)
-    renderer.render(scene, camera)
-    controls.update()
-    // textMesh.lookAt(camera.position)
-    // console.log(atomicData)
+    requestAnimationFrame(animate);
+    renderer.render(scene, camera);
+    controls.update();
     
+    // Make sure all text meshes face the camera
+    atomGroup.children.forEach(child => {
+        if (child.userData.isText) {
+            child.lookAt(camera.position);
+        }
+    });
 }
+
 
 let selectedAtoms=[]
 
