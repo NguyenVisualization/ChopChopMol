@@ -202,6 +202,7 @@ function addToVisualizer(allAtomsSymbols, atomicData){
             // metalness:0.9, 
             // roughness:0.1
             // emissive: 0x00ff00
+
         });
         const atomGeo = new THREE.IcosahedronGeometry(radius, 5);
 
@@ -439,7 +440,7 @@ window.addEventListener('mousedown', (event) => {
         selectionBox.style.top = `${startY}px`;
         selectionBox.style.width = '0px';
         selectionBox.style.height = '0px';
-        selectionBox.style.display = 'block'; // Show the box
+        selectionBox.style.display = 'none'; // Show the box
     }
 });
 
@@ -538,7 +539,9 @@ function selectAtom(select) {
 
 
 
-
+function createCustomFile(){
+    
+}
 
 
 animate()
