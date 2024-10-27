@@ -5,6 +5,10 @@ import getAtom from './atom.js';
 import {FontLoader} from 'jsm/loaders/FontLoader.js'
 import {TextGeometry} from 'jsm/geometries/TextGeometry.js'
 
+import { EffectComposer } from 'jsm/postprocessing/EffectComposer.js';
+import { RenderPass } from 'jsm/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'jsm/postprocessing/UnrealBloomPass.js';
+
 
 
 let positionsX=[]
@@ -28,6 +32,10 @@ scalarSlider.addEventListener('change', function(e){
 const clickSound=new Audio()
 clickSound.src='click.mp3'
 
+const selectFileButton=document.getElementById('fileInput')
+
+
+
 const labelButton=document.getElementById('label')
 labelButton.addEventListener('click', function(){
     clickSound.play()
@@ -40,6 +48,16 @@ labelButton.addEventListener('click', function(){
     }
     updateAtomSizes()
 
+})
+
+const fileButton=document.getElementById('createFile')
+fileButton.addEventListener('click', function(){
+    if(selectedAtoms.length>0){
+
+    }else{
+        window.alert('Please select an atom or load one.')
+        selectFileButton.style.color='blue'
+    }
 })
 
 
@@ -498,6 +516,8 @@ function animate(){
     
 }
 
+let selectedAtoms=[]
+
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 let selectedAtom = null;  // To track the currently selected atom
@@ -516,6 +536,7 @@ function selectAtom(select) {
     if (intersects.length > 0) {
         const selectedObject = intersects[0].object;
 
+
         console.log("Selected Object:", selectedObject); // Debug log to check if an atom is clicked
 
         // Check if an atom was clicked
@@ -524,6 +545,7 @@ function selectAtom(select) {
 
             // Store the selected atom
             selectedAtom = selectedObject;
+            selectedAtoms.push(selectedAtom)
 
             // Store original color
             selectedAtom.userData.originalColor = selectedAtom.material.color.getHex();
@@ -540,7 +562,10 @@ function selectAtom(select) {
 
 
 function createCustomFile(){
-    
+    console.log(selectedAtoms)
+    for(let i=0;i<selectedAtoms.length;i++){
+
+    }
 }
 
 
