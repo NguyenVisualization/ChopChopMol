@@ -392,20 +392,18 @@ function centerMolecule(atomicData) {
 }
 
 let selecting=false
+selecting=true
+
 
 window.addEventListener('keydown', function(e){
     if(e.key==' '){
         clearScene()
     }
-    if(e.key=='Control'){
-        selecting=true
-    }
+
 })
 
 window.addEventListener('keyup', function(e){
-    if(e.key=='Control'){
-        selecting=false
-    }
+
 })
 
 window.addEventListener('resize', () => {
@@ -465,7 +463,6 @@ window.addEventListener('mousemove', (event) => {
 });
 
 window.addEventListener('mouseup', () => {
-    if (!isSelecting) return;
     
     isSelecting = false;
     selectionBox.style.display = 'none'; // Hide the box
