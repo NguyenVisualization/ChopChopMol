@@ -32,7 +32,6 @@ scalarSlider.addEventListener('change', function(e){
 const clickSound=new Audio()
 clickSound.src='click.mp3'
 
-const selectFileButton=document.getElementById('fileInput')
 
 
 
@@ -56,7 +55,6 @@ fileButton.addEventListener('click', function(){
 
     }else{
         window.alert('Please select an atom or load one.')
-        selectFileButton.style.color='blue'
     }
 })
 
@@ -217,9 +215,6 @@ function addToVisualizer(allAtomsSymbols, atomicData){
 
 
         atomMat = new THREE.MeshStandardMaterial({color: colorH, 
-            // metalness:0.9, 
-            // roughness:0.1
-            // emissive: 0x00ff00
 
         });
         const atomGeo = new THREE.IcosahedronGeometry(radius, 5);
@@ -503,15 +498,6 @@ function animate(){
     renderer.render(scene, camera)
     controls.update()
     // textMesh.lookAt(camera.position)
-
-    for (const atomGroup of atomVisuals) {
-        for (const child of atomGroup.children) {
-            if (child.userData.isText) {
-                child.lookAt(camera.position);
-            }
-        }
-    }
-
     // console.log(atomicData)
     
 }
