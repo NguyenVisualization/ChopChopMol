@@ -198,9 +198,9 @@ function addToVisualizer(allAtomsSymbols, atomicData){
         atomMat = new THREE.MeshPhysicalMaterial({color: colorH, 
             // metalness:0.9, 
             // roughness:0.1
-            emissive: 0x00ff00
+            // emissive: 0x00ff00
         });
-        const atomGeo = new THREE.IcosahedronGeometry(radius, 10);
+        const atomGeo = new THREE.IcosahedronGeometry(radius, 5);
 
         const atomMesh = new THREE.Mesh(atomGeo, atomMat);
 
