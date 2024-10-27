@@ -198,7 +198,7 @@ function addToVisualizer(allAtomsSymbols, atomicData){
         let atomMat
 
 
-        atomMat = new THREE.MeshPhysicalMaterial({color: colorH, 
+        atomMat = new THREE.MeshStandardMaterial({color: colorH, 
             // metalness:0.9, 
             // roughness:0.1
             // emissive: 0x00ff00
@@ -472,7 +472,13 @@ window.addEventListener('mouseup', () => {
 
     const boxBounds = selectionBox.getBoundingClientRect();
     // selectAtomsInBox(boxBounds);
-    selectAtom()
+    selectAtom(select)
+    select={
+        startX:0,
+        startY:0,
+        endX:0,
+        endY:0
+    }
 });
 
 
@@ -494,11 +500,44 @@ function animate(){
     
 }
 
-function selectAtom() {
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+let selectedAtom = null;  // To track the currently selected atom
 
+function selectAtom(select) {
+    // Calculate normalized device coordinates (NDC) for raycasting
+    mouse.x = select.startX;
+    mouse.y = select.startY;
+
+    // Update the raycaster with the camera and mouse position
+    raycaster.setFromCamera(mouse, camera);
+
+    // Get the list of intersected objects (atom meshes)
+    const intersects = raycaster.intersectObjects(atomVisuals, true); // 'true' to check child meshes in the atomGroup
+
+    if (intersects.length > 0) {
+        const selectedObject = intersects[0].object;
+
+        console.log("Selected Object:", selectedObject); // Debug log to check if an atom is clicked
+
+        // Check if an atom was clicked
+        if (selectedObject) {
+
+
+            // Store the selected atom
+            selectedAtom = selectedObject;
+
+            // Store original color
+            selectedAtom.userData.originalColor = selectedAtom.material.color.getHex();
+
+            // Change color to red to indicate selection
+            selectedAtom.material.color.set(0x00ff00);  
+            console.log("Atom selected and color changed to red");
+        }
+    } else {
+        console.log("No atom selected");
+    }
 }
-
-
 
 
 
