@@ -472,26 +472,9 @@ window.addEventListener('mouseup', () => {
 
     const boxBounds = selectionBox.getBoundingClientRect();
     // selectAtomsInBox(boxBounds);
-    selectAtoms()
+    selectAtom()
 });
 
-function selectAtomsInBox(bounds) {
-    // Here you can implement the logic to check which atoms fall within the selection box
-    const atoms = atomVisuals; // Use your atom visuals array
-    atoms.forEach(atomGroup => {
-        const atomMesh = atomGroup.children[0]; // Assuming the first child is the mesh
-
-        const atomPosition = atomMesh.position.clone().project(camera);
-        // Convert from normalized device coordinates to screen coordinates
-        const x = (atomPosition.x * 0.5 + 0.5) * window.innerWidth;
-        const y = (atomPosition.y * -0.5 + 0.5) * window.innerHeight;
-
-        if (x > bounds.left && x < bounds.right && y > bounds.top && y < bounds.bottom) {
-            // Atom is within the selection box
-            atomMesh.material.color.set(0xff0000); // Change color or do something with the selection
-        }
-    });
-}
 
 function animate(){
     requestAnimationFrame(animate)
@@ -511,51 +494,8 @@ function animate(){
     
 }
 
-function selectAtoms() {
-    // Convert selection box from NDC to screen coordinates
-    const selectStartX = (select.startX * 0.5 + 0.5) * window.innerWidth;
-    const selectEndX = (select.endX * 0.5 + 0.5) * window.innerWidth;
-    const selectStartY = (-select.startY * 0.5 + 0.5) * window.innerHeight;
-    const selectEndY = (-select.endY * 0.5 + 0.5) * window.innerHeight;
+function selectAtom() {
 
-    // Clear previous selection
-    const selectedAtoms = [];
-
-    let atomPosition
-    let projectedPosition
-
-    for (let i = 0; i < atomicData.length; i++) {
-        // Get the projected position of the atom
-        atomPosition = new THREE.Vector3(positionsX[i], positionsY[i], positionsZ[i]);
-        projectedPosition = atomPosition.project(camera);
-
-        // Convert normalized device coordinates to screen coordinates
-        const x = (projectedPosition.x * 0.5 + 0.5) * window.innerWidth;
-        const y = (-projectedPosition.y * 0.5 + 0.5) * window.innerHeight;
-
-        // Debug logs for checking the selection box and projected coordinates
-        console.log(`Projected Position: (${x}, ${y}) for atom ${i}`);
-        console.log(`Selection box: (${selectStartX}, ${selectStartY}) to (${selectEndX}, ${selectEndY})`);
-
-        // Check if the atom's screen position is within the selection box
-        if (projectedPosition.x >= selectionBox.startX && projectedPosition.x <= selectionBox.endX &&
-            projectedPosition.y >= selectionBox.startY && projectedPosition.y <= selectionBox.endY) {
-            // Select atom
-        }{
-            // Iterate over each mesh of the atom
-            for (let j = 0; j < atomVisuals[i].children.length; j++) {
-                const atomMesh = atomVisuals[i].children[j];
-                
-                // Change color or do something with the selection
-                atomMesh.material.color.set(0x00ff00); // Change color of the atom mesh
-                console.log(`Selected atom ${i}, mesh ${j}`); // Log selected atoms
-            }
-            selectedAtoms.push(i); // Keep track of selected atom index
-        }
-    }
-
-    // Optionally, do something with selectedAtoms, like storing or displaying them
-    console.log('Selected Atoms:', selectedAtoms);
 }
 
 
