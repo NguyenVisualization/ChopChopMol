@@ -518,10 +518,16 @@ function selectAtoms() {
     const selectStartY = (-select.startY * 0.5 + 0.5) * window.innerHeight;
     const selectEndY = (-select.endY * 0.5 + 0.5) * window.innerHeight;
 
+    // Clear previous selection
+    const selectedAtoms = [];
+
+    let atomPosition
+    let projectedPosition
+
     for (let i = 0; i < atomicData.length; i++) {
         // Get the projected position of the atom
-        const atomPosition = new THREE.Vector3(positionsX[i], positionsY[i], positionsZ[i]);
-        const projectedPosition = atomPosition.project(camera);
+        atomPosition = new THREE.Vector3(positionsX[i], positionsY[i], positionsZ[i]);
+        projectedPosition = atomPosition.project(camera);
 
         // Convert normalized device coordinates to screen coordinates
         const x = (projectedPosition.x * 0.5 + 0.5) * window.innerWidth;
@@ -532,16 +538,27 @@ function selectAtoms() {
         console.log(`Selection box: (${selectStartX}, ${selectStartY}) to (${selectEndX}, ${selectEndY})`);
 
         // Check if the atom's screen position is within the selection box
-        if (
-            x >= selectStartX && x <= selectEndX &&
-            y >= selectStartY && y <= selectEndY
-        ) {
-            const atomMesh = atomVisuals[i].children[0]; // Assuming the first child is the atom mesh
-            atomMesh.material.color.set(0x00ff00); // Change color or do something with the selection
-            console.log(`Selected atom ${i}`); // Log selected atoms
+        if (projectedPosition.x >= selectionBox.startX && projectedPosition.x <= selectionBox.endX &&
+            projectedPosition.y >= selectionBox.startY && projectedPosition.y <= selectionBox.endY) {
+            // Select atom
+        }{
+            // Iterate over each mesh of the atom
+            for (let j = 0; j < atomVisuals[i].children.length; j++) {
+                const atomMesh = atomVisuals[i].children[j];
+                
+                // Change color or do something with the selection
+                atomMesh.material.color.set(0x00ff00); // Change color of the atom mesh
+                console.log(`Selected atom ${i}, mesh ${j}`); // Log selected atoms
+            }
+            selectedAtoms.push(i); // Keep track of selected atom index
         }
     }
+
+    // Optionally, do something with selectedAtoms, like storing or displaying them
+    console.log('Selected Atoms:', selectedAtoms);
 }
+
+
 
 
 
