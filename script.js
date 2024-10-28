@@ -52,7 +52,7 @@ labelButton.addEventListener('click', function(){
 const fileButton=document.getElementById('createFile')
 fileButton.addEventListener('click', function(){
     if(selectedAtoms.length>0){
-
+        createCustomFile()
     }else{
         // Store the original color
         const originalColor = fileSelectButton.style.backgroundColor;
@@ -572,12 +572,14 @@ function selectAtom(select) {
 }
 
 
-
+let fileFromSelect=[]
 function createCustomFile(){
     console.log(selectedAtoms)
-    for(let i=0;i<selectedAtoms.length;i++){
 
+    for(let i=0;i<selectedAtoms.length;i++){
+        fileFromSelect.push(selectedAtoms[i].position.x,selectedAtoms[i].position.y,selectedAtoms[i].position.z)
     }
+    console.log(fileFromSelect)
 }
 
 
