@@ -49,6 +49,17 @@ labelButton.addEventListener('click', function(){
 
 })
 
+const pointSelectButton=document.getElementById('enableSelection')
+pointSelectButton.addEventListener('click', function(){
+    if(pointSelectButton.style.boxShadow=='0 0 20px rgba(255, 255, 255, 0.8)'){
+        pointSelectButton.style.boxShadow=''
+    }else{
+        pointSelectButton.style.boxShadow='0 0 20px rgba(255, 255, 255, 0.8)'
+    }
+})
+
+
+
 const fileButton=document.getElementById('createFile')
 fileButton.addEventListener('click', function(){
     if(selectedAtoms.length>0){
