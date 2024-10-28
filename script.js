@@ -32,7 +32,7 @@ scalarSlider.addEventListener('change', function(e){
 const clickSound=new Audio()
 clickSound.src='click.mp3'
 
-
+const fileSelectButton=document.getElementsByClassName('file-label')[0]
 
 
 const labelButton=document.getElementById('label')
@@ -54,7 +54,26 @@ fileButton.addEventListener('click', function(){
     if(selectedAtoms.length>0){
 
     }else{
-        window.alert('Please select an atom or load one.')
+        // Store the original color
+        const originalColor = fileSelectButton.style.backgroundColor;
+
+        // Set the button to red
+        fileSelectButton.style.backgroundColor = 'red';  
+        
+        // Start the blinking effect
+        let isRed = true; // Track the current color state
+        const blinkInterval = setInterval(() => {
+            fileSelectButton.style.backgroundColor = isRed ? originalColor : 'red';
+            isRed = !isRed; // Toggle the state
+        }, 200); // Change color every 500ms
+
+        // Stop blinking after a certain duration (e.g., 3 seconds)
+        setTimeout(() => {
+            clearInterval(blinkInterval);
+            fileSelectButton.style.backgroundColor = originalColor; // Reset to original color
+        }, 3000); // Blink for 3 seconds
+
+        window.alert('Please select an atom or load one')
     }
 })
 
@@ -499,11 +518,13 @@ function animate(){
     controls.update();
     
     // Make sure all text meshes face the camera
-    atomGroup.children.forEach(child => {
-        if (child.userData.isText) {
-            child.lookAt(camera.position);
-        }
-    });
+    if(atomGroup){
+        atomGroup.children.forEach(child => {
+            if (child.userData.isText) {
+                child.lookAt(camera.position);
+            }
+        });
+    }
 }
 
 
