@@ -544,6 +544,7 @@ function selectAtom(select) {
 
     // Get the list of intersected objects (atom meshes)
     const intersects = raycaster.intersectObjects(atomVisuals, true); // 'true' to check child meshes in the atomGroup
+    console.log(selectedAtoms)
 
     if (intersects.length > 0) {
         const selectedObject = intersects[0].object;
@@ -551,20 +552,26 @@ function selectAtom(select) {
 
         console.log("Selected Object:", selectedObject); // Debug log to check if an atom is clicked
 
+
         // Check if an atom was clicked
         if (selectedObject) {
-
-
-            // Store the selected atom
             selectedAtom = selectedObject;
-            selectedAtoms.push(selectedAtom)
+            let index = selectedAtoms.indexOf(selectedAtom);
 
-            // Store original color
-            selectedAtom.userData.originalColor = selectedAtom.material.color.getHex();
+            if(index !== -1){
+                selectedAtom.material.color.set(selectedAtom.userData.originalColor);
+                selectedAtoms.splice(index,1)
+            }else{
+                // Store the selected atom
+                selectedAtoms.push(selectedAtom)
 
-            // Change color to red to indicate selection
-            selectedAtom.material.color.set(0x00ff00);  
-            console.log("Atom selected and color changed to red");
+                // Store original color
+                selectedAtom.userData.originalColor = selectedAtom.material.color.getHex();
+
+                // Change color to red to indicate selection
+                selectedAtom.material.color.set(0x00ff00);
+                console.log("Atom selected and color changed to red");  
+            }
         }
     } else {
         console.log("No atom selected");
