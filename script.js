@@ -21,13 +21,22 @@ let atomOptions
 let labelTrue=false
 const w=window.innerWidth
 const h=window.innerHeight
-let scalar=0.6
+let scalar=0.5
 const scalarSlider=document.getElementById('scalar')
-scalarSlider.value=0.6
-scalarSlider.addEventListener('change', function(e){
-    scalar=scalarSlider.value
+scalarSlider.value=0.5
+scalarSlider.addEventListener('change', function(){
     updateAtomSizes()
+
 })
+scalarSlider.addEventListener('input', function(){
+
+    scalar=scalarSlider.value
+
+    scalarSpan.textContent=`Scalar: ${scalar}`
+})
+
+const scalarSpan=document.getElementById('scalarValue')
+scalarSpan.textContent=`Scalar: ${scalar}`
 
 const clickSound=new Audio()
 clickSound.src='click.mp3'
