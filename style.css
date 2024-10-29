@@ -12,25 +12,12 @@ body {
 }
 
 .button{
-    
-}
-
-#fileInput {
-    display: none; /* Hide the default file input */
-}
-
-/* Style the label to look like a button */
-.file-label {
-    box-shadow: 0 0 20px rgba(0, 247, 255, 0.8); /* Glowing shadow */
     position: absolute;
-    top: 20px;
-    left: 52px;
-
     display: inline-block;
     padding: 5px 10px;
-    background-color: #007BFF; /* Bootstrap primary color */
     color: white;
     border-radius: 5px;
+    border: none;
     cursor: pointer;
     font-size: 12px;
     transition: all 0.3s ease;
@@ -38,12 +25,28 @@ body {
     transform: translate(-50%, -50%);
 }
 
-/* Change the background color on hover */
-.file-label:hover {
-    background-color: #000dff;
-    font-size: 15px;
-  
+#fileInput {
+    display: none; /* Hide the default file input */
 }
+
+/* Style the label to look like a button */
+#file-label {
+    top: 20px;
+    left: 52px;
+    color: black;
+    background-color: white; /* Bootstrap primary color */
+
+}
+
+/* Change the background color on hover */
+#file-label:hover {
+    background-color: #008cff;
+    font-size: 15px;
+    color: white;
+    animation: glowPulse 1.5s linear infinite;
+    
+}
+
 #scalar{
     position: absolute;
     top: 10px;
@@ -53,29 +56,17 @@ body {
 
 
 #label{
-    box-shadow: 0 0 20px rgba(0, 255, 0, 0.8); /* Glowing shadow */
-
-    position: absolute;
+    color: black;
     top: 55px;
     left: 54px;
-
-    
-    border: 0px;
-    display: inline-block;
-    padding: 5px 10px;
-    background-color: #44ff00; /* Bootstrap primary color */
-    color: rgb(0, 0, 0);
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 12px;
-    transition: all 0.3s ease;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    transform: translate(-50%, -50%);
 }
 
 #label:hover{
-    background-color: #2b8900;
+    color: white;
+    background-color: #47e100;
     font-size: 15px;
+    animation: glowPulse 1.5s linear infinite;
+    
 }
 
 /* styles.css */
@@ -89,99 +80,92 @@ body {
 }
 
 #createFile{
-    position: absolute;
     top: 90px;
     left: 67px;
+    color: black;
 
-    
-    border: 0px;
-    display: inline-block;
-    padding: 5px 10px;
-    box-shadow: 0 0 20px rgba(187, 0, 255, 0.8); /* Glowing shadow */
-
-    background-color: #9900ff; /* Bootstrap primary color */
-    color: rgb(0, 0, 0);
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 12px;
-    transition: all 0.3s ease;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    transform: translate(-50%, -50%);
 }
 
 #createFile:hover{
-    background-color: #ff0088;
+    background-color: #ff2200;
     font-size: 15px;
+    color: white;
+    animation: glowPulse 1.5s linear infinite;
+}
+
+@keyframes glowPulse {
+    0% {
+        box-shadow:0 0 0px white ;
+    }
+    10% {
+        box-shadow:0 0 2px white ;
+    }
+    20% {
+        box-shadow:0 0 4px white ;
+    }
+    30% {
+        box-shadow:0 0 8px white ;
+    }
+    40% {
+        box-shadow:0 0 16px white ;
+    }
+    50% {
+        box-shadow:0 0 18px white ;
+    }
+    60% {
+        box-shadow:0 0 18px white ;
+    }
+    70% {
+        box-shadow:0 0 16px white ;
+    }
+    80% {
+        box-shadow:0 0 8px white ;
+    }
+    90% {
+        box-shadow:0 0 4px white ;
+    }
+    100% {
+        box-shadow:0 0 2px white ;
+    }
 }
 
 #enableSelection{
-    position: absolute;
     top: 124px;
     left: 27px;
-
-    
-    border: 0px;
-    display: inline-block;
-    padding: 5px 10px;
-    /* box-shadow: 0 0 20px rgba(255, 255, 255, 0.8); */
-
-    background-color: #d2d2d2; /* Bootstrap primary color */
-    color: rgb(0, 0, 0);
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 12px;
-    transition: all 0.3s ease;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    transform: translate(-50%, -50%);
-    background-image: url('cursor2.png');
-    background-size: 40% 40%;
-    
-    background-repeat: no-repeat;
-    background-position: center;
     width: 30px;
     height: 30px;
-
+    background-image: url('cursor2.png');
+    background-size: 50%, 50%;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
+
+
+
 #enableSelection:hover{
-    background-color: #ffffff;
+    background-color: #008cff;
     width: 35px;
     height: 35px;
 }
 
 #enableSelectionBox{
-    position: absolute;
     top: 124px;
     left: 64px;
-
-    
-    border: 0px;
-    display: inline-block;
-    padding: 5px 10px;
-    /* box-shadow: 0 0 20px rgba(255, 255, 255, 0.8); Glowing shadow */
-
-    background-color: #d2d2d2; /* Bootstrap primary color */
-    color: rgb(0, 0, 0);
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 12px;
-    transition: all 0.3s ease;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    transform: translate(-50%, -50%);
-    background-image: url('cursorSelect.png');
-    background-size: 60% 60%;
-    
-    background-repeat: no-repeat;
-    background-position: center;
     width: 30px;
     height: 30px;
+    background-image: url('cursorSelect.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 50%, 50%;
 
 }
 
 #enableSelectionBox:hover{
-    background-color: #ffffff;
+    background-color: #ffae00;
     width: 35px;
     height: 35px;
+
 }
 
 .glow {
