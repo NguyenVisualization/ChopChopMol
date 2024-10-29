@@ -11,6 +11,10 @@ body {
     user-select: none;
 }
 
+.button{
+    
+}
+
 #fileInput {
     display: none; /* Hide the default file input */
 }
@@ -178,4 +182,11 @@ body {
     background-color: #ffffff;
     width: 35px;
     height: 35px;
+}
+
+.glow {
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+}
+.bright {
+    filter: brightness(1.5); /* 1.5 means 150% brightness */
 }

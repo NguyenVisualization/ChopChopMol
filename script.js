@@ -49,14 +49,15 @@ labelButton.addEventListener('click', function(){
 
 })
 
-const pointSelectButton=document.getElementById('enableSelection')
-pointSelectButton.addEventListener('click', function(){
-    if(pointSelectButton.style.boxShadow=='0 0 20px rgba(255, 255, 255, 0.8)'){
-        pointSelectButton.style.boxShadow=''
-    }else{
-        pointSelectButton.style.boxShadow='0 0 20px rgba(255, 255, 255, 0.8)'
-    }
-})
+const pointSelectButton = document.getElementById('enableSelection');
+
+pointSelectButton.addEventListener('click', function() {
+    const glowEffect = '0 0 20px rgba(255, 255, 255, 0.8)';
+    pointSelectButton.classList.toggle('glow')
+    pointSelectButton.classList.toggle('bright')
+
+});
+
 
 
 
