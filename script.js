@@ -64,6 +64,11 @@ pointSelectButton.addEventListener('click', function() {
     const glowEffect = '0 0 20px rgba(255, 255, 255, 0.8)';
     pointSelectButton.classList.toggle('glow')
     pointSelectButton.classList.toggle('bright')
+    if(selecting){
+        selecting=false
+    }else{
+        selecting=true
+    }
 
 });
 
@@ -446,7 +451,6 @@ function centerMolecule(atomicData) {
 }
 
 let selecting=false
-selecting=true
 
 
 window.addEventListener('keydown', function(e){

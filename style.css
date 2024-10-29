@@ -196,6 +196,7 @@ body {
 
 .glow {
     box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+    background-color: #008cff;
 }
 .bright {
     filter: brightness(1.5); /* 1.5 means 150% brightness */
