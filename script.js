@@ -156,6 +156,8 @@ document.getElementById('fileInput').addEventListener('change', function(event) 
 });
 
 function loadNewMolecule(atomicData){
+    clearScene()
+    clearBonds()
     getAllAtoms(atomicData); // Call function to get all atom symbols after data is extracted
     console.log(allAtomsSymbols); // Log all atom symbols to the console
     addToVisualizer(allAtomsSymbols, atomicData)
@@ -315,23 +317,25 @@ function addToVisualizer(allAtomsSymbols, atomicData){
 
 
 function clearScene() {
-
-    clearBonds()
-    // Remove everything except lights
+    // clearBonds()
+    // Remove all objects except lights
     for (let i = scene.children.length - 1; i >= 0; i--) {
         const object = scene.children[i];
-        if (object !== lights && object !== ambiLights) { // Keep the lights
-            if (object.isMesh) {
-                object.geometry.dispose();
-                object.material.dispose();
-            }
+        // Check if the object is not a light
+        if (!(object instanceof THREE.Light)) {
+            // Dispose of geometry and material if they exist
+            if (object.geometry) object.geometry.dispose();
+            if (object.material) object.material.dispose();
+            // Remove the object from the scene
             scene.remove(object);
         }
     }
 
+    // Optionally, reset your atomVisuals array and any other data you need
     atomVisuals = [];
     allAtomsSymbols = [];
 }
+
 
 function updateAtomSizes() {
     // Remove the existing atoms from the scene
