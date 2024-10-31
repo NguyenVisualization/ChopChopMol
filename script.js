@@ -5,9 +5,6 @@ import getAtom from './atom.js';
 import {FontLoader} from 'jsm/loaders/FontLoader.js'
 import {TextGeometry} from 'jsm/geometries/TextGeometry.js'
 
-import { EffectComposer } from 'jsm/postprocessing/EffectComposer.js';
-import { RenderPass } from 'jsm/postprocessing/RenderPass.js';
-import { UnrealBloomPass } from 'jsm/postprocessing/UnrealBloomPass.js';
 
 
 
@@ -272,7 +269,7 @@ function addToVisualizer(allAtomsSymbols, atomicData){
         atomMat = new THREE.MeshStandardMaterial({color: colorH, 
 
         });
-        const atomGeo = new THREE.IcosahedronGeometry(radius, 5);
+        const atomGeo = new THREE.IcosahedronGeometry(radius, 1);
 
         const atomMesh = new THREE.Mesh(atomGeo, atomMat);
 
