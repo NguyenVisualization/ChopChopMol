@@ -156,8 +156,16 @@ document.getElementById('fileInput').addEventListener('change', function(event) 
 });
 
 function loadNewMolecule(atomicData){
+    positionsX = [];
+    positionsY = [];
+    positionsZ = [];
+    bondVisuals = [];
+    atomVisuals = [];
+    allAtomsSymbols = [];
+    selectedAtoms = [];
+    fileFromSelect = [];
+
     clearScene()
-    clearBonds()
     getAllAtoms(atomicData); // Call function to get all atom symbols after data is extracted
     console.log(allAtomsSymbols); // Log all atom symbols to the console
     addToVisualizer(allAtomsSymbols, atomicData)
@@ -317,8 +325,9 @@ function addToVisualizer(allAtomsSymbols, atomicData){
 
 
 function clearScene() {
-    // clearBonds()
-    // Remove all objects except lights
+    clearBonds()
+    console.log(scene)
+
     for (let i = scene.children.length - 1; i >= 0; i--) {
         const object = scene.children[i];
         // Check if the object is not a light
@@ -330,6 +339,8 @@ function clearScene() {
             scene.remove(object);
         }
     }
+    console.log(scene)
+
 
     // Optionally, reset your atomVisuals array and any other data you need
     atomVisuals = [];
