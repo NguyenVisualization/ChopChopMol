@@ -194,6 +194,20 @@ body {
 
 }
 
+#deselect{
+    top: 159px;
+    left: 46px;
+    text-align: center;
+    color: black;
+}
+
+#deselect:hover{
+    background-color: #00d5ff;
+    font-size: 15px;
+    animation: glowPulse 1.5s linear infinite;
+
+}
+
 .glow {
     box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
     background-color: #008cff;

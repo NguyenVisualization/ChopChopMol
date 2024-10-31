@@ -467,10 +467,20 @@ let selecting=false
 
 window.addEventListener('keydown', function(e){
     if(e.key==' '){
-        clearScene()
+        saveImage()
     }
 
 })
+
+function saveImage(){
+    renderer.render(scene,camera)
+    let imgData=renderer.domElement.toDataURL("image/png", 1.0)
+    const link=document.createElement('a')
+    link.setAttribute('href', imgData)
+    link.setAttribute('target', '_blank')
+    link.setAttribute('download', "canvas.png")
+    link.click()
+}
 
 window.addEventListener('keyup', function(e){
 
