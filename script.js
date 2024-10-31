@@ -55,6 +55,7 @@ labelButton.addEventListener('click', function(){
 
 })
 
+let fileName
 const pointSelectButton = document.getElementById('enableSelection');
 
 pointSelectButton.addEventListener('click', function() {
@@ -137,9 +138,14 @@ fetch('options.json')
     console.error('Error loading the JSON file:', error);
 });
 
+const docName=document.getElementById('name')
+const fSB=document.getElementById('fileInput')
 // Listen for file selection
 document.getElementById('fileInput').addEventListener('change', function(event) {
     const file = event.target.files[0];
+    fileName=fSB.files[0].name
+    docName.value=fileName
+    console.log(fileName)
     if (file) {
         const reader = new FileReader();
         reader.onload = function(e) {
@@ -467,7 +473,7 @@ let selecting=false
 
 window.addEventListener('keydown', function(e){
     if(e.key==' '){
-        saveImage()
+        // saveImage()
     }
 
 })
