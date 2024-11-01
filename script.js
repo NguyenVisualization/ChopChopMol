@@ -112,7 +112,9 @@ const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping=true
 controls.enablePan=false
 renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.setPixelRatio(devicePixelRatio);
+// renderer.setPixelRatio(devicePixelRatio);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));  // Limit pixel ratio for performance
+
 document.body.appendChild(renderer.domElement);
 
 let allAtomsSymbols = [];
