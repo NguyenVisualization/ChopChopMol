@@ -275,7 +275,7 @@ function addToVisualizer(allAtomsSymbols, atomicData){
         atomMat = new THREE.MeshStandardMaterial({color: colorH, 
 
         });
-        const atomGeo = new THREE.IcosahedronGeometry(radius, 1);
+        const atomGeo = new THREE.IcosahedronGeometry(radius, 0);
 
         const atomMesh = new THREE.Mesh(atomGeo, atomMat);
 
@@ -630,6 +630,25 @@ function selectAtom(select) {
         console.log("No atom selected");
     }
 }
+
+const deSelectButton=document.getElementById('deselect')
+deSelectButton.addEventListener('click', function(){
+    unselectAllAtoms()
+})
+
+function unselectAllAtoms() {
+    // Loop through each selected atom
+    selectedAtoms.forEach(atom => {
+        // Reset the atom color to its original color
+        atom.material.color.set(atom.userData.originalColor);
+    });
+
+    // Clear the selectedAtoms array
+    selectedAtoms = [];
+    
+    console.log("All atoms unselected");
+}
+
 
 
 let fileFromSelect=[]
