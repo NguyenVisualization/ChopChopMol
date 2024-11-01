@@ -346,6 +346,15 @@ function addToVisualizer(allAtomsSymbols, atomicData){
 }
 
 
+let needsUpdate = true;  // Flag to track if the scene needs updating
+
+function render() {
+    if (needsUpdate) {
+        renderer.render(scene, camera);
+        needsUpdate = false;  // Reset flag after rendering
+    }
+}
+
 function clearScene() {
     clearBonds()
     console.log(scene)
