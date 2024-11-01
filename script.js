@@ -275,7 +275,7 @@ function addToVisualizer(allAtomsSymbols, atomicData){
         atomMat = new THREE.MeshStandardMaterial({color: colorH, 
 
         });
-        const atomGeo = new THREE.IcosahedronGeometry(radius, 0);
+        const atomGeo = new THREE.SphereGeometry(radius, 16, 16);
 
         const atomMesh = new THREE.Mesh(atomGeo, atomMat);
 
