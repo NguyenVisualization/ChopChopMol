@@ -70,7 +70,17 @@ pointSelectButton.addEventListener('click', function() {
 
 });
 
+let displayMode=false
 
+const displayButton=document.getElementById('displayMode')
+displayButton.addEventListener('click', function(){
+    if(displayMode){
+        displayMode=false
+    }else{
+        displayMode=true
+    }
+    updateAtomSizes()
+})
 
 
 const fileButton=document.getElementById('createFile')
@@ -272,12 +282,19 @@ function addToVisualizer(allAtomsSymbols, atomicData){
         radius = atomOptions[mySymbol].radius * scalar; // Apply updated scalar
 
         let atomMat
+        let atomGeo
 
+        if(displayMode){
+            atomMat = new THREE.MeshStandardMaterial({color: colorH, 
+                metalness:0.6,
+                roughness: 0.4
+            });
+            atomGeo = new THREE.SphereGeometry(radius, 30, 30);
 
-        atomMat = new THREE.MeshStandardMaterial({color: colorH, 
-
-        });
-        const atomGeo = new THREE.SphereGeometry(radius, 16, 16);
+        }else{
+            atomMat = new THREE.MeshStandardMaterial({color: colorH});
+            atomGeo = new THREE.SphereGeometry(radius, 10, 10);
+        }
 
         const atomMesh = new THREE.Mesh(atomGeo, atomMat);
 
