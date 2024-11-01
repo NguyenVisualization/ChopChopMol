@@ -6,8 +6,6 @@ import {FontLoader} from 'jsm/loaders/FontLoader.js'
 import {TextGeometry} from 'jsm/geometries/TextGeometry.js'
 
 
-
-
 let positionsX=[]
 let positionsY=[]
 let positionsZ=[]
