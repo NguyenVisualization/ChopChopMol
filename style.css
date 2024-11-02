@@ -421,7 +421,7 @@ body {
     text-align: center; /* This can be kept for text alignment */
     align-items: center; /* Not needed for flexbox, included for clarity */
     position: absolute;
-    width: 230px;
+    width: 100vw;
     height: 40px;
     top: 0px;
     left: 0px;
