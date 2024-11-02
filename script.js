@@ -118,11 +118,38 @@ const allButtons=document.getElementById('allButtons')
 
 
 
+const infoPanel=document.getElementById('info')
+
+
+const menuPanel=document.getElementById('menuControls')
+let menuPanelHeight=menuPanel.style.height
+console.log(menuPanelHeight)
+let inMainMenu=false
+
 const controlButton=document.getElementById('control')
 controlButton.addEventListener('click', function(){
+    menuPanel.classList.toggle('menu')
+    if(!allButtons.classList.contains('inMenu')){
+        allButtons.classList.toggle('inMenu')
+    }
+    if(!infoPanel.classList.contains('inMenu')){
+        infoPanel.classList.toggle('inMenu')
+    }
+})
+
+const toolButton=document.getElementById('tools')
+toolButton.addEventListener('click', function(){
     allButtons.classList.toggle('inMenu')
 
 })
+
+
+const infoButton=document.getElementById('infoButton')
+infoButton.addEventListener('click', function(){
+    infoPanel.classList.toggle('inMenu')
+
+})
+
 
 
 const loader = new FontLoader();

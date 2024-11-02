@@ -16,7 +16,6 @@
 </head>
 <body>
     
-    <input type="text" id="name" value="">
     <input type="file" id="fileInput" accept=".xyz">
 
     <div id="allButtons" class="inMenu">
@@ -31,10 +30,29 @@
 
     <button id="control" class="button">Menu</button>
 
-    <div id="sliderContainer">
-        <input type="range" id="scalar" min="0.2" max="2" step="0.01">
-        <span id="scalarValue">Scalar: 0.6</span>
+    <div id="menuControls" class="menu">
+        <button id="tools" class="button">Tools</button>
+        <div id="allButtons" class="inMenu">
+            <label for="fileInput" id="file-label" class="button">Open File</label>
+            <button id="label" class="button">Show Labels</button>
+            <button id="createFile" class="button">Save File</button>
+            <button id="enableSelection" class="button"></button>
+            <button id="enableSelectionBox" class="button"></button>
+            <button id="deselect" class="button">Unselect All</button>
+            <button id="displayMode" class="button">Display Mode</button>
+        </div>
+        <button id="infoButton" class="button">Information/Adjust</button>
+
+        <div id="info" class="inMenu">
+            <input type="text" id="name" value=""><br><br><br>
+
+            <div id="sliderContainer">
+                <input type="range" id="scalar" min="0.2" max="2" step="0.01"><br>
+                <span id="scalarValue">Scalar: 0.6</span>
+            </div>
+        </div>
     </div>
+
 
     <!-- <script src="atom.js"></script> -->
      
