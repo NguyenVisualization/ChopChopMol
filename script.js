@@ -19,7 +19,7 @@ const h=window.innerHeight
 let scalar=0.5
 const scalarSlider=document.getElementById('scalar')
 scalarSlider.value=0.5
-scalarSlider.addEventListener('change', function(){
+scalarSlider.addEventListener('input', function(){
     updateAtomSizes()
 
 })
@@ -148,6 +148,11 @@ const infoButton=document.getElementById('infoButton')
 infoButton.addEventListener('click', function(){
     infoPanel.classList.toggle('inMenu')
 
+})
+
+const cameraButton=document.getElementById('camera')
+cameraButton.addEventListener('click', function(){
+    saveImage()
 })
 
 

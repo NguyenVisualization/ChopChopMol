@@ -23,7 +23,7 @@ body {
     align-items: center; /* Not needed for flexbox, included for clarity */
     position: absolute;
     width: 120px;
-    height: 280px;
+    height: 330px;
     top: 90px;
     left: 10px;
     display: flex; /* Use Flexbox */
@@ -48,6 +48,7 @@ body {
 
 
 .button {
+    z-index: 10;
     display: block; /* Change display to block for proper stacking */
     padding: 5px 10px;
     color: rgb(0, 0, 0);
@@ -280,6 +281,22 @@ body {
 }
 
 #displayMode:hover{
+
+    font-size: 15px;
+    background-color: #ffdd00;
+    animation: glowPulse 1.5s linear infinite;
+    
+}
+
+#camera{
+
+    top: 210px;
+
+    text-align: center;
+    color: black;
+}
+
+#camera:hover{
 
     font-size: 15px;
     background-color: #ffdd00;
