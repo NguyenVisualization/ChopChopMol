@@ -17,6 +17,14 @@ body {
 
 }
 
+#allButtons{
+    width: 100px;
+    height: 100px;
+    top: 50%;
+    top: 50%;
+
+}
+
 
 .button{
     position: absolute;
