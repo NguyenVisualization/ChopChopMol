@@ -33,8 +33,8 @@ body {
     position: absolute;
     width: 200px;
     height: 200px;
-    top: -10px;
-    left: -10px;
+    top: -200px;
+    left: 70px;
     transition: all 0.3s ease;
 
 }

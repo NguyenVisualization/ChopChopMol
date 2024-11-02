@@ -111,7 +111,7 @@ fileButton.addEventListener('click', function(){
 
 const allButtons=document.getElementById('allButtons')
 window.addEventListener('click', function(){
-    allButtons.classList.remove('inMenu')
+    allButtons.classList.toggle('inMenu')
 })
 
 
