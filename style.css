@@ -22,7 +22,7 @@ body {
     text-align: center; /* This can be kept for text alignment */
     align-items: center; /* Not needed for flexbox, included for clarity */
     position: absolute;
-    width: 250px;
+    width: 120px;
     height: 300px;
     top: 90px;
     left: 10px;
@@ -39,8 +39,6 @@ body {
 #allButtons.inMenu{
     opacity: -1;
     position: absolute;
-    width: 250px;
-    height: 300px;
     top: -400px;
     left: 10px;
     transition: all 0.3s ease;
