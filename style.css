@@ -18,10 +18,24 @@ body {
 }
 
 #allButtons{
-    width: 100px;
-    height: 100px;
-    top: 50%;
-    top: 50%;
+    opacity: 1;
+
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    top: 80px;
+    left: 70px;
+    transition: all 0.3s ease;
+}
+
+#allButtons.inMenu{
+    opacity: -1;
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    top: -10px;
+    left: -10px;
+    transition: all 0.3s ease;
 
 }
 
@@ -47,8 +61,8 @@ body {
 
 /* Style the label to look like a button */
 #file-label {
-    top: 70px;
-    left: 45px;
+
+    top: 0px;
     color: black;
     background-color: white; /* Bootstrap primary color */
 
@@ -91,9 +105,9 @@ body {
 
 
 #label{
+    top: 35px;
     color: black;
-    top: 105px;
-    left: 54px;
+
 }
 
 #label:hover{
@@ -114,8 +128,7 @@ body {
 }
 
 #createFile{
-    top: 138px;
-    left: 44px;
+    top: 70px;
     color: black;
 
 }
@@ -125,6 +138,16 @@ body {
     font-size: 15px;
     color: white;
     animation: glowPulse 1.5s linear infinite;
+}
+
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
 }
 
 @keyframes glowPulse {
@@ -164,8 +187,9 @@ body {
 }
 
 #enableSelection{
-    top: 174px;
-    left: 27px;
+    top: 105px;
+    left: -18px;
+
     width: 30px;
     height: 30px;
     background-image: url('cursor2.png');
@@ -187,8 +211,12 @@ body {
 }
 
 #enableSelectionBox{
-    top: 174px;
-    left: 64px;
+
+
+    top: 105px;
+    left: 18px;
+
+
     width: 30px;
     height: 30px;
     background-image: url('cursorSelect.png');
@@ -207,8 +235,8 @@ body {
 }
 
 #deselect{
-    top: 209px;
-    left: 54px;
+    top: 140px;
+
     text-align: center;
     color: black;
 }
@@ -255,15 +283,15 @@ body {
 }
 
 #displayMode{
-    top: 242px;
-    left: 60px;
+
+    top: 175px;
+
     text-align: center;
     color: black;
 }
 
 #displayMode:hover{
-    top: 242px;
-    left: 60px;
+
     font-size: 15px;
     background-color: #ffdd00;
     animation: glowPulse 1.5s linear infinite;

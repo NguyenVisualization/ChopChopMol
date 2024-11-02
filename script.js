@@ -109,6 +109,11 @@ fileButton.addEventListener('click', function(){
     }
 })
 
+const allButtons=document.getElementById('allButtons')
+window.addEventListener('click', function(){
+    allButtons.classList.remove('inMenu')
+})
+
 
 const loader = new FontLoader();
 const scene = new THREE.Scene();
