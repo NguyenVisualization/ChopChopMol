@@ -289,14 +289,16 @@ body {
 #camera{
 
     top: 210px;
-
+    background-color: #ffffff;
     text-align: center;
     color: black;
+    font-size: 15px;
+
 }
 
 #camera:hover{
 
-    font-size: 15px;
+    font-size: 20px;
     background-color: #ffdd00;
     animation: glowPulse 1.5s linear infinite;
     
