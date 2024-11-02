@@ -307,7 +307,11 @@ body {
 #control{
     /* opacity: 1; */
     position: absolute;
+    
+    top: 15px;
+    left: 32px;
 
+    transform: translate(-50%, -50%);
     z-index: 10;
 }
 
@@ -337,6 +341,7 @@ body {
 
 #menuControls{
     opacity: 1;
+    z-index: 1;
     text-align: center; /* This can be kept for text alignment */
     align-items: center; /* Not needed for flexbox, included for clarity */
     position: absolute;
@@ -345,8 +350,9 @@ body {
     top: 0px;
     left: 0px;
     display: flex; /* Use Flexbox */
-    flex-direction: column; /* Stack children vertically */
+    flex-direction: row; /* Stack children vertically */
     justify-content: center; /* Center items vertically */
+    gap: 10px;
     align-items: center; /* Center items horizontally */
     transition: all 0.3s ease;
     background-color: rgb(83, 175, 255);
@@ -364,6 +370,7 @@ body {
     background-color: #ffffff;
     top: 0px;
     left: 0px;
+    box-shadow: 5px 5px 10px rgb(0, 24, 119);
 }
 
 #tools:hover{
@@ -393,13 +400,21 @@ body {
 }
 
 #info.inMenu{
+
     opacity: -1;
     position: absolute;
     top: -400px;
     transition: all 0.3s ease;
+
+}
+
+#infoButton{
+    box-shadow: 5px 5px 10px rgb(0, 24, 119);
 }
 
 #infoButton:hover{
     font-size: 15px;
     background-color: #ffae00;
 }
+
+
