@@ -30,6 +30,8 @@ scalarSlider.addEventListener('input', function(){
     scalarSpan.textContent=`Scalar: ${scalar}`
 })
 
+let mouseOnButton=false
+
 const scalarSpan=document.getElementById('scalarValue')
 scalarSpan.textContent=`Scalar: ${scalar}`
 
@@ -78,6 +80,7 @@ displayButton.addEventListener('click', function(){
         displayMode=true
     }
     updateAtomSizes()
+
 })
 
 
@@ -107,11 +110,18 @@ fileButton.addEventListener('click', function(){
 
         window.alert('Please select an atom or load one')
     }
+
 })
 
 const allButtons=document.getElementById('allButtons')
-window.addEventListener('click', function(){
+
+
+
+
+const controlButton=document.getElementById('control')
+controlButton.addEventListener('click', function(){
     allButtons.classList.toggle('inMenu')
+
 })
 
 

@@ -24,8 +24,8 @@ body {
     position: absolute;
     width: 250px;
     height: 300px;
-    top: 0px;
-    left: 0px;
+    top: 90px;
+    left: 10px;
     display: flex; /* Use Flexbox */
     flex-direction: column; /* Stack children vertically */
     justify-content: center; /* Center items vertically */
@@ -42,7 +42,7 @@ body {
     width: 250px;
     height: 300px;
     top: -400px;
-    left: 0px;
+    left: 10px;
     transition: all 0.3s ease;
 }
 
@@ -50,7 +50,7 @@ body {
 .button {
     display: block; /* Change display to block for proper stacking */
     padding: 5px 10px;
-    color: white;
+    color: rgb(0, 0, 0);
     border-radius: 5px;
     border: none;
     cursor: pointer;
@@ -303,5 +303,41 @@ body {
     animation: glowPulse 1.5s linear infinite;
     
 }
+
+#control{
+    /* opacity: 1; */
+    position: absolute;
+    top: 60px;
+    left: 30px;
+    transform: translate(-50%, -50%);
+}
+
+#control:hover{
+    position: absolute;
+    top: 60px;
+    left: 30px;
+    font-size: 15px;
+    transform: translate(-50%, -50%);
+    background-color: #47e100;
+    animation: glowPulse 1.5s linear infinite;
+    
+}
+
+.fadeOut{
+    opacity: 0;
+}
+
+@keyframes rainbow {
+    0% { background-color: red; }
+    14% { background-color: orange; }
+    28% { background-color: yellow; }
+    42% { background-color: rgb(0, 255, 0); }
+    57% { background-color: blue; }
+    71% { background-color: rgb(149, 0, 255); }
+    85% { background-color: violet; }
+    100% { background-color: red; }
+}
+
+
 
 
