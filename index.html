@@ -28,26 +28,31 @@
     </div>
         <div id="allButtons" class="inMenu">
             <label for="fileInput" id="file-label" class="button">Open File</label>
-            <button id="label" class="button">Show Labels</button>
             <button id="createFile" class="button">Save File</button>
-            <button id="enableSelection" class="button"></button>
-            <button id="enableSelectionBox" class="button"></button>
-            <button id="deselect" class="button">Unselect All</button>
-            <button id="displayMode" class="button">Display Mode</button>
+
+
             <button id="camera" class="button">📷</button>
 
 
         </div>
 
-        <div id="info" class="inMenu">
-            <input type="text" id="name" value=""><br><br><br>
-
-            <div id="sliderContainer">
-                <input type="range" id="scalar" min="0.2" max="2" step="0.01"><br>
-                <span id="scalarValue">Scalar: 0.6</span>
-            </div>
+        <div id="fragPanel" class="inMenu">
+            <button id="enableSelection" class="button"></button>
+            <button id="enableSelectionBox" class="button"></button>
+            <button id="deselect" class="button">Unselect All</button>
         </div>
 
+        <div id="info" class="inMenu">
+            <button id="displayMode" class="button">Display Mode</button>
+            <button id="label" class="button">Show Labels</button>
+
+        </div>
+
+        <input type="text" id="name" value="">
+        <div id="sliderContainer">
+            <input type="range" id="scalar" min="0.2" max="2" step="0.01"><br>
+            <span id="scalarValue">Atom Size: 0.6</span>
+        </div>
 
     <!-- <script src="atom.js"></script> -->
      

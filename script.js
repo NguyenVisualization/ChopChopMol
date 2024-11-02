@@ -27,13 +27,13 @@ scalarSlider.addEventListener('input', function(){
 
     scalar=scalarSlider.value
 
-    scalarSpan.textContent=`Scalar: ${scalar}`
+    scalarSpan.textContent=`Atom Size: ${scalar}`
 })
 
 let mouseOnButton=false
 
 const scalarSpan=document.getElementById('scalarValue')
-scalarSpan.textContent=`Scalar: ${scalar}`
+scalarSpan.textContent=`Atom Size: ${scalar}`
 
 const clickSound=new Audio()
 clickSound.src='click.mp3'
@@ -119,7 +119,7 @@ const allButtons=document.getElementById('allButtons')
 
 
 const infoPanel=document.getElementById('info')
-
+const fragPanel=document.getElementById('fragPanel')
 
 let inMainMenu=false
 
@@ -134,6 +134,11 @@ fileButton.addEventListener('click', function(){
 const viewButton=document.getElementById('view')
 viewButton.addEventListener('click', function(){
     infoPanel.classList.toggle('inMenu')
+})
+
+const fragBuilderButton=document.getElementById('fragBuilder')
+fragBuilderButton.addEventListener('click', function(){
+    fragPanel.classList.toggle('inMenu')
 })
 
 

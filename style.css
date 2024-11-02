@@ -22,10 +22,10 @@ body {
     text-align: center; /* This can be kept for text alignment */
     align-items: center; /* Not needed for flexbox, included for clarity */
     position: absolute;
-    width: 120px;
-    height: 330px;
+    width: 110px;
+    height: 120px;
     top: 40px;
-    left: 10px;
+    left: 14px;
     display: flex; /* Use Flexbox */
     flex-direction: column; /* Stack children vertically */
     justify-content: center; /* Center items vertically */
@@ -88,6 +88,7 @@ body {
 #sliderContainer{
     position: absolute;
 
+    top: 1000vh;
     text-align: center;
     width: 200px;
     height: 20px;
@@ -108,7 +109,6 @@ body {
 
 
 #label{
-    top: 35px;
     color: black;
 
 }
@@ -261,8 +261,8 @@ body {
 
 
 #name{
-    /* position: absolute; */
-    top: 600px;
+    position: absolute;
+    top: 1000vh;
     left: 10px;
     border-radius: 6px;
     border: none;
@@ -274,9 +274,6 @@ body {
 }
 
 #displayMode{
-
-    top: 175px;
-
     text-align: center;
     color: black;
 }
@@ -380,22 +377,22 @@ body {
 }
 
 #info {
-    z-index: 0;
     opacity: 1;
     text-align: center; /* This can be kept for text alignment */
     align-items: center; /* Not needed for flexbox, included for clarity */
     position: absolute;
-    width: 220px;
-    height: 280px;
+    width: 120px;
+    height: 120px;
     top: 40px;
-    left: 140px;
+    left: 136px;
     display: flex; /* Use Flexbox */
     flex-direction: column; /* Stack children vertically */
     justify-content: center; /* Center items vertically */
     align-items: center; /* Center items horizontally */
     transition: all 0.3s ease;
-    /* background-color: rgb(83, 175, 255); */
-    background: linear-gradient(105deg, rgba(0,128,255,1) 0%, rgba(255,0,0,1) 100%);
+    background-color: rgb(83, 175, 255);
+    background: linear-gradient(105deg, rgba(0,128,255,1) 0%, rgba(255,0,0,1) 100% );
+
     border-radius: 10px;
     border: none;
 }
@@ -465,3 +462,32 @@ body {
     font-size: 15px;
 }
 
+#fragPanel {
+    opacity: 1;
+    text-align: center; /* This can be kept for text alignment */
+    align-items: center; /* Not needed for flexbox, included for clarity */
+    position: absolute;
+    width: 110px;
+    height: 120px;
+    top: 40px;
+    left: 270px;
+    display: flex; /* Use Flexbox */
+    flex-direction: column; /* Stack children vertically */
+    justify-content: center; /* Center items vertically */
+    align-items: center; /* Center items horizontally */
+    transition: all 0.3s ease;
+    background-color: rgb(83, 175, 255);
+    background: linear-gradient(105deg, rgba(255,0,0,1) 0%, rgba(0,128,255,1) 100%);
+
+    border-radius: 10px;
+    border: none;
+}
+
+#fragPanel.inMenu{
+
+    opacity: -1;
+    position: absolute;
+    top: -400px;
+    transition: all 0.3s ease;
+
+}
