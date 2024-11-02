@@ -24,7 +24,7 @@ body {
     position: absolute;
     width: 120px;
     height: 330px;
-    top: 90px;
+    top: 40px;
     left: 10px;
     display: flex; /* Use Flexbox */
     flex-direction: column; /* Stack children vertically */
@@ -386,8 +386,8 @@ body {
     position: absolute;
     width: 220px;
     height: 280px;
-    top: 90px;
-    left: 150px;
+    top: 40px;
+    left: 140px;
     display: flex; /* Use Flexbox */
     flex-direction: column; /* Stack children vertically */
     justify-content: center; /* Center items vertically */
@@ -417,4 +417,50 @@ body {
     background-color: #ffae00;
 }
 
+#mainControl{
+    z-index: 0;
+    opacity: 1;
+    text-align: center; /* This can be kept for text alignment */
+    align-items: center; /* Not needed for flexbox, included for clarity */
+    position: absolute;
+    width: 230px;
+    height: 40px;
+    top: 0px;
+    left: 0px;
+    display: flex; /* Use Flexbox */
+    flex-direction: row; /* Stack children vertically */
+    gap: 5px;
+    justify-content: center; /* Center items vertically */
+    align-items: center; /* Center items horizontally */
+    transition: all 0.3s ease;
+    /* background-color: rgb(83, 175, 255); */
+
+    border-radius: 10px;
+    border: none;
+}
+
+#file{
+    background-color: #ffffff;
+}
+
+#view{
+    background-color: #ffffff;
+}
+
+#fragBuilder{
+    background-color: #ffffff;
+}
+
+#file:hover{
+    font-size: 15px;
+}
+
+#view:hover{
+    font-size: 15px;
+
+}
+
+#fragBuilder:hover{
+    font-size: 15px;
+}
 

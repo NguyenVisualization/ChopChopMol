@@ -84,8 +84,8 @@ displayButton.addEventListener('click', function(){
 })
 
 
-const fileButton=document.getElementById('createFile')
-fileButton.addEventListener('click', function(){
+const selectFileButton=document.getElementById('createFile')
+selectFileButton.addEventListener('click', function(){
     if(selectedAtoms.length>0){
         createCustomFile()
     }else{
@@ -121,34 +121,23 @@ const allButtons=document.getElementById('allButtons')
 const infoPanel=document.getElementById('info')
 
 
-const menuPanel=document.getElementById('menuControls')
-let menuPanelHeight=menuPanel.style.height
-console.log(menuPanelHeight)
 let inMainMenu=false
 
-const controlButton=document.getElementById('control')
-controlButton.addEventListener('click', function(){
-    menuPanel.classList.toggle('menu')
-    if(!allButtons.classList.contains('inMenu')){
-        allButtons.classList.toggle('inMenu')
-    }
-    if(!infoPanel.classList.contains('inMenu')){
-        infoPanel.classList.toggle('inMenu')
-    }
-})
 
-const toolButton=document.getElementById('tools')
-toolButton.addEventListener('click', function(){
+// infoPanel.classList.toggle('inMenu')
+
+const fileButton=document.getElementById('file')
+fileButton.addEventListener('click', function(){
     allButtons.classList.toggle('inMenu')
-
 })
 
-
-const infoButton=document.getElementById('infoButton')
-infoButton.addEventListener('click', function(){
+const viewButton=document.getElementById('view')
+viewButton.addEventListener('click', function(){
     infoPanel.classList.toggle('inMenu')
-
 })
+
+
+
 
 const cameraButton=document.getElementById('camera')
 cameraButton.addEventListener('click', function(){
