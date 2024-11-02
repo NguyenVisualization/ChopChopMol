@@ -23,7 +23,7 @@ body {
     align-items: center; /* Not needed for flexbox, included for clarity */
     position: absolute;
     width: 120px;
-    height: 300px;
+    height: 280px;
     top: 90px;
     left: 10px;
     display: flex; /* Use Flexbox */
