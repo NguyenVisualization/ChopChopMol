@@ -204,7 +204,7 @@ document.getElementById('fileInput').addEventListener('change', function(event) 
             atomicData = extractAtomicData(data); // Save extracted atomic data globally
             loadNewMolecule(atomicData)
             for(let i=0;i<atomicData.length;i++){
-                updateTable(workRow, i)
+                updateTable(1, i)
             }
         };  
         reader.readAsText(file);
