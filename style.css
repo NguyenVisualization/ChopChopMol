@@ -502,51 +502,42 @@ body {
 
 }
 
-table{
-    position: absolute;
-    top: 50%;
-    left: 50%;
-
-    background-color: #ffffff;
-    border-collapse: collapse;
-    width: 100%;
-    transform: translate(-50%, -50%);
-}
-  
-td{
-    /* border: 1px solid #dddddd; */
-    text-align: left;
-    padding: 8px;
+#fragWindow {
+    position: relative; /* Keep it in document flow */
+    max-height: 600px; /* Set a maximum height for scrolling */
+    overflow-y: auto; /* Enable vertical scrolling */
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+    background-color: #008cff; /* Background color for the container */
+    width: 500px; /* Fixed width for the container */
+    margin: 50px auto; /* Center the container with some margin on top */
+    border: 1px solid #dddddd; /* Optional border around the container */
 }
 
-th{
-    position: sticky;
-    height: 20px;
-    text-align: left;
-    padding: 8px;
-    top: 0;
-    z-index: 3;
+table {
+    background-color: #ffffff; /* Background color for the table */
+    border-collapse: collapse; /* Collapse borders */
+    width: 100%; /* Full width of the container */
 }
-  
+
+th, td {
+    padding: 12px; /* Increased cell padding for better spacing */
+    text-align: left; /* Left-align text */
+    border: 1px solid #dddddd; /* Border around cells */
+}
+
+th {
+    position: sticky; /* Make header sticky */
+    top: 0; /* Stick to the top of the container */
+    background-color: #f2f2f2; /* Background color for header */
+    z-index: 1; /* Stack above other content */
+}
+
 tr:nth-child(even) {
-    background-color: #dddddd;
+    background-color: #f9f9f9; /* Zebra striping for even rows */
 }
 
-#fragWindow{
-    position: absolute;
-    
-    max-height: 600px;
-    overflow: auto;
-    overflow-x: hidden;
-    background-color: #008cff;
-    width: 500px;
-    height: 600px;
-    text-align: center;
-    align-items: center;
-    justify-content: center;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+tr:hover {
+    background-color: #f1f1f1; /* Highlight row on hover */
 }
 
 .checkbox{
