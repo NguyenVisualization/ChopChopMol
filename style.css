@@ -18,6 +18,8 @@ body {
 }
 
 #allButtons {
+    transition: all 0.3s ease;
+
     cursor: move;
     opacity: 1;
     text-align: center; /* This can be kept for text alignment */
@@ -31,12 +33,13 @@ body {
     flex-direction: column; /* Stack children vertically */
     justify-content: center; /* Center items vertically */
     align-items: center; /* Center items horizontally */
-    transition: all 0.3s ease;
     background-color: rgb(83, 175, 255);
     background: linear-gradient(105deg, rgba(255,0,0,1) 0%, rgba(0,128,255,1) 100%);
     z-index: 9;
     border-radius: 10px;
     border: none;
+
+    
 }
 
 #allButtons.inMenu{
@@ -202,21 +205,7 @@ body {
     background-repeat: no-repeat;
 
 }
-#mydiv {
-    position: absolute;
-    z-index: 9;
-    background-color: #f1f1f1;
-    text-align: center;
-    border: 1px solid #d3d3d3;
-  }
-  
-  #mydivheader {
-    padding: 10px;
-    cursor: move;
-    z-index: 10;
-    background-color: #2196F3;
-    color: #fff;
-  }
+
 
 
 
@@ -394,6 +383,8 @@ body {
 }
 
 #info {
+    cursor: move;
+
     opacity: 1;
     text-align: center; /* This can be kept for text alignment */
     align-items: center; /* Not needed for flexbox, included for clarity */
@@ -480,6 +471,8 @@ body {
 }
 
 #fragPanel {
+    cursor: move;
+
     opacity: 1;
     text-align: center; /* This can be kept for text alignment */
     align-items: center; /* Not needed for flexbox, included for clarity */
