@@ -501,44 +501,46 @@ body {
     transition: all 0.3s ease;
 
 }
-
 #fragWindow {
-    position: relative; /* Keep it in document flow */
-    max-height: 600px; /* Set a maximum height for scrolling */
-    overflow-y: auto; /* Enable vertical scrolling */
-    overflow-x: hidden; /* Prevent horizontal scrolling */
-    background-color: #008cff; /* Background color for the container */
-    width: 500px; /* Fixed width for the container */
-    margin: 50px auto; /* Center the container with some margin on top */
-    border: 1px solid #dddddd; /* Optional border around the container */
+    position: absolute;  /* Keep this to allow dragging */
+    max-height: 600px;
+    overflow: auto;      /* Allows scrolling for long content */
+    overflow-x: hidden;
+    background-color: #ffffff;
+    width: 500px;
+    height: 600px;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Optional: adds shadow */
 }
 
 table {
-    background-color: #ffffff; /* Background color for the table */
-    border-collapse: collapse; /* Collapse borders */
-    width: 100%; /* Full width of the container */
-}
-
-th, td {
-    padding: 12px; /* Increased cell padding for better spacing */
-    text-align: left; /* Left-align text */
-    border: 1px solid #dddddd; /* Border around cells */
+    width: 100%; /* Ensure the table fills the container */
+    border-collapse: collapse; /* Keep borders tidy */
 }
 
 th {
-    position: sticky; /* Make header sticky */
-    top: 0; /* Stick to the top of the container */
-    background-color: #f2f2f2; /* Background color for header */
-    z-index: 1; /* Stack above other content */
+    height: 20px;
+    padding: 10px;
+    position: sticky; /* Keep the header sticky */
+    top: 0; /* Stick to the top */
+    background-color: #ffffff; /* Background for visibility */
+    z-index: 3; /* Ensure it stays above other content */
+}
+
+td {
+    text-align: left;
+    padding: 8px;
 }
 
 tr:nth-child(even) {
-    background-color: #f9f9f9; /* Zebra striping for even rows */
-}
+    background-color: #dddddd;
+  }
 
-tr:hover {
-    background-color: #f1f1f1; /* Highlight row on hover */
-}
 
 .checkbox{
     width: 20px;
