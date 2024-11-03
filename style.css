@@ -502,13 +502,17 @@ body {
 
 }
 #fragWindow {
+    border-radius: 10px;
+    background: linear-gradient(105deg, rgba(255,0,0,1) 0%, rgba(0,128,255,1) 100%);
+
     position: absolute;  /* Keep this to allow dragging */
     max-height: 600px;
     overflow: auto;      /* Allows scrolling for long content */
-    overflow-x: hidden;
+    overflow-x: auto;
     background-color: #ffffff;
     width: 500px;
-    height: 600px;
+    min-height: 200px;   /* Initial small height */
+    max-height: 400px;   /* Maximum height */
     text-align: center;
     align-items: center;
     justify-content: center;
@@ -537,27 +541,44 @@ td {
     padding: 8px;
 }
 
-tr:nth-child(even) {
-    background-color: #dddddd;
-  }
+/* tr:nth-child(even) {
+    background-color: #dddddd38;
+} */
 
 
 .checkbox{
     width: 20px;
     height: 20px;
+
 }
 
 #newFrag:hover{
-    font-size: 15px;
+    
     background-color: #51ff00;
-    animation: rainbow 5.5s linear infinite;
 
 }
 #newFrag{
+    font-size: 15px;
     position: relative;
     
 }
 
+.selected {
+    background-color: lightblue;
+}
+
 #fragCell{
     border: none;
+}
+
+#fragWindow::-webkit-scrollbar {
+    width: 7px;
+}
+#fragWindow::-webkit-scrollbar-track {
+    background: #f1f1f100;
+    border-radius: 10px;
+}
+#fragWindow::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 10px;
 }

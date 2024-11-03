@@ -15,23 +15,26 @@
     </script>
 </head>
 <body>
+
+  
     
     <input type="file" id="fileInput" accept=".xyz">
 
     <div id="fragWindow">
-      <table border="1" id="fragTable">
-        <tr>
-          <th>Show</th>
-          <th>Fragment</th>
-          <th>Atoms</th>
-        </tr>
+      <table id="fragTable">
+        <div>
+          <tr id="fragWindowheader">
+            <th style="width: 111px;">Show</th>
+            <th>Fragment</th>
+            <th>Atoms</th>
+          </tr>
+        </div>
         <tr>
           <td>
             <input type="checkbox" class="checkbox">
           </td>
           <td>Fragment 1</td>
-          <td></td>
-
+          <td id="frag1Atoms"></td>
         </tr>
         <tr>
           <td id="fragCell">

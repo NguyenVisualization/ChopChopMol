@@ -6,6 +6,7 @@ import {FontLoader} from 'jsm/loaders/FontLoader.js'
 import {TextGeometry} from 'jsm/geometries/TextGeometry.js'
 
 
+let workRow=1
 let positionsX=[]
 let positionsY=[]
 let positionsZ=[]
@@ -51,8 +52,9 @@ labelButton.addEventListener('click', function(){
         labelButton.textContent='Show Labels'
         labelTrue=false
     }
-    updateAtomSizes()
-
+    for(let i=0; i<atomicData.length;i++){
+        updateAtomSizes(i, 1)
+    }
 })
 
 let fileName
@@ -147,7 +149,7 @@ cameraButton.addEventListener('click', function(){
     saveImage()
 })
 
-
+let fragSelected=[]
 
 const loader = new FontLoader();
 const scene = new THREE.Scene();
@@ -201,7 +203,9 @@ document.getElementById('fileInput').addEventListener('change', function(event) 
             const data = e.target.result;
             atomicData = extractAtomicData(data); // Save extracted atomic data globally
             loadNewMolecule(atomicData)
-
+            for(let i=0;i<atomicData.length;i++){
+                updateTable(workRow, i)
+            }
         };  
         reader.readAsText(file);
     }
@@ -314,6 +318,7 @@ function addToVisualizer(allAtomsSymbols, atomicData){
         const mySymbol =(atomicData[i].atomicSymbol).replace(/[^a-zA-Z]/g, '');
         let colorH;
         let radius;
+        fragSelected.push(i)
 
         colorH = atomOptions[mySymbol].color;
         radius = atomOptions[mySymbol].radius * scalar; // Apply updated scalar
@@ -340,6 +345,7 @@ function addToVisualizer(allAtomsSymbols, atomicData){
         atomMesh.position.y = atomicData[i].coordinates.y * 4;
         atomMesh.position.z = atomicData[i].coordinates.z * 4;
         atomMesh.renderOrder=0
+        atomMesh.userData.id=i
 
         // Add atom to the scene
         if(!labelTrue){
@@ -676,10 +682,15 @@ function selectAtom(select) {
             selectedAtom = selectedObject;
             let index = selectedAtoms.indexOf(selectedAtom);
 
+
             if(index !== -1){
                 selectedAtom.material.color.set(selectedAtom.userData.originalColor);
                 selectedAtoms.splice(index,1)
+
             }else{
+                fragSelected[selectedAtom.userData.id]=selectedAtom.userData.id
+                console.log(fragSelected)
+                updateTable(workRow, selectedAtom.userData.id)
                 // Store the selected atom
                 selectedAtoms.push(selectedAtom)
 
@@ -715,7 +726,6 @@ function unselectAllAtoms() {
 }
 
 
-
 let fileFromSelect=[]
 function createCustomFile(){
     console.log(selectedAtoms)
@@ -730,10 +740,11 @@ const creatFragButton=document.getElementById('newFrag')
 creatFragButton.addEventListener('click', insertRow)
 
 let fragNum=1
+let table = document.getElementById("fragTable");
+
 function insertRow() {
     fragNum++
     // Get the table element by ID
-    let table = document.getElementById("fragTable");
     let rowIndex = table.rows.length - 1;
     
     // Insert a new row at the end of the table
@@ -747,12 +758,48 @@ function insertRow() {
     
     // Add text content to the cells
     cell2.innerHTML = `Fragment ${fragNum}`;
-    cell3.innerHTML = "Null";
+    cell3.innerHTML = "";
 
     
     // Add a checkbox to the second cell
     cell1.innerHTML = '<input type="checkbox" class="checkbox">';
 }
+
+function updateTable(row, update=''){
+    editRow(row, 3, update)
+}
+
+function editRow(rowIndex, column, text){
+    let row = table.rows[rowIndex];
+  
+    if (row.cells[column-1].innerHTML) {
+        row.cells[column-1].innerHTML += ', ' + text; // Append the new value
+    }else{
+        row.cells[column-1].innerHTML = text; // Just set the new value if it's empty
+    }
+    // Edit the content of the cells in the row
+    row.cells[column-1].innerHTML;
+}
+
+// Select the table
+
+// Function to handle row click
+table.addEventListener("click", function (e) {
+    const rows = table.getElementsByTagName("tr");
+
+    // Remove the 'selected' class from all rows
+    for (let i = 0; i < rows.length; i++) {
+        rows[i].classList.remove("selected");
+    }
+
+    // Add the 'selected' class to the clicked row
+    if (e.target.tagName === "TD" || e.target.tagName === "TH") {
+        const row = e.target.parentElement;
+        workRow=row.rowIndex
+        row.classList.add("selected");
+        console.log(workRow)
+    }
+});
 
 animate()
 
