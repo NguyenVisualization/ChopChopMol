@@ -116,8 +116,6 @@ selectFileButton.addEventListener('click', function(){
 const allButtons=document.getElementById('allButtons')
 
 
-
-
 const infoPanel=document.getElementById('info')
 const fragPanel=document.getElementById('fragPanel')
 
