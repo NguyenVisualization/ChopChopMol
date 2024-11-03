@@ -769,17 +769,34 @@ function updateTable(row, update=''){
     editRow(row, 3, update)
 }
 
-function editRow(rowIndex, column, text){
+function editRow(rowIndex, column, text) {
     let row = table.rows[rowIndex];
-  
-    if (row.cells[column-1].innerHTML) {
-        row.cells[column-1].innerHTML += ', ' + text; // Append the new value
-    }else{
-        row.cells[column-1].innerHTML = text; // Just set the new value if it's empty
+
+    // Remove the text from any other cell in the table
+    for (let i = 1; i < table.rows.length-1; i++) {
+        if(table.rows[i]!==rowIndex){
+            let cell = table.rows[i].cells[2];
+            console.log(cell.textContent)
+            // Split cell contents by commas and filter out the text
+            if(cell.innerHTML){
+                cell.innerHTML = cell.innerHTML.replace(text,"")
+                cell.innerHTML = cell.innerHTML.replace(", ,",",")
+                if(cell.innerHTML==","||cell.innerHTML==" ,"||cell.innerHTML==", "){
+                    cell.innerHTML=""
+                }
+
+            }
+        }
     }
-    // Edit the content of the cells in the row
-    row.cells[column-1].innerHTML;
+
+    // Now update the specified cell in the row
+    if (row.cells[column - 1].innerHTML) {
+        row.cells[column - 1].innerHTML += (row.cells[column - 1].innerHTML ? ', ' : '') + text; // Append the new value
+    } else {
+        row.cells[column - 1].innerHTML = text; // Just set the new value if it's empty
+    }
 }
+
 
 // Select the table
 
