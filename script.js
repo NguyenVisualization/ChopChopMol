@@ -12,6 +12,18 @@ let positionsY=[]
 let positionsZ=[]
 let bondVisuals = [];  // Array to store bond lines
 
+let fragColors=[
+    'magenta',
+    '#ff8b8b',
+    '#ffc38b',
+    '#fffd8b',
+    '#a8ff8b',
+    '#8bb3ff',
+    '#bc8bff',
+    '#cf8bff',
+    '#c44848'
+]
+
 
 let atomOptions
 let labelTrue=false
@@ -698,7 +710,7 @@ function selectAtom(select) {
                 selectedAtom.userData.originalColor = selectedAtom.material.color.getHex();
 
                 // Change color to red to indicate selection
-                selectedAtom.material.color.set(0x00ff00);
+                selectedAtom.material.color.set(fragColors[workRow-1]);
                 console.log("Atom selected and color changed to red");  
             }
         }
@@ -807,6 +819,7 @@ table.addEventListener("click", function (e) {
     // Remove the 'selected' class from all rows
     for (let i = 0; i < rows.length; i++) {
         rows[i].classList.remove("selected");
+        rows[i].style.backgroundColor=""
     }
 
     // Add the 'selected' class to the clicked row
@@ -814,6 +827,7 @@ table.addEventListener("click", function (e) {
         const row = e.target.parentElement;
         workRow=row.rowIndex
         row.classList.add("selected");
+        row.style.backgroundColor=fragColors[workRow-1]
         console.log(workRow)
     }
 });

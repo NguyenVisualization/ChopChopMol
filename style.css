@@ -503,7 +503,7 @@ body {
 }
 #fragWindow {
     border-radius: 10px;
-    background: linear-gradient(105deg, rgba(255,0,0,1) 0%, rgba(0,128,255,1) 100%);
+    /* background: linear-gradient(105deg, rgba(255,0,0,1) 0%, rgba(0,128,255,1) 100%); */
 
     position: absolute;  /* Keep this to allow dragging */
     max-height: 600px;
@@ -511,7 +511,7 @@ body {
     overflow-x: auto;
     background-color: #ffffff;
     width: 500px;
-    min-height: 200px;   /* Initial small height */
+    min-height: 100px;   /* Initial small height */
     max-height: 400px;   /* Maximum height */
     text-align: center;
     align-items: center;
@@ -532,7 +532,8 @@ th {
     padding: 10px;
     position: sticky; /* Keep the header sticky */
     top: 0; /* Stick to the top */
-    background-color: #ffffff; /* Background for visibility */
+    color: white;
+    background-color: #386dff; /* Background for visibility */
     z-index: 3; /* Ensure it stays above other content */
 }
 
@@ -563,9 +564,9 @@ td {
     
 }
 
-.selected {
-    background-color: lightblue;
-}
+/* .selected {
+    
+} */
 
 #fragCell{
     border: none;
