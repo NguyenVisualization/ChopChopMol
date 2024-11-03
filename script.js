@@ -725,7 +725,34 @@ function createCustomFile(){
     }
     console.log(fileFromSelect)
 }
+const creatFragButton=document.getElementById('newFrag')
 
+creatFragButton.addEventListener('click', insertRow)
+
+let fragNum=1
+function insertRow() {
+    fragNum++
+    // Get the table element by ID
+    let table = document.getElementById("fragTable");
+    let rowIndex = table.rows.length - 1;
+    
+    // Insert a new row at the end of the table
+    let newRow = table.insertRow(rowIndex);
+    
+    // Insert new cells (columns) in the new row
+    let cell1 = newRow.insertCell(0); // First column
+    let cell2 = newRow.insertCell(1); // Second column
+    let cell3 = newRow.insertCell(2); // Second column
+
+    
+    // Add text content to the cells
+    cell2.innerHTML = `Fragment ${fragNum}`;
+    cell3.innerHTML = "Null";
+
+    
+    // Add a checkbox to the second cell
+    cell1.innerHTML = '<input type="checkbox" class="checkbox">';
+}
 
 animate()
 

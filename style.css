@@ -501,3 +501,70 @@ body {
     transition: all 0.3s ease;
 
 }
+
+table{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+    background-color: #ffffff;
+    border-collapse: collapse;
+    width: 100%;
+    transform: translate(-50%, -50%);
+}
+  
+td{
+    /* border: 1px solid #dddddd; */
+    text-align: left;
+    padding: 8px;
+}
+
+th{
+    position: sticky;
+    height: 20px;
+    text-align: left;
+    padding: 8px;
+    top: 0;
+    z-index: 3;
+}
+  
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+
+#fragWindow{
+    position: absolute;
+    
+    max-height: 600px;
+    overflow: auto;
+    overflow-x: hidden;
+    background-color: #008cff;
+    width: 500px;
+    height: 600px;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.checkbox{
+    width: 20px;
+    height: 20px;
+}
+
+#newFrag:hover{
+    font-size: 15px;
+    background-color: #51ff00;
+    animation: rainbow 5.5s linear infinite;
+
+}
+#newFrag{
+    position: relative;
+    
+}
+
+#fragCell{
+    border: none;
+}

@@ -18,6 +18,28 @@
     
     <input type="file" id="fileInput" accept=".xyz">
 
+    <div id="fragWindow">
+      <table border="1" id="fragTable">
+        <tr>
+          <th>Show</th>
+          <th>Fragment</th>
+          <th>Atoms</th>
+        </tr>
+        <tr>
+          <td>
+            <input type="checkbox" class="checkbox">
+          </td>
+          <td>Fragment 1</td>
+          <td></td>
+
+        </tr>
+        <tr>
+          <td id="fragCell">
+            <button class="button" id="newFrag">Add Fragment</button>
+          </td>
+        </tr>
+      </table>
+    </div>
 
     <div id="mainControl">
         <button id="file" class="button">File</button>
@@ -63,6 +85,8 @@
         dragElement(document.getElementById('allButtons'));
         dragElement(document.getElementById('info'));
         dragElement(document.getElementById('fragPanel'));
+        dragElement(document.getElementById('fragTable'));
+
 
 
         
