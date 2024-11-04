@@ -830,9 +830,9 @@ function replaceNthOccurrence(arr, valueToReplace, newValue, n) {
         }
       }
     }
-  
+    occurrence=0
     return arr; // Return modified array
-  }
+}
 
 // Select the table
 
