@@ -6,6 +6,7 @@ import {FontLoader} from 'jsm/loaders/FontLoader.js'
 import {TextGeometry} from 'jsm/geometries/TextGeometry.js'
 
 
+let workingRowArray=[0]
 let workRow=1
 let positionsX=[]
 let positionsY=[]
@@ -710,7 +711,7 @@ function selectAtom(select) {
                 selectedAtom.userData.originalColor = selectedAtom.material.color.getHex();
 
                 // Change color to red to indicate selection
-                selectedAtom.material.color.set(fragColors[workRow-1]);
+                selectedAtom.material.color.set(fragColors[workRow-2]);
                 console.log("Atom selected and color changed to red");  
             }
         }
@@ -749,13 +750,18 @@ function createCustomFile(){
 }
 const creatFragButton=document.getElementById('newFrag')
 
-creatFragButton.addEventListener('click', insertRow)
 
 let fragNum=1
 let table = document.getElementById("fragTable");
 
+creatFragButton.addEventListener('click', insertRow)
+
+insertRow()
+
+
 function insertRow() {
     fragNum++
+    workingRowArray.push(0)
     // Get the table element by ID
     let rowIndex = table.rows.length - 1;
     
@@ -783,7 +789,7 @@ function updateTable(row, update=''){
 
 function editRow(rowIndex, column, text) {
     let row = table.rows[rowIndex];
-
+    
     // Remove the text from any other cell in the table
     for (let i = 1; i < table.rows.length-1; i++) {
         if(table.rows[i]!==rowIndex){
@@ -806,9 +812,23 @@ function editRow(rowIndex, column, text) {
         row.cells[column - 1].innerHTML += (row.cells[column - 1].innerHTML ? ', ' : '') + text; // Append the new value
     } else {
         row.cells[column - 1].innerHTML = text; // Just set the new value if it's empty
+        replaceNthOccurrence(workingRowArray,0,1,rowIndex)
     }
 }
 
+function replaceNthOccurrence(arr, valueToReplace, newValue, n) {
+    let occurrence = 0; // Track how many times we've found the value
+  
+    return arr.map(item => {
+        if (item === valueToReplace) {
+            occurrence++; // Increment the count for each occurrence
+            if (occurrence === n) {
+            return newValue; // Replace only the n-th occurrence
+            }
+        }
+        return item; // Return the original item if not replaced
+    });
+}
 
 // Select the table
 
@@ -826,11 +846,27 @@ table.addEventListener("click", function (e) {
     if (e.target.tagName === "TD" || e.target.tagName === "TH") {
         const row = e.target.parentElement;
         workRow=row.rowIndex
-        row.classList.add("selected");
-        row.style.backgroundColor=fragColors[workRow-1]
-        console.log(workRow)
+        if(workRow!==1){
+            row.classList.add("selected");
+            row.style.backgroundColor=fragColors[workRow-2]
+            console.log(workRow)
+        }else{
+            workRow=2
+        }
     }
 });
+
+function setActiveRows(rowIndexNum){
+    let rows = table.getElementsByTagName("tr");
+    const editRow=rows[rowIndexNum]
+    editRow.style.backgroundColor=fragColors[rowIndexNum-2]
+}
+
+window.addEventListener('click', function(){
+    console.log(workingRowArray)
+})
+
+setActiveRows(2)
 
 animate()
 

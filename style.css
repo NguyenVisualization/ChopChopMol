@@ -503,6 +503,7 @@ body {
 }
 #fragWindow {
     border-radius: 10px;
+    
     /* background: linear-gradient(105deg, rgba(255,0,0,1) 0%, rgba(0,128,255,1) 100%); */
 
     position: absolute;  /* Keep this to allow dragging */
