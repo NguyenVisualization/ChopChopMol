@@ -6,7 +6,7 @@ import {FontLoader} from 'jsm/loaders/FontLoader.js'
 import {TextGeometry} from 'jsm/geometries/TextGeometry.js'
 
 
-let workingRowArray=[0]
+let workingRowArray=[1]
 let workRow=1
 let positionsX=[]
 let positionsY=[]
@@ -812,23 +812,27 @@ function editRow(rowIndex, column, text) {
         row.cells[column - 1].innerHTML += (row.cells[column - 1].innerHTML ? ', ' : '') + text; // Append the new value
     } else {
         row.cells[column - 1].innerHTML = text; // Just set the new value if it's empty
-        replaceNthOccurrence(workingRowArray,0,1,rowIndex)
+        workingRowArray=replaceNthOccurrence(workingRowArray,0,1,rowIndex-1)
+        console.log(rowIndex)
     }
 }
 
 function replaceNthOccurrence(arr, valueToReplace, newValue, n) {
     let occurrence = 0; // Track how many times we've found the value
   
-    return arr.map(item => {
-        if (item === valueToReplace) {
-            occurrence++; // Increment the count for each occurrence
-            if (occurrence === n) {
-            return newValue; // Replace only the n-th occurrence
-            }
+    // Loop through the array using a traditional for loop
+    for (let i = 0; i < arr.length; i++) {
+      if (arr[i] === valueToReplace) {
+        occurrence++; // Increment the count for each occurrence
+        if (occurrence === n) {
+          arr[i] = newValue; // Replace only the n-th occurrence
+          break; // Exit after replacement
         }
-        return item; // Return the original item if not replaced
-    });
-}
+      }
+    }
+  
+    return arr; // Return modified array
+  }
 
 // Select the table
 
