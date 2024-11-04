@@ -413,7 +413,6 @@ function render() {
 
 function clearScene() {
     clearBonds()
-    console.log(scene)
 
     for (let i = scene.children.length - 1; i >= 0; i--) {
         const object = scene.children[i];
@@ -426,7 +425,6 @@ function clearScene() {
             scene.remove(object);
         }
     }
-    console.log(scene)
 
 
     // Optionally, reset your atomVisuals array and any other data you need
@@ -794,7 +792,6 @@ function editRow(rowIndex, column, text) {
     for (let i = 1; i < table.rows.length-1; i++) {
         if(table.rows[i]!==rowIndex){
             let cell = table.rows[i].cells[2];
-            console.log(cell.textContent)
             // Split cell contents by commas and filter out the text
             if(cell.innerHTML){
                 cell.innerHTML = cell.innerHTML.replace(text,"")
@@ -809,30 +806,23 @@ function editRow(rowIndex, column, text) {
 
     // Now update the specified cell in the row
     if (row.cells[column - 1].innerHTML) {
-        row.cells[column - 1].innerHTML += (row.cells[column - 1].innerHTML ? ', ' : '') + text; // Append the new value
+        row.cells[column - 1].innerHTML += (row.cells[column - 1].innerHTML ? ', ' : '') + text; // Append the new valu
+        workingRowArray=swapNthElement(workingRowArray,1,rowIndex-1)
+        console.log(rowIndex-1)
     } else {
         row.cells[column - 1].innerHTML = text; // Just set the new value if it's empty
-        workingRowArray=replaceNthOccurrence(workingRowArray,0,1,rowIndex-1)
-        console.log(rowIndex)
+        workingRowArray=swapNthElement(workingRowArray,1,rowIndex-1)
+        console.log(rowIndex-1)
     }
 }
 
-function replaceNthOccurrence(arr, valueToReplace, newValue, n) {
-    let occurrence = 0; // Track how many times we've found the value
-  
-    // Loop through the array using a traditional for loop
-    for (let i = 0; i < arr.length; i++) {
-      if (arr[i] === valueToReplace) {
-        occurrence++; // Increment the count for each occurrence
-        if (occurrence === n) {
-          arr[i] = newValue; // Replace only the n-th occurrence
-          break; // Exit after replacement
-        }
-      }
+function swapNthElement(array, newNumber, n) {
+    if (array.length >= n) { // Check if the array has at least two elements
+        array[n] = newNumber; // Replace the second element (index 1)
     }
-    occurrence=0
-    return arr; // Return modified array
+    return array; // Return the modified array
 }
+
 
 // Select the table
 
@@ -842,8 +832,10 @@ table.addEventListener("click", function (e) {
 
     // Remove the 'selected' class from all rows
     for (let i = 0; i < rows.length; i++) {
-        rows[i].classList.remove("selected");
-        rows[i].style.backgroundColor=""
+        if(workingRowArray[i-1]==0){
+            rows[i].classList.remove("selected");
+            rows[i].style.backgroundColor=""
+        }
     }
 
     // Add the 'selected' class to the clicked row
@@ -867,7 +859,7 @@ function setActiveRows(rowIndexNum){
 }
 
 window.addEventListener('click', function(){
-    console.log(workingRowArray)
+    console.log(workingRowArray, workRow)
 })
 
 setActiveRows(2)
