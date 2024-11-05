@@ -7,7 +7,7 @@ import {TextGeometry} from 'jsm/geometries/TextGeometry.js'
 
 
 let workingRowArray=[1]
-let workRow=1
+let workRow=2
 let positionsX=[]
 let positionsY=[]
 let positionsZ=[]
@@ -24,6 +24,7 @@ let fragColors=[
     '#cf8bff',
     '#c44848'
 ]
+let atomsNumberArray=[]
 
 
 let atomOptions
@@ -758,8 +759,9 @@ insertRow()
 
 
 function insertRow() {
-    fragNum++
-    workingRowArray.push(0)
+    fragNum++;
+    workingRowArray.push(0);
+
     // Get the table element by ID
     let rowIndex = table.rows.length - 1;
     
@@ -767,19 +769,40 @@ function insertRow() {
     let newRow = table.insertRow(rowIndex);
     
     // Insert new cells (columns) in the new row
-    let cell1 = newRow.insertCell(0); // First column
-    let cell2 = newRow.insertCell(1); // Second column
-    let cell3 = newRow.insertCell(2); // Second column
+    let cell1 = newRow.insertCell(0); // First column (checkbox)
+    let cell2 = newRow.insertCell(1); // Second column (fragment text)
+    let cell3 = newRow.insertCell(2); // Third column (empty cell)
 
-    
-    // Add text content to the cells
+    // Create a checkbox element
+    let checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.className = 'checkbox';
+
+    // Add an event listener to the checkbox
+    checkbox.addEventListener('change', function() {
+        if (checkbox.checked) {
+            getNumbersFromString(table.rows[workRow].cells[2].innerHTML)
+            hideAtomsInArray(atomsNumberArray)
+            console.log(atomsNumberArray)
+            // Add any other actions you want to perform when checked
+        } else {
+            getNumbersFromString(table.rows[workRow].cells[2].innerHTML)
+            showAtomsInArray(atomsNumberArray)
+            console.log(`Checkbox for Fragment ${fragNum} is unchecked`);
+            // Add any other actions you want to perform when unchecked
+        }
+    });
+
+    // Add the checkbox to the first cell
+    cell1.appendChild(checkbox);
+
+    // Add text content to the second cell
     cell2.innerHTML = `Fragment ${fragNum}`;
-    cell3.innerHTML = "";
 
-    
-    // Add a checkbox to the second cell
-    cell1.innerHTML = '<input type="checkbox" class="checkbox">';
+    // Set the third cell as empty
+    cell3.innerHTML = "";
 }
+
 
 function updateTable(row, update=''){
     editRow(row, 3, update)
@@ -796,7 +819,7 @@ function editRow(rowIndex, column, text) {
             if(cell.innerHTML){
                 cell.innerHTML = cell.innerHTML.replace(text,"")
                 cell.innerHTML = cell.innerHTML.replace(", ,",",")
-                if(cell.innerHTML==","||cell.innerHTML==" ,"||cell.innerHTML==", "){
+                if(containsOnlySpacesAndNoNumbers(cell.innerHTML)){
                     cell.innerHTML=""
                 }
 
@@ -806,7 +829,7 @@ function editRow(rowIndex, column, text) {
 
     // Now update the specified cell in the row
     if (row.cells[column - 1].innerHTML) {
-        row.cells[column - 1].innerHTML += (row.cells[column - 1].innerHTML ? ', ' : '') + text; // Append the new valu
+        row.cells[column - 1].innerHTML += (row.cells[column - 1].innerHTML ? ' ' : '') + text; // Append the new valu
         workingRowArray=swapNthElement(workingRowArray,1,rowIndex-1)
         console.log(rowIndex-1)
     } else {
@@ -816,6 +839,9 @@ function editRow(rowIndex, column, text) {
     }
 }
 
+function containsOnlySpacesAndNoNumbers(str) {
+    return /^[ ]*$/.test(str) || /^[0-9\s]*$/.test(str) && str.trim().length === 0;
+}
 
 function swapNthElement(array, newNumber, n) {
     if (array.length >= n) { // Check if the array has at least two elements
@@ -862,6 +888,40 @@ function setActiveRows(rowIndexNum){
 window.addEventListener('click', function(){
     console.log(workingRowArray, workRow)
 })
+
+function getNumbersFromString(str){
+    atomsNumberArray=[]
+    atomsNumberArray=str.split(' ').map(Number);
+}
+
+function hideAtomsInArray(arr) {
+    console.log(arr)
+    // Assuming arr is already an array of numbers
+    for (let i = 0; i < atomVisuals.length; i++) {
+        const atom = atomVisuals[0].children[i]; // Access the first child of the current atom
+        const atomNum = atom.userData.id; // Get the atom's user data ID
+        console.log(atomNum)
+        // Check if the index of the current atom is in the array arr
+        if (arr.includes(atomNum)) {
+            atom.visible = false; // Hide the atom
+        }
+    }
+}
+
+function showAtomsInArray(arr) {
+    console.log(arr)
+    // Assuming arr is already an array of numbers
+    for (let i = 0; i < atomVisuals.length; i++) {
+        const atom = atomVisuals[0].children[i]; // Access the first child of the current atom
+        const atomNum = atom.userData.id; // Get the atom's user data ID
+        console.log(atomNum)
+        // Check if the index of the current atom is in the array arr
+        if (arr.includes(atomNum)) {
+            atom.visible = true; // Hide the atom
+        }
+    }
+}
+
 
 setActiveRows(2)
 
