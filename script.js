@@ -1,6 +1,5 @@
 import * as THREE from 'three';
 import {OrbitControls} from 'jsm/controls/OrbitControls.js'
-import getAtom from './atom.js';
 
 import {FontLoader} from 'jsm/loaders/FontLoader.js'
 import {TextGeometry} from 'jsm/geometries/TextGeometry.js'
@@ -12,6 +11,17 @@ let positionsX=[]
 let positionsY=[]
 let positionsZ=[]
 let bondVisuals = [];  // Array to store bond lines
+let selecting=false
+let atomOptions
+let labelTrue=false
+let scalar=0.5
+let fileName
+let displayMode=false
+let fragSelected=[]
+let allAtomsSymbols = [];
+let atomicData = []; 
+let atomVisuals=[]
+let atomGroup
 
 let fragColors=[
     'magenta',
@@ -25,14 +35,31 @@ let fragColors=[
     '#c44848'
 ]
 
+const selectFileButton=document.getElementById('createFile')
+const allButtons=document.getElementById('allButtons')
+const infoPanel=document.getElementById('info')
+const fragPanel=document.getElementById('fragPanel')
+const fileButton=document.getElementById('file')
+const viewButton=document.getElementById('view')
+const fragBuilderButton=document.getElementById('fragBuilder')
+const cameraButton=document.getElementById('camera')
+const scalarSpan=document.getElementById('scalarValue')
+const fileSelectButton=document.getElementsByClassName('file-label')[0]
+const labelButton=document.getElementById('label')
+const pointSelectButton = document.getElementById('enableSelection');
+const displayButton=document.getElementById('displayMode')
+const docName=document.getElementById('name')
+const fSB=document.getElementById('fileInput')
+const scalarSlider=document.getElementById('scalar')
 
-let atomOptions
-let labelTrue=false
+
+
+const clickSound=new Audio()
 const w=window.innerWidth
 const h=window.innerHeight
-let scalar=0.5
-const scalarSlider=document.getElementById('scalar')
+
 scalarSlider.value=0.5
+
 scalarSlider.addEventListener('input', function(){
     updateAtomSizes()
 
@@ -44,18 +71,13 @@ scalarSlider.addEventListener('input', function(){
     scalarSpan.textContent=`Atom Size: ${scalar}`
 })
 
-let mouseOnButton=false
 
-const scalarSpan=document.getElementById('scalarValue')
 scalarSpan.textContent=`Atom Size: ${scalar}`
 
-const clickSound=new Audio()
 clickSound.src='click.mp3'
 
-const fileSelectButton=document.getElementsByClassName('file-label')[0]
 
 
-const labelButton=document.getElementById('label')
 labelButton.addEventListener('click', function(){
     clickSound.play()
     if(labelButton.textContent=='Show Labels'){
@@ -70,11 +92,8 @@ labelButton.addEventListener('click', function(){
     }
 })
 
-let fileName
-const pointSelectButton = document.getElementById('enableSelection');
 
 pointSelectButton.addEventListener('click', function() {
-    const glowEffect = '0 0 20px rgba(255, 255, 255, 0.8)';
     pointSelectButton.classList.toggle('glow')
     pointSelectButton.classList.toggle('bright')
     if(selecting){
@@ -85,9 +104,7 @@ pointSelectButton.addEventListener('click', function() {
 
 });
 
-let displayMode=false
 
-const displayButton=document.getElementById('displayMode')
 displayButton.addEventListener('click', function(){
     if(displayMode){
         displayMode=false
@@ -99,25 +116,20 @@ displayButton.addEventListener('click', function(){
 })
 
 
-const selectFileButton=document.getElementById('createFile')
 selectFileButton.addEventListener('click', function(){
     if(selectedAtoms.length>0){
         createCustomFile()
     }else{
-        // Store the original color
         const originalColor = fileSelectButton.style.backgroundColor;
 
-        // Set the button to red
         fileSelectButton.style.backgroundColor = 'red';  
         
-        // Start the blinking effect
         let isRed = true; // Track the current color state
         const blinkInterval = setInterval(() => {
             fileSelectButton.style.backgroundColor = isRed ? originalColor : 'red';
             isRed = !isRed; // Toggle the state
         }, 200); // Change color every 500ms
 
-        // Stop blinking after a certain duration (e.g., 3 seconds)
         setTimeout(() => {
             clearInterval(blinkInterval);
             fileSelectButton.style.backgroundColor = originalColor; // Reset to original color
@@ -128,28 +140,15 @@ selectFileButton.addEventListener('click', function(){
 
 })
 
-const allButtons=document.getElementById('allButtons')
 
-
-const infoPanel=document.getElementById('info')
-const fragPanel=document.getElementById('fragPanel')
-
-let inMainMenu=false
-
-
-// infoPanel.classList.toggle('inMenu')
-
-const fileButton=document.getElementById('file')
 fileButton.addEventListener('click', function(){
     allButtons.classList.toggle('inMenu')
 })
 
-const viewButton=document.getElementById('view')
 viewButton.addEventListener('click', function(){
     infoPanel.classList.toggle('inMenu')
 })
 
-const fragBuilderButton=document.getElementById('fragBuilder')
 fragBuilderButton.addEventListener('click', function(){
     fragPanel.classList.toggle('inMenu')
 })
@@ -157,12 +156,10 @@ fragBuilderButton.addEventListener('click', function(){
 
 
 
-const cameraButton=document.getElementById('camera')
 cameraButton.addEventListener('click', function(){
     saveImage()
 })
 
-let fragSelected=[]
 
 const loader = new FontLoader();
 const scene = new THREE.Scene();
@@ -174,16 +171,8 @@ const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping=true
 controls.enablePan=false
 renderer.setSize(window.innerWidth, window.innerHeight);
-// renderer.setPixelRatio(devicePixelRatio);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));  // Limit pixel ratio for performance
-
 document.body.appendChild(renderer.domElement);
-
-let allAtomsSymbols = [];
-let atomicData = []; // Declare atomicData globally so it can be accessed
-
-let atomVisuals=[]
-
 const rect = renderer.domElement.getBoundingClientRect();
 
 
@@ -202,9 +191,7 @@ fetch('options.json')
     console.error('Error loading the JSON file:', error);
 });
 
-const docName=document.getElementById('name')
-const fSB=document.getElementById('fileInput')
-// Listen for file selection
+
 document.getElementById('fileInput').addEventListener('change', function(event) {
     const file = event.target.files[0];
     fileName=fSB.files[0].name
@@ -236,13 +223,10 @@ function loadNewMolecule(atomicData){
 
     clearScene()
     getAllAtoms(atomicData); // Call function to get all atom symbols after data is extracted
-    console.log(allAtomsSymbols); // Log all atom symbols to the console
     addToVisualizer(allAtomsSymbols, atomicData)
-    console.log(atomicData)
     createBond(atomicData)
 }
 
-// Function to extract atomic data
 function extractAtomicData(input) {
     const lines = input.trim().split('\n');
     const atomicData = [];
@@ -265,7 +249,6 @@ function extractAtomicData(input) {
     return atomicData;
 }
 
-// Function to get all atom symbols
 function getAllAtoms(atomicData) {
     const atomCounts = {};
 
@@ -284,41 +267,8 @@ function getAllAtoms(atomicData) {
     return allAtomsSymbols;
 }
 
-// Function to evaluate a specific atom
-function evaluateAtoms(atomicData, atomIdentifier) {
-    let targetAtom = null;
-
-    // Track counts for each atom type
-    const atomCounts = {};
-
-    // Iterate through atomic data to build counts
-    for (const atom of atomicData) {
-        const { atomicSymbol } = atom;
-
-        // Initialize count if not present
-        if (!atomCounts[atomicSymbol]) {
-            atomCounts[atomicSymbol] = 0;
-        }
-
-        // Increment count for the atomic symbol
-        atomCounts[atomicSymbol]++;
-
-        // Check if the current atom matches the user input
-        if (atomIdentifier === `${atomicSymbol}${atomCounts[atomicSymbol]}`) {
-            targetAtom = atom; // Match the specific atom
-            break; // Exit loop
-        }
-    }
-
-    if (targetAtom) {
-        const coordinates = targetAtom.coordinates;
-        return coordinates;
-    }
-}
 
 
-
-let atomGroup
 
 
 function addToVisualizer(allAtomsSymbols, atomicData){
@@ -377,13 +327,7 @@ function addToVisualizer(allAtomsSymbols, atomicData){
             
                 // Create a material for the text
                 const textMaterial = new THREE.MeshBasicMaterial({color: colorH,});
-                
-                // Create a mesh from the geometry and material
-                
-                // Position the text
-                // textMesh.position.set(0, 0, 0);
-                
-            
+
                 const textMesh = new THREE.Mesh(textGeometry, textMaterial);
                 textMesh.userData.isText=true
                 textMesh.position.set(atomMesh.position.x, atomMesh.position.y, atomMesh.position.z)
@@ -401,15 +345,6 @@ function addToVisualizer(allAtomsSymbols, atomicData){
     }
 }
 
-
-let needsUpdate = true;  // Flag to track if the scene needs updating
-
-function render() {
-    if (needsUpdate) {
-        renderer.render(scene, camera);
-        needsUpdate = false;  // Reset flag after rendering
-    }
-}
 
 function clearScene() {
     clearBonds()
@@ -466,20 +401,14 @@ function createBond(atomicData){
     let myPositionZ
     let myAtomSymbol
     let myAtomRadius
-    
     let points=[]
-
     let otherPositionX
     let otherPositionY
     let otherPositionZ
     let otherAtomSymbol
     let otherAtomRadius
-
-    let variables={}
-
     let distance
     let checks=0
-    const bondThreshold=2
 
     for(let i=0;i<atomVisuals.length;i++){
         points=[]
@@ -550,15 +479,7 @@ function centerMolecule(atomicData) {
     });
 }
 
-let selecting=false
 
-
-window.addEventListener('keydown', function(e){
-    if(e.key==' '){
-        // saveImage()
-    }
-
-})
 
 function saveImage(){
     renderer.render(scene,camera)
