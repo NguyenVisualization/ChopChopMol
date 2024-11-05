@@ -24,7 +24,6 @@ let atomVisuals=[]
 let atomGroup
 let selectedAtoms=[]
 
-
 let fragColors=[
     'magenta',
     '#ff8b8b',
@@ -54,8 +53,6 @@ const docName=document.getElementById('name')
 const fSB=document.getElementById('fileInput')
 const scalarSlider=document.getElementById('scalar')
 
-
-
 const clickSound=new Audio()
 const w=window.innerWidth
 const h=window.innerHeight
@@ -63,8 +60,6 @@ const h=window.innerHeight
 scalarSlider.value=0.5
 scalarSpan.textContent=`Atom Size: ${scalar}`
 clickSound.src='click.mp3'
-
-
 
 const loader = new FontLoader();
 const scene = new THREE.Scene();
@@ -80,7 +75,6 @@ controls.enableDamping=true
 controls.enablePan=false
 camera.position.set(80,80,80)
 camera.lookAt(0,0,0)
-
 
 const lights=new THREE.DirectionalLight(0xffffff, 4)
 const ambiLights=new THREE.AmbientLight(0xffffff, 2)
