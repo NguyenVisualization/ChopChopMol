@@ -22,6 +22,8 @@ let allAtomsSymbols = [];
 let atomicData = []; 
 let atomVisuals=[]
 let atomGroup
+let selectedAtoms=[]
+
 
 let fragColors=[
     'magenta',
@@ -59,121 +61,25 @@ const w=window.innerWidth
 const h=window.innerHeight
 
 scalarSlider.value=0.5
-
-scalarSlider.addEventListener('input', function(){
-    updateAtomSizes()
-
-})
-scalarSlider.addEventListener('input', function(){
-
-    scalar=scalarSlider.value
-
-    scalarSpan.textContent=`Atom Size: ${scalar}`
-})
-
-
 scalarSpan.textContent=`Atom Size: ${scalar}`
-
 clickSound.src='click.mp3'
 
-
-
-labelButton.addEventListener('click', function(){
-    clickSound.play()
-    if(labelButton.textContent=='Show Labels'){
-        labelButton.textContent='Hide Labels'
-        labelTrue=true
-    }else{
-        labelButton.textContent='Show Labels'
-        labelTrue=false
-    }
-    for(let i=0; i<atomicData.length;i++){
-        updateAtomSizes(i, 1)
-    }
-})
-
-
-pointSelectButton.addEventListener('click', function() {
-    pointSelectButton.classList.toggle('glow')
-    pointSelectButton.classList.toggle('bright')
-    if(selecting){
-        selecting=false
-    }else{
-        selecting=true
-    }
-
-});
-
-
-displayButton.addEventListener('click', function(){
-    if(displayMode){
-        displayMode=false
-    }else{
-        displayMode=true
-    }
-    updateAtomSizes()
-
-})
-
-
-selectFileButton.addEventListener('click', function(){
-    if(selectedAtoms.length>0){
-        createCustomFile()
-    }else{
-        const originalColor = fileSelectButton.style.backgroundColor;
-
-        fileSelectButton.style.backgroundColor = 'red';  
-        
-        let isRed = true; // Track the current color state
-        const blinkInterval = setInterval(() => {
-            fileSelectButton.style.backgroundColor = isRed ? originalColor : 'red';
-            isRed = !isRed; // Toggle the state
-        }, 200); // Change color every 500ms
-
-        setTimeout(() => {
-            clearInterval(blinkInterval);
-            fileSelectButton.style.backgroundColor = originalColor; // Reset to original color
-        }, 3000); // Blink for 3 seconds
-
-        window.alert('Please select an atom or load one')
-    }
-
-})
-
-
-fileButton.addEventListener('click', function(){
-    allButtons.classList.toggle('inMenu')
-})
-
-viewButton.addEventListener('click', function(){
-    infoPanel.classList.toggle('inMenu')
-})
-
-fragBuilderButton.addEventListener('click', function(){
-    fragPanel.classList.toggle('inMenu')
-})
-
-
-
-
-cameraButton.addEventListener('click', function(){
-    saveImage()
-})
 
 
 const loader = new FontLoader();
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(10, w/h, 0.1, 10000)
-camera.position.set(80,80,80)
-camera.lookAt(0,0,0)
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 const controls = new OrbitControls(camera, renderer.domElement);
+const rect = renderer.domElement.getBoundingClientRect();
+
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+document.body.appendChild(renderer.domElement);
 controls.enableDamping=true
 controls.enablePan=false
-renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));  // Limit pixel ratio for performance
-document.body.appendChild(renderer.domElement);
-const rect = renderer.domElement.getBoundingClientRect();
+camera.position.set(80,80,80)
+camera.lookAt(0,0,0)
 
 
 const lights=new THREE.DirectionalLight(0xffffff, 4)
@@ -190,7 +96,6 @@ fetch('options.json')
   .catch(error => {
     console.error('Error loading the JSON file:', error);
 });
-
 
 document.getElementById('fileInput').addEventListener('change', function(event) {
     const file = event.target.files[0];
@@ -267,10 +172,6 @@ function getAllAtoms(atomicData) {
     return allAtomsSymbols;
 }
 
-
-
-
-
 function addToVisualizer(allAtomsSymbols, atomicData){
     centerMolecule(atomicData);
 
@@ -303,14 +204,12 @@ function addToVisualizer(allAtomsSymbols, atomicData){
 
         const atomMesh = new THREE.Mesh(atomGeo, atomMat);
 
-        // Set atom position using atomicData
         atomMesh.position.x = atomicData[i].coordinates.x * 4;
         atomMesh.position.y = atomicData[i].coordinates.y * 4;
         atomMesh.position.z = atomicData[i].coordinates.z * 4;
         atomMesh.renderOrder=0
         atomMesh.userData.id=i
 
-        // Add atom to the scene
         if(!labelTrue){
             atomGroup.add(atomMesh);
         }
@@ -325,13 +224,11 @@ function addToVisualizer(allAtomsSymbols, atomicData){
                              
                 });
             
-                // Create a material for the text
                 const textMaterial = new THREE.MeshBasicMaterial({color: colorH,});
 
                 const textMesh = new THREE.Mesh(textGeometry, textMaterial);
                 textMesh.userData.isText=true
                 textMesh.position.set(atomMesh.position.x, atomMesh.position.y, atomMesh.position.z)
-                // Add the text mesh to the scene
                 textGeometry.center()
                 textMesh.renderOrder=999
     
@@ -351,25 +248,18 @@ function clearScene() {
 
     for (let i = scene.children.length - 1; i >= 0; i--) {
         const object = scene.children[i];
-        // Check if the object is not a light
         if (!(object instanceof THREE.Light)) {
-            // Dispose of geometry and material if they exist
             if (object.geometry) object.geometry.dispose();
             if (object.material) object.material.dispose();
-            // Remove the object from the scene
             scene.remove(object);
         }
     }
-
-
-    // Optionally, reset your atomVisuals array and any other data you need
     atomVisuals = [];
     allAtomsSymbols = [];
 }
 
 
 function updateAtomSizes() {
-    // Remove the existing atoms from the scene
     atomVisuals.forEach(atom => {
         scene.remove(atom); // Remove each atom from the scene
         if (atom.geometry) atom.geometry.dispose(); // Dispose geometry
@@ -377,7 +267,6 @@ function updateAtomSizes() {
     });
     atomVisuals = []; // Clear the array
 
-    // Re-add the atoms to the scene with the updated scalar
     addToVisualizer(allAtomsSymbols, atomicData);
 }
 
@@ -426,9 +315,6 @@ function createBond(atomicData){
                 otherAtomSymbol=atomicData[j].atomicSymbol
                 otherAtomRadius=atomOptions[otherAtomSymbol].realRadius
 
-
-
-
                 distance=Math.hypot((myPositionX-otherPositionX),(myPositionY-otherPositionY),(myPositionZ-otherPositionZ))
                 if(distance<=(myAtomRadius*4)+(otherAtomRadius*4)){
                     points.push(new THREE.Vector3(myPositionX*4, myPositionY*4, myPositionZ*4))
@@ -459,8 +345,6 @@ function clearBonds() {
 
 function centerMolecule(atomicData) {
     let totalX = 0, totalY = 0, totalZ = 0;
-
-    // Calculate the centroid
     atomicData.forEach(atom => {
         totalX += atom.coordinates.x;
         totalY += atom.coordinates.y;
@@ -471,7 +355,6 @@ function centerMolecule(atomicData) {
     const centerY = totalY / atomicData.length;
     const centerZ = totalZ / atomicData.length;
 
-    // Adjust atom positions to center the molecule at (0, 0, 0)
     atomicData.forEach(atom => {
         atom.coordinates.x -= centerX;
         atom.coordinates.y -= centerY;
@@ -556,8 +439,6 @@ window.addEventListener('mouseup', () => {
     isSelecting = false;
     selectionBox.style.display = 'none'; // Hide the box
 
-    const boxBounds = selectionBox.getBoundingClientRect();
-    // selectAtomsInBox(boxBounds);
     selectAtom(select)
     select={
         startX:0,
@@ -573,7 +454,6 @@ function animate(){
     renderer.render(scene, camera);
     controls.update();
     
-    // Make sure all text meshes face the camera
     if(atomGroup){
         atomGroup.children.forEach(child => {
             if (child.userData.isText) {
@@ -584,21 +464,17 @@ function animate(){
 }
 
 
-let selectedAtoms=[]
 
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 let selectedAtom = null;  // To track the currently selected atom
 
 function selectAtom(select) {
-    // Calculate normalized device coordinates (NDC) for raycasting
     mouse.x = select.startX;
     mouse.y = select.startY;
 
-    // Update the raycaster with the camera and mouse position
     raycaster.setFromCamera(mouse, camera);
 
-    // Get the list of intersected objects (atom meshes)
     const intersects = raycaster.intersectObjects(atomVisuals, true); // 'true' to check child meshes in the atomGroup
     console.log(selectedAtoms)
 
@@ -608,8 +484,6 @@ function selectAtom(select) {
 
         console.log("Selected Object:", selectedObject); // Debug log to check if an atom is clicked
 
-
-        // Check if an atom was clicked
         if (selectedObject) {
             selectedAtom = selectedObject;
             let index = selectedAtoms.indexOf(selectedAtom);
@@ -623,13 +497,8 @@ function selectAtom(select) {
                 fragSelected[selectedAtom.userData.id]=selectedAtom.userData.id
                 console.log(fragSelected)
                 updateTable(workRow, selectedAtom.userData.id)
-                // Store the selected atom
                 selectedAtoms.push(selectedAtom)
-
-                // Store original color
                 selectedAtom.userData.originalColor = selectedAtom.material.color.getHex();
-
-                // Change color to red to indicate selection
                 selectedAtom.material.color.set(fragColors[workRow-2]);
                 console.log("Atom selected and color changed to red");  
             }
@@ -645,13 +514,11 @@ deSelectButton.addEventListener('click', function(){
 })
 
 function unselectAllAtoms() {
-    // Loop through each selected atom
     selectedAtoms.forEach(atom => {
         // Reset the atom color to its original color
         atom.material.color.set(atom.userData.originalColor);
     });
 
-    // Clear the selectedAtoms array
     selectedAtoms = [];
     
     console.log("All atoms unselected");
@@ -681,24 +548,17 @@ insertRow()
 function insertRow() {
     fragNum++
     workingRowArray.push(0)
-    // Get the table element by ID
     let rowIndex = table.rows.length - 1;
     
-    // Insert a new row at the end of the table
     let newRow = table.insertRow(rowIndex);
     
-    // Insert new cells (columns) in the new row
     let cell1 = newRow.insertCell(0); // First column
     let cell2 = newRow.insertCell(1); // Second column
     let cell3 = newRow.insertCell(2); // Second column
 
     
-    // Add text content to the cells
     cell2.innerHTML = `Fragment ${fragNum}`;
     cell3.innerHTML = "";
-
-    
-    // Add a checkbox to the second cell
     cell1.innerHTML = '<input type="checkbox" class="checkbox">';
 }
 
@@ -709,7 +569,6 @@ function updateTable(row, update=''){
 function editRow(rowIndex, column, text) {
     let row = table.rows[rowIndex];
     
-    // Remove the text from any other cell in the table
     for (let i = 1; i < table.rows.length-1; i++) {
         if(table.rows[i]!==rowIndex){
             let cell = table.rows[i].cells[2];
@@ -745,10 +604,6 @@ function swapNthElement(array, newNumber, n) {
     return array; // Return the modified array
 }
 
-
-// Select the table
-
-// Function to handle row click
 table.addEventListener("click", function (e) {
     const rows = table.getElementsByTagName("tr");
 
@@ -784,7 +639,98 @@ window.addEventListener('click', function(){
     console.log(workingRowArray, workRow)
 })
 
-setActiveRows(2)
+scalarSlider.addEventListener('input', function(){
+    updateAtomSizes()
 
+})
+scalarSlider.addEventListener('input', function(){
+
+    scalar=scalarSlider.value
+
+    scalarSpan.textContent=`Atom Size: ${scalar}`
+})
+
+
+labelButton.addEventListener('click', function(){
+    clickSound.play()
+    if(labelButton.textContent=='Show Labels'){
+        labelButton.textContent='Hide Labels'
+        labelTrue=true
+    }else{
+        labelButton.textContent='Show Labels'
+        labelTrue=false
+    }
+    for(let i=0; i<atomicData.length;i++){
+        updateAtomSizes(i, 1)
+    }
+})
+
+
+pointSelectButton.addEventListener('click', function() {
+    pointSelectButton.classList.toggle('glow')
+    pointSelectButton.classList.toggle('bright')
+    if(selecting){
+        selecting=false
+    }else{
+        selecting=true
+    }
+
+});
+
+
+displayButton.addEventListener('click', function(){
+    if(displayMode){
+        displayMode=false
+    }else{
+        displayMode=true
+    }
+    updateAtomSizes()
+
+})
+
+
+selectFileButton.addEventListener('click', function(){
+    if(selectedAtoms.length>0){
+        createCustomFile()
+    }else{
+        const originalColor = fileSelectButton.style.backgroundColor;
+
+        fileSelectButton.style.backgroundColor = 'red';  
+        
+        let isRed = true; // Track the current color state
+        const blinkInterval = setInterval(() => {
+            fileSelectButton.style.backgroundColor = isRed ? originalColor : 'red';
+            isRed = !isRed; // Toggle the state
+        }, 200); // Change color every 500ms
+
+        setTimeout(() => {
+            clearInterval(blinkInterval);
+            fileSelectButton.style.backgroundColor = originalColor; // Reset to original color
+        }, 3000); // Blink for 3 seconds
+
+        window.alert('Please select an atom or load one')
+    }
+
+})
+
+
+fileButton.addEventListener('click', function(){
+    allButtons.classList.toggle('inMenu')
+})
+
+viewButton.addEventListener('click', function(){
+    infoPanel.classList.toggle('inMenu')
+})
+
+fragBuilderButton.addEventListener('click', function(){
+    fragPanel.classList.toggle('inMenu')
+})
+
+cameraButton.addEventListener('click', function(){
+    saveImage()
+})
+
+
+setActiveRows(2)
 animate()
 
