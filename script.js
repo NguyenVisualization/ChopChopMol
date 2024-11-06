@@ -870,13 +870,9 @@ table.addEventListener("click", function (e) {
     if (e.target.tagName === "TD" || e.target.tagName === "TH") {
         const row = e.target.parentElement;
         workRow=row.rowIndex
-        if(workRow!==1){
-            row.classList.add("selected");
-            row.style.backgroundColor=fragColors[workRow-1]
-            console.log(workRow)
-        }else{
-            workRow=2
-        }
+        row.classList.add("selected");
+        row.style.backgroundColor=fragColors[workRow-1]
+        console.log(workRow)
     }
 });
 
