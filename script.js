@@ -14,7 +14,8 @@ let positionsZ=[]
 let bondVisuals = [];  // Array to store bond lines
 
 let fragColors=[
-    'magenta',
+    '#a8ff8b',
+    '#ffa3ff',
     '#ff8b8b',
     '#ffc38b',
     '#fffd8b',
@@ -710,7 +711,7 @@ function selectAtom(select) {
                 selectedAtom.userData.originalColor = selectedAtom.material.color.getHex();
 
                 // Change color to red to indicate selection
-                selectedAtom.material.color.set(fragColors[workRow-2]);
+                selectedAtom.material.color.set(fragColors[workRow-1]);
                 console.log("Atom selected and color changed to red");  
             }
         }
@@ -859,10 +860,10 @@ table.addEventListener("click", function (e) {
 
     // Remove the 'selected' class from all rows
     for (let i = 0; i < rows.length; i++) {
-        if(workingRowArray[i-1]==0){
-            rows[i].classList.remove("selected");
-            rows[i].style.backgroundColor=""
-        }
+        // if(workingRowArray[i-1]==0){
+        rows[i].classList.remove("selected");
+        rows[i].style.backgroundColor=""
+        // }
     }
 
     // Add the 'selected' class to the clicked row
@@ -871,7 +872,7 @@ table.addEventListener("click", function (e) {
         workRow=row.rowIndex
         if(workRow!==1){
             row.classList.add("selected");
-            row.style.backgroundColor=fragColors[workRow-2]
+            row.style.backgroundColor=fragColors[workRow-1]
             console.log(workRow)
         }else{
             workRow=2
@@ -882,7 +883,7 @@ table.addEventListener("click", function (e) {
 function setActiveRows(rowIndexNum){
     let rows = table.getElementsByTagName("tr");
     const editRow=rows[rowIndexNum]
-    editRow.style.backgroundColor=fragColors[rowIndexNum-2]
+    editRow.style.backgroundColor=fragColors[rowIndexNum-1]
 }
 
 window.addEventListener('click', function(){
