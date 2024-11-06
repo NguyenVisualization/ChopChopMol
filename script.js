@@ -815,16 +815,14 @@ function editRow(rowIndex, column, text) {
     
     // Remove the text from any other cell in the table
     for (let i = 1; i < table.rows.length-1; i++) {
-        if(table.rows[i]!==rowIndex){
+        if(i!==rowIndex){
             let cell = table.rows[i].cells[2];
             // Split cell contents by commas and filter out the text
             if(cell.innerHTML){
                 cell.innerHTML = cell.innerHTML.replace(text,"")
-                cell.innerHTML = cell.innerHTML.replace(", ,",",")
                 if(containsOnlySpacesAndNoNumbers(cell.innerHTML)){
                     cell.innerHTML=""
                 }
-
             }
         }
     }
@@ -896,17 +894,28 @@ function getNumbersFromString(str){
     atomsNumberArray=str.split(' ').map(Number);
 }
 
+// function hideAtomsInArray(arr) {
+//     console.log(arr)
+//     // Assuming arr is already an array of numbers
+//     for (let i = 0; i < atomVisuals.length; i++) {
+//         const atom = atomVisuals[0].children[i]; // Access the first child of the current atom
+//         const atomNum = atom.userData.id; // Get the atom's user data ID
+//         console.log(atomNum)
+//         // Check if the index of the current atom is in the array arr
+//         if (arr.includes(atomNum)) {
+//             atom.visible = false; // Hide the atom
+//         }
+//     }
+// }
+
 function hideAtomsInArray(arr) {
     console.log(arr)
     // Assuming arr is already an array of numbers
-    for (let i = 0; i < atomVisuals.length; i++) {
-        const atom = atomVisuals[0].children[i]; // Access the first child of the current atom
+    for (let i = 0; i < arr.length; i++) {
+        const atom = atomVisuals[0].children[arr[i]]; // Access the first child of the current atom
         const atomNum = atom.userData.id; // Get the atom's user data ID
         console.log(atomNum)
-        // Check if the index of the current atom is in the array arr
-        if (arr.includes(atomNum)) {
-            atom.visible = false; // Hide the atom
-        }
+        atom.visible = false; // Hide the atom
     }
 }
 
