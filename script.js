@@ -776,6 +776,7 @@ function insertRow() {
 
     // Create a checkbox element
     let checkbox = document.createElement('input');
+    checkbox.checked=true
     checkbox.type = 'checkbox';
     checkbox.className = 'checkbox';
 
@@ -783,14 +784,12 @@ function insertRow() {
     checkbox.addEventListener('change', function() {
         if (checkbox.checked) {
             getNumbersFromString(table.rows[workRow].cells[2].innerHTML)
-            hideAtomsInArray(atomsNumberArray)
-            console.log(atomsNumberArray)
-            // Add any other actions you want to perform when checked
-        } else {
-            getNumbersFromString(table.rows[workRow].cells[2].innerHTML)
             showAtomsInArray(atomsNumberArray)
             console.log(`Checkbox for Fragment ${fragNum} is unchecked`);
-            // Add any other actions you want to perform when unchecked
+        } else {
+            getNumbersFromString(table.rows[workRow].cells[2].innerHTML)
+            hideAtomsInArray(atomsNumberArray)
+            console.log(atomsNumberArray)
         }
     });
 
@@ -798,7 +797,7 @@ function insertRow() {
     cell1.appendChild(checkbox);
 
     // Add text content to the second cell
-    cell2.innerHTML = `Fragment ${fragNum}`;
+    cell2.innerHTML = `Frg ${fragNum}`;
 
     // Set the third cell as empty
     cell3.innerHTML = "";
