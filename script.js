@@ -699,7 +699,8 @@ function selectAtom(select) {
             if(index !== -1){
                 selectedAtom.material.color.set(selectedAtom.userData.originalColor);
                 selectedAtoms.splice(index,1)
-
+                removeFromRow(workRow, selectedAtom.userData.id)
+                getNumbersFromString(table.rows[workRow].cells[2].innerHTML)
             }else{
                 fragSelected[selectedAtom.userData.id]=selectedAtom.userData.id
                 console.log(fragSelected)
@@ -839,6 +840,20 @@ function editRow(rowIndex, column, text) {
     }
 }
 
+function removeFromRow(rowIndex,  text) {
+    
+    let cell = table.rows[rowIndex].cells[2];
+    // Split cell contents by commas and filter out the text
+    if(cell.innerHTML){
+        cell.innerHTML = cell.innerHTML.replace(text,"")
+        if(containsOnlySpacesAndNoNumbers(cell.innerHTML)){
+            cell.innerHTML=""
+        }
+    }
+
+}
+
+
 function containsOnlySpacesAndNoNumbers(str) {
     return /^[ ]*$/.test(str) || /^[0-9\s]*$/.test(str) && str.trim().length === 0;
 }
@@ -855,24 +870,27 @@ function swapNthElement(array, newNumber, n) {
 
 // Function to handle row click
 table.addEventListener("click", function (e) {
-    const rows = table.getElementsByTagName("tr");
+    if (e.target.tagName !== "TH") {
+        const rows = table.getElementsByTagName("tr");
 
-    // Remove the 'selected' class from all rows
-    for (let i = 0; i < rows.length; i++) {
-        // if(workingRowArray[i-1]==0){
-        rows[i].classList.remove("selected");
-        rows[i].style.backgroundColor=""
-        // }
+        // Remove the 'selected' class from all rows
+        for (let i = 0; i < rows.length; i++) {
+            // if(workingRowArray[i-1]==0){
+            rows[i].classList.remove("selected");
+            rows[i].style.backgroundColor=""
+            // }
+        }
+    
+        // Add the 'selected' class to the clicked row
+        if (e.target.tagName === "TD") {
+            const row = e.target.parentElement;
+            workRow=row.rowIndex
+            row.classList.add("selected");
+            row.style.backgroundColor=fragColors[workRow-1]
+            console.log(workRow)
+        }
     }
 
-    // Add the 'selected' class to the clicked row
-    if (e.target.tagName === "TD" || e.target.tagName === "TH") {
-        const row = e.target.parentElement;
-        workRow=row.rowIndex
-        row.classList.add("selected");
-        row.style.backgroundColor=fragColors[workRow-1]
-        console.log(workRow)
-    }
 });
 
 function setActiveRows(rowIndexNum){
@@ -887,7 +905,9 @@ window.addEventListener('click', function(){
 
 function getNumbersFromString(str){
     atomsNumberArray=[]
-    atomsNumberArray=str.split(' ').map(Number);
+    if(str.length>0){
+        atomsNumberArray=str.split(' ').map(Number);
+    }
 }
 
 // function hideAtomsInArray(arr) {
@@ -907,11 +927,13 @@ function getNumbersFromString(str){
 function hideAtomsInArray(arr) {
     console.log(arr)
     // Assuming arr is already an array of numbers
-    for (let i = 0; i < arr.length; i++) {
-        const atom = atomVisuals[0].children[arr[i]]; // Access the first child of the current atom
-        const atomNum = atom.userData.id; // Get the atom's user data ID
-        console.log(atomNum)
-        atom.visible = false; // Hide the atom
+    if(arr.length>0){
+        for (let i = 0; i < arr.length; i++) {
+            const atom = atomVisuals[0].children[arr[i]]; // Access the first child of the current atom
+            const atomNum = atom.userData.id; // Get the atom's user data ID
+            console.log(atomNum)
+            atom.visible = false; // Hide the atom
+        }
     }
 }
 
