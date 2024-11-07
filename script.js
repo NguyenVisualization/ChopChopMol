@@ -841,6 +841,9 @@ function editRow(rowIndex, column, text) {
 }
 
 function removeFromRow(rowIndex,  text) {
+
+    let row = table.rows[1];
+
     
     let cell = table.rows[rowIndex].cells[2];
     // Split cell contents by commas and filter out the text
@@ -851,6 +854,13 @@ function removeFromRow(rowIndex,  text) {
         }
     }
 
+    if (row.cells[2].innerHTML) {
+        row.cells[2].innerHTML += (row.cells[2].innerHTML ? ' ' : '') + text; // Append the new valu
+        workingRowArray=swapNthElement(workingRowArray,1,rowIndex-1)
+    } else {
+        row.cells[2].innerHTML = text; // Just set the new value if it's empty
+        workingRowArray=swapNthElement(workingRowArray,1,rowIndex-1)
+    }
 }
 
 
