@@ -529,6 +529,7 @@ table {
 }
 
 th {
+    user-select: none;
     height: 20px;
     padding: 10px;
     position: sticky; /* Keep the header sticky */
