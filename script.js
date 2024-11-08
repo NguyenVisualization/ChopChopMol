@@ -156,7 +156,7 @@ camera.lookAt(0,0,0)
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping=true
-controls.enablePan=false
+controls.enablePan=true
 renderer.setSize(window.innerWidth, window.innerHeight);
 // renderer.setPixelRatio(devicePixelRatio);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));  // Limit pixel ratio for performance
@@ -466,37 +466,48 @@ function createBond(atomicData){
     const bondThreshold=2
 
     for(let i=0;i<atomVisuals.length;i++){
-        points=[]
-        myPositionX=positionsX[currentAtomNum]
-        myPositionY=positionsY[currentAtomNum]
-        myPositionZ=positionsZ[currentAtomNum]
-        myAtomSymbol=atomicData[currentAtomNum].atomicSymbol
-        myAtomRadius=atomOptions[myAtomSymbol].realRadius
-        for(let j=0;j<atomVisuals.length;j++){
-            if(j!==currentAtomNum){
-                checks++
-                otherPositionX=positionsX[j]
-                otherPositionY=positionsY[j]
-                otherPositionZ=positionsZ[j]
-                otherAtomSymbol=atomicData[j].atomicSymbol
-                otherAtomRadius=atomOptions[otherAtomSymbol].realRadius
 
+        const atom=atomVisuals[0].children[i]
+        console.log(atom.visible)
+        if(atom.visible==true){
+            points=[]
+            myPositionX=positionsX[currentAtomNum]
+            myPositionY=positionsY[currentAtomNum]
+            myPositionZ=positionsZ[currentAtomNum]
+            myAtomSymbol=atomicData[currentAtomNum].atomicSymbol
+            myAtomRadius=atomOptions[myAtomSymbol].realRadius
+            for(let j=0;j<atomVisuals.length;j++){
+                if(j!==currentAtomNum){
+                    const atom=atomVisuals[0].children[j]
 
-
-
-                distance=Math.hypot((myPositionX-otherPositionX),(myPositionY-otherPositionY),(myPositionZ-otherPositionZ))
-                if(distance<=(myAtomRadius*4)+(otherAtomRadius*4)){
-                    points.push(new THREE.Vector3(myPositionX*4, myPositionY*4, myPositionZ*4))
-                    points.push(new THREE.Vector3(otherPositionX*4, otherPositionY*4, otherPositionZ*4))
-                    const geometry = new THREE.BufferGeometry().setFromPoints(points);
-                    const material = new THREE.LineBasicMaterial({ color: 0x999999});
-                    const line = new THREE.Line(geometry, material);
-                    scene.add(line);
-                    bondVisuals.push(line)
+                    if(atom.visible==true){
+                        checks++
+                        otherPositionX=positionsX[j]
+                        otherPositionY=positionsY[j]
+                        otherPositionZ=positionsZ[j]
+                        otherAtomSymbol=atomicData[j].atomicSymbol
+                        otherAtomRadius=atomOptions[otherAtomSymbol].realRadius
+    
+    
+    
+    
+                        distance=Math.hypot((myPositionX-otherPositionX),(myPositionY-otherPositionY),(myPositionZ-otherPositionZ))
+                        if(distance<=(myAtomRadius*4)+(otherAtomRadius*4)){
+                            points.push(new THREE.Vector3(myPositionX*4, myPositionY*4, myPositionZ*4))
+                            points.push(new THREE.Vector3(otherPositionX*4, otherPositionY*4, otherPositionZ*4))
+                            const geometry = new THREE.BufferGeometry().setFromPoints(points);
+                            const material = new THREE.LineBasicMaterial({ color: 0x999999});
+                            const line = new THREE.Line(geometry, material);
+                            scene.add(line);
+                            bondVisuals.push(line)
+                        }
+                    }
                 }
             }
+            currentAtomNum++
+        
         }
-        currentAtomNum++
+
     }
     console.log(checks)
 
@@ -925,6 +936,8 @@ function hideAtomsInArray(arr) {
             const atomNum = atom.userData.id; // Get the atom's user data ID
             console.log(atomNum)
             atom.visible = false; // Hide the atom
+            clearBonds()
+            createBond(atomicData)
         }
     }
 }
@@ -939,6 +952,8 @@ function showAtomsInArray(arr) {
         // Check if the index of the current atom is in the array arr
         if (arr.includes(atomNum)) {
             atom.visible = true; // Hide the atom
+            clearBonds()
+            createBond(atomicData)
         }
     }
 }
@@ -948,6 +963,8 @@ const fragTableButton=document.getElementById('fragTableButton')
 
 fragTableButton.addEventListener('click', function(){
     fragWindow.classList.toggle('collapse')
+    clearBonds()
+    createBond(atomicData)
 })
 
 
