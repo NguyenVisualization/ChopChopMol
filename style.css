@@ -25,16 +25,17 @@ body {
     text-align: center; /* This can be kept for text alignment */
     align-items: center; /* Not needed for flexbox, included for clarity */
     position: absolute;
-    width: 110px;
-    height: 120px;
-    top: 40px;
-    left: 14px;
+    width: 210px;
+    height: 40px;
+    top: 0px;
+    left: 0px;
+    gap: 5px;
     display: flex; /* Use Flexbox */
-    flex-direction: column; /* Stack children vertically */
+    flex-direction: row; /* Stack children vertically */
     justify-content: center; /* Center items vertically */
     align-items: center; /* Center items horizontally */
     background-color: rgb(83, 175, 255);
-    background: linear-gradient(105deg, rgba(255,0,0,1) 0%, rgba(0,128,255,1) 100%);
+    background: none;
     z-index: 9;
     border-radius: 10px;
     border: none;
@@ -389,17 +390,18 @@ body {
     text-align: center; /* This can be kept for text alignment */
     align-items: center; /* Not needed for flexbox, included for clarity */
     position: absolute;
-    width: 120px;
-    height: 120px;
-    top: 40px;
-    left: 136px;
+    width: 220px;
+    height: 40px;
+    top: 0px;
+    left: 185px;
+    gap: 5px;
     display: flex; /* Use Flexbox */
-    flex-direction: column; /* Stack children vertically */
+    flex-direction: row; /* Stack children vertically */
     justify-content: center; /* Center items vertically */
     align-items: center; /* Center items horizontally */
     transition: all 0.3s ease;
     background-color: rgb(83, 175, 255);
-    background: linear-gradient(105deg, rgba(0,128,255,1) 0%, rgba(255,0,0,1) 100% );
+    background: none;
 
     border-radius: 10px;
     border: none;
@@ -423,27 +425,6 @@ body {
     background-color: #ffae00;
 }
 
-#mainControl{
-    z-index: 0;
-    opacity: 1;
-    text-align: center; /* This can be kept for text alignment */
-    align-items: center; /* Not needed for flexbox, included for clarity */
-    position: absolute;
-    width: 240px;
-    height: 40px;
-    top: 0px;
-    left: 0px;
-    display: flex; /* Use Flexbox */
-    flex-direction: row; /* Stack children vertically */
-    gap: 5px;
-    justify-content: center; /* Center items vertically */
-    align-items: center; /* Center items horizontally */
-    transition: all 0.3s ease;
-    /* background-color: rgb(83, 175, 255); */
-
-    border-radius: 10px;
-    border: none;
-}
 
 #file{
     background-color: #ffffff;
@@ -477,17 +458,18 @@ body {
     text-align: center; /* This can be kept for text alignment */
     align-items: center; /* Not needed for flexbox, included for clarity */
     position: absolute;
-    width: 110px;
-    height: 120px;
-    top: 40px;
-    left: 270px;
+    width: 170px;
+    height: 40px;
+    gap: 5px;
+    top: 0px;
+    left: 382px;
     display: flex; /* Use Flexbox */
-    flex-direction: column; /* Stack children vertically */
+    flex-direction: row; /* Stack children vertically */
     justify-content: center; /* Center items vertically */
     align-items: center; /* Center items horizontally */
     transition: all 0.3s ease;
     background-color: rgb(83, 175, 255);
-    background: linear-gradient(105deg, rgba(255,0,0,1) 0%, rgba(0,128,255,1) 100%);
+    background: none;
 
     border-radius: 10px;
     border: none;

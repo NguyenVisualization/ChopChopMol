@@ -139,22 +139,12 @@ const fragPanel=document.getElementById('fragPanel')
 let inMainMenu=false
 
 
-// infoPanel.classList.toggle('inMenu')
+infoPanel.classList.toggle('inMenu')
+fragPanel.classList.toggle('inMenu')
+allButtons.classList.toggle('inMenu')
 
-const fileButton=document.getElementById('file')
-fileButton.addEventListener('click', function(){
-    allButtons.classList.toggle('inMenu')
-})
 
-const viewButton=document.getElementById('view')
-viewButton.addEventListener('click', function(){
-    infoPanel.classList.toggle('inMenu')
-})
 
-const fragBuilderButton=document.getElementById('fragBuilder')
-fragBuilderButton.addEventListener('click', function(){
-    fragPanel.classList.toggle('inMenu')
-})
 
 
 

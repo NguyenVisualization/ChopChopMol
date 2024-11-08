@@ -47,14 +47,7 @@
       </table>
     </div>
 
-    <div id="mainControl">
-        <button id="file" class="button">File</button>
-        <button id="view" class="button">View</button>
-        <button id="fragBuilder" class="button">Fragment Builder</button>
-        
 
-
-    </div>
     <div id="allButtons" class="inMenu">
         <label for="fileInput" id="file-label" class="button">Open File</label>
         <button id="createFile" class="button">Save File</button>
@@ -66,22 +59,24 @@
 
     </div>
 
-    <div id="fragPanel" class="inMenu">
+    <div id="buttonContainer">
+      <div id="fragPanel" class="inMenu">
         <button id="enableSelection" class="button"></button>
         <button id="enableSelectionBox" class="button"></button>
         <button id="deselect" class="button">Unselect All</button>
-    </div>
+      </div>
 
-    <div id="info" class="inMenu">
-        <button id="displayMode" class="button">Display Mode</button>
-        <button id="label" class="button">Show Labels</button>
+      <div id="info" class="inMenu">
+          <button id="displayMode" class="button">Display Mode</button>
+          <button id="label" class="button">Show Labels</button>
 
-    </div>
+      </div>
 
-    <input type="text" id="name" value="">
-    <div id="sliderContainer">
-        <input type="range" id="scalar" min="0.2" max="2" step="0.01"><br>
-        <span id="scalarValue">Atom Size: 0.6</span>
+      <input type="text" id="name" value="">
+      <div id="sliderContainer">
+          <input type="range" id="scalar" min="0.2" max="2" step="0.01"><br>
+          <span id="scalarValue">Atom Size: 0.6</span>
+      </div>
     </div>
 
     <!-- <script src="atom.js"></script> -->
