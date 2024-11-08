@@ -47,30 +47,27 @@
       </table>
     </div>
 
-
     <div id="allButtons" class="inMenu">
-        <label for="fileInput" id="file-label" class="button">Open File</label>
-        <button id="createFile" class="button">Save File</button>
-
-
-        <div class="button" id="camera">
-            📷
-        </div>
 
     </div>
 
     <div id="buttonContainer">
-      <div id="fragPanel" class="inMenu">
+      <label for="fileInput" id="file-label" class="button">Open File</label>
+      <button id="createFile" class="button">Save File</button>
+
+
+      <div class="button" id="camera">
+          📷
+      </div>
+
+
         <button id="enableSelection" class="button"></button>
         <button id="enableSelectionBox" class="button"></button>
         <button id="deselect" class="button">Unselect All</button>
-      </div>
 
-      <div id="info" class="inMenu">
           <button id="displayMode" class="button">Display Mode</button>
           <button id="label" class="button">Show Labels</button>
 
-      </div>
 
       <input type="text" id="name" value="">
       <div id="sliderContainer">
@@ -83,15 +80,9 @@
      
 
     <script>
-        //Make the DIV element draggagle:
-        dragElement(document.getElementById('allButtons'));
-        dragElement(document.getElementById('info'));
-        dragElement(document.getElementById('fragPanel'));
+
         dragElement(document.getElementById('fragWindow'));
 
-
-
-        
         function dragElement(elmnt) {
           var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
           if (document.getElementById(elmnt.id + "header")) {

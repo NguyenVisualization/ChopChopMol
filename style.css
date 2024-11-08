@@ -17,7 +17,7 @@ body {
 
 }
 
-#allButtons {
+#buttonContainer {
     transition: all 0.3s ease;
 
     cursor: move;
@@ -25,11 +25,11 @@ body {
     text-align: center; /* This can be kept for text alignment */
     align-items: center; /* Not needed for flexbox, included for clarity */
     position: absolute;
-    width: 210px;
-    height: 40px;
+    width: 100vw;
+    height: 100px;
     top: 0px;
     left: 0px;
-    gap: 5px;
+    gap: 10px;
     display: flex; /* Use Flexbox */
     flex-direction: row; /* Stack children vertically */
     justify-content: center; /* Center items vertically */
@@ -39,7 +39,6 @@ body {
     z-index: 9;
     border-radius: 10px;
     border: none;
-
     
 }
 
@@ -383,29 +382,7 @@ body {
     font-size: 15px;
 }
 
-#info {
-    cursor: move;
 
-    opacity: 1;
-    text-align: center; /* This can be kept for text alignment */
-    align-items: center; /* Not needed for flexbox, included for clarity */
-    position: absolute;
-    width: 220px;
-    height: 40px;
-    top: 0px;
-    left: 185px;
-    gap: 5px;
-    display: flex; /* Use Flexbox */
-    flex-direction: row; /* Stack children vertically */
-    justify-content: center; /* Center items vertically */
-    align-items: center; /* Center items horizontally */
-    transition: all 0.3s ease;
-    background-color: rgb(83, 175, 255);
-    background: none;
-
-    border-radius: 10px;
-    border: none;
-}
 
 #info.inMenu{
 
@@ -451,29 +428,7 @@ body {
     font-size: 15px;
 }
 
-#fragPanel {
-    cursor: move;
 
-    opacity: 1;
-    text-align: center; /* This can be kept for text alignment */
-    align-items: center; /* Not needed for flexbox, included for clarity */
-    position: absolute;
-    width: 170px;
-    height: 40px;
-    gap: 5px;
-    top: 0px;
-    left: 382px;
-    display: flex; /* Use Flexbox */
-    flex-direction: row; /* Stack children vertically */
-    justify-content: center; /* Center items vertically */
-    align-items: center; /* Center items horizontally */
-    transition: all 0.3s ease;
-    background-color: rgb(83, 175, 255);
-    background: none;
-
-    border-radius: 10px;
-    border: none;
-}
 
 #fragPanel.inMenu{
 
