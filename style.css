@@ -19,8 +19,6 @@ body {
 
 #buttonContainer {
     transition: all 0.3s ease;
-
-    cursor: move;
     opacity: 1;
     text-align: center; /* This can be kept for text alignment */
     align-items: center; /* Not needed for flexbox, included for clarity */
@@ -439,8 +437,9 @@ body {
 
 }
 #fragWindow {
+    transition: all 0.3s ease;
+
     border-radius: 10px;
-    
     /* background: linear-gradient(105deg, rgba(255,0,0,1) 0%, rgba(0,128,255,1) 100%); */
 
     position: absolute;  /* Keep this to allow dragging */
@@ -449,15 +448,37 @@ body {
     overflow-x: auto;
     background-color: #ffffff;
     width: 500px;
-    min-height: 100px;   /* Initial small height */
+    min-height: 100vh;   /* Initial small height */
+    height: 100vh;
     max-height: 400px;   /* Maximum height */
     text-align: center;
     align-items: center;
     justify-content: center;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    top: 0px;
+    left: 0px;
+    /* transform: translate(-50%, -50%); */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Optional: adds shadow */
+}
+
+#fragWindow.collapse {
+    transition: all 0.3s ease;
+    border-radius: 10px;
+    /* background: linear-gradient(105deg, rgba(255,0,0,1) 0%, rgba(0,128,255,1) 100%); */
+
+    position: absolute;  /* Keep this to allow dragging */
+    overflow: hidden;      /* Allows scrolling for long content */
+    overflow-x: auto;
+    background-color: #ffffff;
+
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    top: 0px;
+    left: 0px;
+    /* transform: translate(-50%, -50%); */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Optional: adds shadow */
+    min-height: 0px;
+    height: 0px;
 }
 
 table {
@@ -531,3 +552,12 @@ td {
     background-color: #ffffff;
     border: none;
 } */
+
+#fragTableButton{
+    align-items: center;
+}
+
+#fragTableButton:hover{
+    font-size: 15px;
+    background-color: #386dff;
+}

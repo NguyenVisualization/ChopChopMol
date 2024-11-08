@@ -21,7 +21,7 @@
     <input type="file" id="fileInput" accept=".xyz">
 
     <div id="fragWindow">
-      <table id="fragTable" border="">
+      <table id="fragTable" border>
         <div>
           <tr id="fragWindowheader">
             <th style="width: 111px;">Show</th>
@@ -68,7 +68,7 @@
           <button id="displayMode" class="button">Display Mode</button>
           <button id="label" class="button">Show Labels</button>
 
-
+        <button id="fragTableButton" class="button">Fragment Table</button>
       <input type="text" id="name" value="">
       <div id="sliderContainer">
           <input type="range" id="scalar" min="0.2" max="2" step="0.01"><br>
@@ -81,7 +81,6 @@
 
     <script>
 
-        dragElement(document.getElementById('fragWindow'));
 
         function dragElement(elmnt) {
           var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;

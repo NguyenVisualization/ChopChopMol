@@ -943,6 +943,13 @@ function showAtomsInArray(arr) {
     }
 }
 
+const fragWindow=document.getElementById('fragWindow')
+const fragTableButton=document.getElementById('fragTableButton')
+
+fragTableButton.addEventListener('click', function(){
+    fragWindow.classList.toggle('collapse')
+})
+
 
 setActiveRows(2)
 
