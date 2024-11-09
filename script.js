@@ -759,20 +759,23 @@ function insertRow() {
 
     // Create a checkbox element
     let checkbox = document.createElement('input');
-    checkbox.checked=true
+    checkbox.checked = true;
     checkbox.type = 'checkbox';
     checkbox.className = 'checkbox';
 
     // Add an event listener to the checkbox
     checkbox.addEventListener('change', function() {
+        // Get the row index
+        let rowIdx = this.closest('tr').rowIndex;
+
         if (checkbox.checked) {
-            getNumbersFromString(table.rows[workRow].cells[2].innerHTML)
-            showAtomsInArray(atomsNumberArray)
-            console.log(`Checkbox for Fragment ${fragNum} is unchecked`);
+            getNumbersFromString(table.rows[rowIdx].cells[2].innerHTML);
+            showAtomsInArray(atomsNumberArray);
+            console.log(`Checkbox for Fragment ${fragNum} in row ${rowIdx} is checked`);
         } else {
-            getNumbersFromString(table.rows[workRow].cells[2].innerHTML)
-            hideAtomsInArray(atomsNumberArray)
-            console.log(atomsNumberArray)
+            getNumbersFromString(table.rows[rowIdx].cells[2].innerHTML);
+            hideAtomsInArray(atomsNumberArray);
+            console.log(`Checkbox for Fragment ${fragNum} in row ${rowIdx} is unchecked`);
         }
     });
 
@@ -785,6 +788,7 @@ function insertRow() {
     // Set the third cell as empty
     cell3.innerHTML = "";
 }
+
 
 
 
