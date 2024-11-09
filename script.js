@@ -459,55 +459,44 @@ function createBond(atomicData){
     let otherAtomSymbol
     let otherAtomRadius
 
-    let variables={}
-
     let distance
     let checks=0
-    const bondThreshold=2
+
+    let checkAtom
+    let otherCheckAtom
 
     for(let i=0;i<atomVisuals.length;i++){
 
-        const atom=atomVisuals[0].children[i]
-        console.log(atom.visible)
-        if(atom.visible==true){
-            points=[]
-            myPositionX=positionsX[currentAtomNum]
-            myPositionY=positionsY[currentAtomNum]
-            myPositionZ=positionsZ[currentAtomNum]
-            myAtomSymbol=atomicData[currentAtomNum].atomicSymbol
-            myAtomRadius=atomOptions[myAtomSymbol].realRadius
-            for(let j=0;j<atomVisuals.length;j++){
-                if(j!==currentAtomNum){
-                    const atom=atomVisuals[0].children[j]
+        points=[]
+        myPositionX=positionsX[currentAtomNum]
+        myPositionY=positionsY[currentAtomNum]
+        myPositionZ=positionsZ[currentAtomNum]
+        myAtomSymbol=atomicData[currentAtomNum].atomicSymbol
+        myAtomRadius=atomOptions[myAtomSymbol].realRadius
+        for(let j=0;j<atomVisuals.length;j++){
+            if(j!==currentAtomNum){
 
-                    if(atom.visible==true){
-                        checks++
-                        otherPositionX=positionsX[j]
-                        otherPositionY=positionsY[j]
-                        otherPositionZ=positionsZ[j]
-                        otherAtomSymbol=atomicData[j].atomicSymbol
-                        otherAtomRadius=atomOptions[otherAtomSymbol].realRadius
-    
-    
-    
-    
-                        distance=Math.hypot((myPositionX-otherPositionX),(myPositionY-otherPositionY),(myPositionZ-otherPositionZ))
-                        if(distance<=(myAtomRadius*4)+(otherAtomRadius*4)){
-                            points.push(new THREE.Vector3(myPositionX*4, myPositionY*4, myPositionZ*4))
-                            points.push(new THREE.Vector3(otherPositionX*4, otherPositionY*4, otherPositionZ*4))
-                            const geometry = new THREE.BufferGeometry().setFromPoints(points);
-                            const material = new THREE.LineBasicMaterial({ color: 0x999999});
-                            const line = new THREE.Line(geometry, material);
-                            scene.add(line);
-                            bondVisuals.push(line)
-                        }
-                    }
+                checks++
+                otherPositionX=positionsX[j]
+                otherPositionY=positionsY[j]
+                otherPositionZ=positionsZ[j]
+                otherAtomSymbol=atomicData[j].atomicSymbol
+                otherAtomRadius=atomOptions[otherAtomSymbol].realRadius
+
+                distance=Math.hypot((myPositionX-otherPositionX),(myPositionY-otherPositionY),(myPositionZ-otherPositionZ))
+                if(distance<=(myAtomRadius*4)+(otherAtomRadius*4)){
+                    points.push(new THREE.Vector3(myPositionX*4, myPositionY*4, myPositionZ*4))
+                    points.push(new THREE.Vector3(otherPositionX*4, otherPositionY*4, otherPositionZ*4))
+                    const geometry = new THREE.BufferGeometry().setFromPoints(points);
+                    const material = new THREE.LineBasicMaterial({ color: 0x999999});
+                    const line = new THREE.Line(geometry, material);
+                    scene.add(line);
+                    bondVisuals.push(line)
                 }
             }
-            currentAtomNum++
-        
         }
-
+        currentAtomNum++
+    
     }
     console.log(checks)
 
