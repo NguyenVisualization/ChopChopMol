@@ -487,6 +487,7 @@ table {
 }
 
 th {
+    text-align: center;
     user-select: none;
     height: 20px;
     padding: 10px;
@@ -498,8 +499,9 @@ th {
 }
 
 td {
-    text-align: left;
+    text-align: center;
     padding: 8px;
+
 }
 
 /* tr:nth-child(even) {
@@ -510,7 +512,6 @@ td {
 .checkbox{
     width: 20px;
     height: 20px;
-
 }
 
 #newFrag:hover{
