@@ -734,7 +734,7 @@ function createCustomFile(){
 const creatFragButton=document.getElementById('newFrag')
 
 
-let fragNum=1
+let fragNum=0
 let table = document.getElementById("fragTable");
 
 creatFragButton.addEventListener('click', insertRow)
@@ -747,7 +747,7 @@ function insertRow() {
     workingRowArray.push(0);
 
     // Get the table element by ID
-    let rowIndex = table.rows.length - 1;
+    let rowIndex = table.rows.length;
     
     // Insert a new row at the end of the table
     let newRow = table.insertRow(rowIndex);
