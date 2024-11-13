@@ -717,7 +717,10 @@ function unselectAllAtoms() {
 
     // Clear the selectedAtoms array
     selectedAtoms = [];
-    
+    for(let i=2;i<table.length;i++){
+        const row=table.rows[i].cells[2]
+        removeFromRow(i,row.innerHTML)
+    }
     console.log("All atoms unselected");
 }
 
