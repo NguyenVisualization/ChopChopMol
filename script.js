@@ -136,11 +136,6 @@ let inMainMenu=false
 
 
 
-
-
-
-
-
 const cameraButton=document.getElementById('camera')
 cameraButton.addEventListener('click', function(){
     saveImage()
@@ -268,39 +263,6 @@ function getAllAtoms(atomicData) {
     return allAtomsSymbols;
 }
 
-// Function to evaluate a specific atom
-function evaluateAtoms(atomicData, atomIdentifier) {
-    let targetAtom = null;
-
-    // Track counts for each atom type
-    const atomCounts = {};
-
-    // Iterate through atomic data to build counts
-    for (const atom of atomicData) {
-        const { atomicSymbol } = atom;
-
-        // Initialize count if not present
-        if (!atomCounts[atomicSymbol]) {
-            atomCounts[atomicSymbol] = 0;
-        }
-
-        // Increment count for the atomic symbol
-        atomCounts[atomicSymbol]++;
-
-        // Check if the current atom matches the user input
-        if (atomIdentifier === `${atomicSymbol}${atomCounts[atomicSymbol]}`) {
-            targetAtom = atom; // Match the specific atom
-            break; // Exit loop
-        }
-    }
-
-    if (targetAtom) {
-        const coordinates = targetAtom.coordinates;
-        return coordinates;
-    }
-}
-
-
 
 let atomGroup
 
@@ -388,12 +350,6 @@ function addToVisualizer(allAtomsSymbols, atomicData){
 
 let needsUpdate = true;  // Flag to track if the scene needs updating
 
-function render() {
-    if (needsUpdate) {
-        renderer.render(scene, camera);
-        needsUpdate = false;  // Reset flag after rendering
-    }
-}
 
 function clearScene() {
     clearBonds()
@@ -462,8 +418,6 @@ function createBond(atomicData){
     let distance
     let checks=0
 
-    let checkAtom
-    let otherCheckAtom
 
     for(let i=0;i<atomVisuals.length;i++){
 
@@ -537,12 +491,7 @@ function centerMolecule(atomicData) {
 let selecting=false
 
 
-window.addEventListener('keydown', function(e){
-    if(e.key==' '){
-        // saveImage()
-    }
 
-})
 
 function saveImage(){
     renderer.render(scene,camera)
@@ -734,12 +683,14 @@ function createCustomFile(){
 const creatFragButton=document.getElementById('newFrag')
 
 
-let fragNum=1
+let fragNum=0
 let table = document.getElementById("fragTable");
 
 creatFragButton.addEventListener('click', insertRow)
 
 insertRow()
+insertRow()
+
 
 
 function insertRow() {
