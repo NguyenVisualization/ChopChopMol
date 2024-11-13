@@ -196,7 +196,7 @@ document.getElementById('fileInput').addEventListener('change', function(event) 
             atomicData = extractAtomicData(data); // Save extracted atomic data globally
             loadNewMolecule(atomicData)
             for(let i=0;i<atomicData.length;i++){
-                updateTable(1, i)
+                updateTable(2, i)
             }
         };  
         reader.readAsText(file);
@@ -643,7 +643,7 @@ function selectAtom(select) {
                 selectedAtom.userData.originalColor = selectedAtom.material.color.getHex();
 
                 // Change color to red to indicate selection
-                selectedAtom.material.color.set(fragColors[workRow-1]);
+                selectedAtom.material.color.set(fragColors[workRow-2]);
                 console.log("Atom selected and color changed to red");  
             }
         }
@@ -666,7 +666,10 @@ function unselectAllAtoms() {
 
     // Clear the selectedAtoms array
     selectedAtoms = [];
-    
+    for(let i=2;i<table.length;i++){
+        const row=table.rows[i].cells[2]
+        removeFromRow(i,row.innerHTML)
+    }
     console.log("All atoms unselected");
 }
 
@@ -698,7 +701,7 @@ function insertRow() {
     workingRowArray.push(0);
 
     // Get the table element by ID
-    let rowIndex = table.rows.length - 1;
+    let rowIndex = table.rows.length;
     
     // Insert a new row at the end of the table
     let newRow = table.insertRow(rowIndex);
@@ -779,7 +782,7 @@ function editRow(rowIndex, column, text) {
 
 function removeFromRow(rowIndex,  text) {
 
-    let row = table.rows[1];
+    let row = table.rows[2];
 
     
     let cell = table.rows[rowIndex].cells[2];
@@ -833,7 +836,7 @@ table.addEventListener("click", function (e) {
             const row = e.target.parentElement;
             workRow=row.rowIndex
             row.classList.add("selected");
-            row.style.backgroundColor=fragColors[workRow-1]
+            row.style.backgroundColor=fragColors[workRow-2]
             console.log(workRow)
         }
     }
@@ -912,7 +915,7 @@ fragTableButton.addEventListener('click', function(){
 })
 
 
-setActiveRows(2)
+setActiveRows(1)
 
 animate()
 

@@ -482,24 +482,27 @@ body {
 }
 
 table {
+    border: 1px solid black;
     width: 100%; /* Ensure the table fills the container */
     border-collapse: collapse; /* Keep borders tidy */
 }
 
 th {
+    text-align: center;
     user-select: none;
-    height: 20px;
+    height: 23px;
     padding: 10px;
     position: sticky; /* Keep the header sticky */
-    top: 0; /* Stick to the top */
+    top: -1px; /* Stick to the top */
     color: white;
     background-color: #386dff; /* Background for visibility */
     z-index: 3; /* Ensure it stays above other content */
 }
 
 td {
-    text-align: left;
+    text-align: center;
     padding: 8px;
+
 }
 
 /* tr:nth-child(even) {
@@ -510,7 +513,6 @@ td {
 .checkbox{
     width: 20px;
     height: 20px;
-
 }
 
 #newFrag:hover{
@@ -529,7 +531,15 @@ td {
 } */
 
 #fragCell{
-    border: none;
+    border: 1px solid black;
+
+    text-align: center;
+    height: 23px;
+    padding: 10px;
+    position: sticky; /* Keep the header sticky */
+    top: 40px; /* Stick to the top */
+    /* color: white; */
+    z-index: 30; /* Ensure it stays above other content */
 }
 
 #fragWindow::-webkit-scrollbar {
@@ -560,4 +570,16 @@ td {
 #fragTableButton:hover{
     font-size: 15px;
     background-color: #386dff;
+}
+
+.sticky{
+    text-align: center;
+    user-select: none;
+    height: 23px;
+    padding: 10px;
+    position: sticky; /* Keep the header sticky */
+    top: 0px; /* Stick to the top */
+    color: white;
+    background-color: #d1d1d1; /* Background for visibility */
+    z-index: 3; /* Ensure it stays above other content */
 }

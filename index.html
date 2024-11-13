@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Display Atoms</title>
+    <title>ChopChopMol</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="logo2.png">
     <script type="importmap">
         {
             "imports": {
@@ -23,6 +24,7 @@
 
     <div id="fragWindow" class="collapse">
       <table id="fragTable" border>
+
         <div>
           <tr id="fragWindowheader">
           <button class="button" id="newFrag">Add Fragment</button>
@@ -32,14 +34,36 @@
             <th>Fragment</th>
             <th>Atoms</th>
 
-          </tr>
+        <div>
+          <tfoot>
+            <tr id="fragCell" style="border: none;">
+              <td class="sticky" style="border: none;">
+                <button class="button" id="newFrag">Add Fragment</button>
+              </td>
+              <td class="sticky" style="border: none;">
+              </td>
+              <td class="sticky" style="border: none;">
+              </td>
+            </tr>
+          </tfoot>
+        </div>
+        <div>
+          <thead>
+            <tr id="fragWindowheader">
+              <th style="width: 0px;">Show</th>
+              <th style="width: 100px;">Fragment</th>
+              <th style="width: 100px;">Atoms</th>
+            </tr>
+          </thead>
         </div>
 
         <tr style="display: none;">
           <td id="fragCell">
           </td>
         </tr>
+
       </table>
+
     </div>
 
     <div id="allButtons" class="inMenu">
