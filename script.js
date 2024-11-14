@@ -60,6 +60,7 @@ const fileSelectButton=document.getElementsByClassName('file-label')[0]
 const cuboidBoxGeo=new THREE.BoxGeometry(10,10,15)
 const cuboidBoxMaterial=new THREE.MeshBasicMaterial({transparent: true, opacity: 0.5, color: 0x30b3e3})
 const cuboid=new THREE.Mesh(cuboidBoxGeo, cuboidBoxMaterial)
+cuboid.position.set(0,0,0)
 
 const labelButton=document.getElementById('label')
 labelButton.addEventListener('click', function(){
