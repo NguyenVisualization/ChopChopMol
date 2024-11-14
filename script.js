@@ -5,6 +5,8 @@ import getAtom from './atom.js';
 import {FontLoader} from 'jsm/loaders/FontLoader.js'
 import {TextGeometry} from 'jsm/geometries/TextGeometry.js'
 
+let atoms
+
 
 let workingRowArray=[1]
 let workRow=2
@@ -55,7 +57,9 @@ const clickSound=new Audio()
 clickSound.src='click.mp3'
 
 const fileSelectButton=document.getElementsByClassName('file-label')[0]
-
+const cuboidBoxGeo=new THREE.BoxGeometry(10,10,15)
+const cuboidBoxMaterial=new THREE.MeshBasicMaterial({transparent: true, opacity: 0.5, color: 0x30b3e3})
+const cuboid=new THREE.Mesh(cuboidBoxGeo, cuboidBoxMaterial)
 
 const labelButton=document.getElementById('label')
 labelButton.addEventListener('click', function(){
@@ -219,6 +223,8 @@ function loadNewMolecule(atomicData){
     addToVisualizer(allAtomsSymbols, atomicData)
     console.log(atomicData)
     createBond(atomicData)
+    atoms = atomVisuals[0].children; // Get atom meshes
+    scene.add(cuboid)
 }
 
 // Function to extract atomic data
@@ -541,6 +547,9 @@ window.addEventListener('mousedown', (event) => {
         selectionBox.style.width = '0px';
         selectionBox.style.height = '0px';
         selectionBox.style.display = 'none'; // Show the box
+    }
+    if(atoms){
+        checkCuboidIntersection(cuboid, atoms)
     }
 });
 
@@ -912,6 +921,33 @@ fragTableButton.addEventListener('click', function(){
     clearBonds()
     createBond(atomicData)
 })
+
+// Assuming cuboid and atoms are already created
+
+scene.add(cuboid)
+
+console.log(atoms)
+
+function checkCuboidIntersection(cuboid, atoms) {
+    // Create a Box3 to represent the cuboid
+    const cuboidBox = new THREE.Box3().setFromObject(cuboid);
+
+    // Loop through each atom in the atoms array
+    for (let i = 0; i < atoms.length; i++) {
+        const atom = atoms[i];
+
+        // Create a Sphere representing the atom's position and radius
+        const atomSphere = new THREE.Sphere(atom.position, atom.radius);
+
+        // Check if the cuboid intersects with the atom sphere
+        if (cuboidBox.intersectsSphere(atomSphere)) {
+            atom.material.color.set(0x00ff00)
+            console.log(`Cuboid intersects with atom ${i} (${atom.userData.id})`);
+        }
+    }
+}
+
+
 
 
 setActiveRows(2)
