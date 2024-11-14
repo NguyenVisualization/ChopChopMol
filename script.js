@@ -77,6 +77,7 @@ labelButton.addEventListener('click', function(){
     }
 })
 
+
 let fileName
 const pointSelectButton = document.getElementById('enableSelection');
 
