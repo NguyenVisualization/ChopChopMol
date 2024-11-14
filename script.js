@@ -751,31 +751,43 @@ function updateTable(row, update=''){
 function editRow(rowIndex, column, text) {
     let row = table.rows[rowIndex];
     
-    // Remove the text from any other cell in the table
-    for (let i = 1; i < table.rows.length-1; i++) {
-        if(i!==rowIndex){
-            let cell = table.rows[i].cells[2];
-            // Split cell contents by commas and filter out the text
-            if(cell.innerHTML){
-                cell.innerHTML = cell.innerHTML.replace(text,"")
-                if(containsOnlySpacesAndNoNumbers(cell.innerHTML)){
-                    cell.innerHTML=""
+    // Remove the text from any other row in the table, but only in column 2 (index 2)
+    for (let i = 1; i < table.rows.length - 1; i++) {
+        if (i !== rowIndex) {
+            let cell = table.rows[i].cells[2]; // target column 2 (index 2)
+            
+            if (cell && cell.innerHTML) {
+                // Only remove the exact match for 'text' from this cell
+                let regex = new RegExp("\\b" + text + "\\b", "g"); // Match whole word (word boundaries)
+                cell.innerHTML = cell.innerHTML.replace(regex, "").trim(); // Remove text and trim extra spaces
+                
+                // If the cell becomes empty or contains only spaces, clear it
+                if (containsOnlySpacesAndNoNumbers(cell.innerHTML)) {
+                    cell.innerHTML = "";
                 }
             }
         }
     }
 
-    // Now update the specified cell in the row
-    if (row.cells[column - 1].innerHTML) {
-        row.cells[column - 1].innerHTML += (row.cells[column - 1].innerHTML ? ' ' : '') + text; // Append the new valu
-        workingRowArray=swapNthElement(workingRowArray,1,rowIndex-1)
-        console.log(rowIndex-1)
+    // Update the specified cell in the row (or add to it if it's not empty)
+    let targetCell = row.cells[column - 1]; // target the correct cell
+    if (targetCell) {
+        if (targetCell.innerHTML) {
+            targetCell.innerHTML += (targetCell.innerHTML ? ' ' : '') + text; // Append the new value
+        } else {
+            targetCell.innerHTML = text; // Just set the value if the cell is empty
+        }
+    }
+
+    // Update the workingRowArray based on the row modification (swap)
+    if (Array.isArray(workingRowArray)) {
+        workingRowArray = swapNthElement(workingRowArray, 1, rowIndex - 1);
+        console.log(rowIndex - 1);
     } else {
-        row.cells[column - 1].innerHTML = text; // Just set the new value if it's empty
-        workingRowArray=swapNthElement(workingRowArray,1,rowIndex-1)
-        console.log(rowIndex-1)
+        console.error('workingRowArray is not defined.');
     }
 }
+
 
 function removeFromRow(rowIndex,  text) {
 
@@ -850,26 +862,16 @@ window.addEventListener('click', function(){
     console.log(workingRowArray, workRow)
 })
 
-function getNumbersFromString(str){
+
+function getNumbersFromString(str) {
     atomsNumberArray=[]
-    if(str.length>0){
-        atomsNumberArray=str.split(' ').map(Number);
+    if (str.length > 0) {
+        atomsNumberArray = str.split(' ').filter(item => item !== "").map(Number);
     }
 }
 
-// function hideAtomsInArray(arr) {
-//     console.log(arr)
-//     // Assuming arr is already an array of numbers
-//     for (let i = 0; i < atomVisuals.length; i++) {
-//         const atom = atomVisuals[0].children[i]; // Access the first child of the current atom
-//         const atomNum = atom.userData.id; // Get the atom's user data ID
-//         console.log(atomNum)
-//         // Check if the index of the current atom is in the array arr
-//         if (arr.includes(atomNum)) {
-//             atom.visible = false; // Hide the atom
-//         }
-//     }
-// }
+// 12 13 4 3
+
 
 function hideAtomsInArray(arr) {
     console.log(arr)
