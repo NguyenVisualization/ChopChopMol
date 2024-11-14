@@ -29,7 +29,7 @@ let fragColors=[
 ]
 let atomsNumberArray=[]
 
-
+let cuboidBox
 let atomOptions
 let labelTrue=false
 const w=window.innerWidth
@@ -58,7 +58,7 @@ clickSound.src='click.mp3'
 
 const fileSelectButton=document.getElementsByClassName('file-label')[0]
 const cuboidBoxGeo=new THREE.BoxGeometry(10,10,15)
-const cuboidBoxMaterial=new THREE.MeshBasicMaterial({transparent: true, opacity: 0.5, color: 0x30b3e3})
+const cuboidBoxMaterial=new THREE.MeshBasicMaterial({transparent: true, opacity: 0.22, color: 0xfffdb7})
 const cuboid=new THREE.Mesh(cuboidBoxGeo, cuboidBoxMaterial)
 cuboid.position.set(0,0,0)
 
@@ -313,6 +313,7 @@ function addToVisualizer(allAtomsSymbols, atomicData){
         atomMesh.position.z = atomicData[i].coordinates.z * 4;
         atomMesh.renderOrder=0
         atomMesh.userData.id=i
+        atomMesh.userData.originalColor=new THREE.Color(colorH)
 
         // Add atom to the scene
         if(!labelTrue){
@@ -930,11 +931,16 @@ scene.add(cuboid)
 
 console.log(atoms)
 
+
 function checkCuboidIntersection(cuboid, atoms) {
     // Create a Box3 to represent the cuboid
-    const cuboidBox = new THREE.Box3().setFromObject(cuboid);
+    cuboidBox = new THREE.Box3().setFromObject(cuboid);
 
     // Loop through each atom in the atoms array
+    for (let i = 0; i < atoms.length; i++) {
+        const atom = atoms[i];
+        atom.material.color.set(atom.userData.originalColor);
+    }
     for (let i = 0; i < atoms.length; i++) {
         const atom = atoms[i];
 
@@ -949,7 +955,58 @@ function checkCuboidIntersection(cuboid, atoms) {
     }
 }
 
+let isCtrlPressed = false;
+let isDragging = false;
+let initialMouse = new THREE.Vector2();
+let initialSize = new THREE.Vector3();
 
+// Listen for keydown and keyup to track the `Ctrl` key
+window.addEventListener('keydown', (event) => {
+  if (event.key === 'Control') {
+    isCtrlPressed = true;
+    controls.enabled = false;  // Disable OrbitControls when Ctrl is held
+  }
+  if (event.key === ' ') {
+        for (let i = 0; i < atoms.length; i++) {
+            const atom = atoms[i];
+            atom.material.color.set(atom.userData.originalColor);
+        }
+  }
+});
+
+window.addEventListener('keyup', (event) => {
+  if (event.key === 'Control') {
+    isCtrlPressed = false;
+    controls.enabled = true;  // Re-enable OrbitControls when Ctrl is released
+  }
+});
+
+// Mouse events for stretching the cuboid
+window.addEventListener('mousedown', (event) => {
+  if (isCtrlPressed) {
+    isDragging = true;
+    initialMouse.set(event.clientX, event.clientY);
+    initialSize.set(cuboid.scale.x, cuboid.scale.y, cuboid.scale.z);  // Store the initial size of the cuboid
+  }
+});
+
+window.addEventListener('mousemove', (event) => {
+  if (isDragging && isCtrlPressed) {
+    const deltaX = event.clientX - initialMouse.x;
+    const deltaY = event.clientY - initialMouse.y;
+    
+    // Stretch the cuboid based on mouse movement
+    cuboid.scale.set(
+      initialSize.x + deltaX * 0.01,  // Stretch in x-direction
+      initialSize.y + deltaY * 0.01,  // Stretch in y-direction
+      initialSize.z + deltaY * 0.0
+    );
+  }
+});
+
+window.addEventListener('mouseup', () => {
+  isDragging = false;
+});
 
 
 setActiveRows(2)
