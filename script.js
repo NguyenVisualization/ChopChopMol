@@ -57,10 +57,15 @@ const clickSound=new Audio()
 clickSound.src='click.mp3'
 
 const fileSelectButton=document.getElementsByClassName('file-label')[0]
-const cuboidBoxGeo=new THREE.BoxGeometry(10,10,15)
-const cuboidBoxMaterial=new THREE.MeshBasicMaterial({transparent: true, opacity: 0.22, color: 0xfffdb7})
-const cuboid=new THREE.Mesh(cuboidBoxGeo, cuboidBoxMaterial)
-cuboid.position.set(0,0,0)
+const cuboidBoxGeo=new THREE.BoxGeometry(1,1,1)
+const cuboidBoxMaterial=new THREE.MeshStandardMaterial({
+    color: "yellow",
+    transparent:true,
+    opacity: 0.5,
+    side: THREE.DoubleSide
+})
+
+
 
 const labelButton=document.getElementById('label')
 labelButton.addEventListener('click', function(){
@@ -226,7 +231,7 @@ function loadNewMolecule(atomicData){
     console.log(atomicData)
     createBond(atomicData)
     atoms = atomVisuals[0].children; // Get atom meshes
-    scene.add(cuboid)
+    createSelectionCube(0,0,0)
 }
 
 // Function to extract atomic data
@@ -307,6 +312,7 @@ function addToVisualizer(allAtomsSymbols, atomicData){
 
         const atomMesh = new THREE.Mesh(atomGeo, atomMat);
 
+
         // Set atom position using atomicData
         atomMesh.position.x = atomicData[i].coordinates.x * 4;
         atomMesh.position.y = atomicData[i].coordinates.y * 4;
@@ -314,6 +320,7 @@ function addToVisualizer(allAtomsSymbols, atomicData){
         atomMesh.renderOrder=0
         atomMesh.userData.id=i
         atomMesh.userData.originalColor=new THREE.Color(colorH)
+        atomMesh.userData.selected=false
 
         // Add atom to the scene
         if(!labelTrue){
@@ -551,9 +558,7 @@ window.addEventListener('mousedown', (event) => {
         selectionBox.style.height = '0px';
         selectionBox.style.display = 'none'; // Show the box
     }
-    if(atoms){
-        checkCuboidIntersection(cuboid, atoms)
-    }
+
 });
 
 window.addEventListener('mousemove', (event) => {
@@ -581,7 +586,6 @@ window.addEventListener('mouseup', () => {
     selectionBox.style.display = 'none'; // Hide the box
 
     const boxBounds = selectionBox.getBoundingClientRect();
-    // selectAtomsInBox(boxBounds);
     selectAtom(select)
     select={
         startX:0,
@@ -640,7 +644,7 @@ function selectAtom(select) {
 
 
             if(index !== -1){
-                selectedAtom.material.color.set(selectedAtom.userData.originalColor);
+                unSelectSpecificAtom(selectedAtom)
                 selectedAtoms.splice(index,1)
                 removeFromRow(workRow, selectedAtom.userData.id)
                 getNumbersFromString(table.rows[workRow].cells[2].innerHTML)
@@ -650,12 +654,10 @@ function selectAtom(select) {
                 updateTable(workRow, selectedAtom.userData.id)
                 // Store the selected atom
                 selectedAtoms.push(selectedAtom)
-
-                // Store original color
                 selectedAtom.userData.originalColor = selectedAtom.material.color.getHex();
 
                 // Change color to red to indicate selection
-                selectedAtom.material.color.set(fragColors[workRow-1]);
+                selectSpecificAtom(selectedAtom, fragColors[workRow-1])
                 console.log("Atom selected and color changed to red");  
             }
         }
@@ -751,9 +753,6 @@ function insertRow() {
     // Set the third cell as empty
     cell3.innerHTML = "";
 }
-
-
-
 
 
 function updateTable(row, update=''){
@@ -927,7 +926,6 @@ fragTableButton.addEventListener('click', function(){
 
 // Assuming cuboid and atoms are already created
 
-scene.add(cuboid)
 
 console.log(atoms)
 
@@ -966,12 +964,6 @@ window.addEventListener('keydown', (event) => {
     isCtrlPressed = true;
     controls.enabled = false;  // Disable OrbitControls when Ctrl is held
   }
-  if (event.key === ' ') {
-        for (let i = 0; i < atoms.length; i++) {
-            const atom = atoms[i];
-            atom.material.color.set(atom.userData.originalColor);
-        }
-  }
 });
 
 window.addEventListener('keyup', (event) => {
@@ -999,7 +991,6 @@ window.addEventListener('mousemove', (event) => {
     cuboid.scale.set(
       initialSize.x + deltaX * 0.01,  // Stretch in x-direction
       initialSize.y + deltaY * 0.01,  // Stretch in y-direction
-      initialSize.z + deltaY * 0.0
     );
   }
 });
@@ -1008,6 +999,35 @@ window.addEventListener('mouseup', () => {
   isDragging = false;
 });
 
+window.addEventListener('wheel', function(e){
+    if (isCtrlPressed) {
+        const deltaZ = e.deltaY * 0.005;  // Use mouse wheel for z scaling
+        cuboid.scale.z += deltaZ;
+      }
+})
+
+function selectSpecificAtom(atom, newColor){
+    atom.userData.selected=true
+    atom.material.color.set(new THREE.Color(newColor))
+}
+
+function unSelectSpecificAtom(atom){
+    atom.userData.selected=true
+    atom.material.color.set(new THREE.Color(atom.userData.originalColor))
+}
+
+function checkSelectionBox(){
+    if(atoms){
+        checkCuboidIntersection(cuboid, atoms)
+    }
+}
+
+function createSelectionCube(x,y,z){
+    const cuboid=new THREE.Mesh(cuboidBoxGeo, cuboidBoxMaterial)
+    cuboid.position.set(x,y,z)
+    cuboid.userData.id=
+    scene.add(cuboid)
+}
 
 setActiveRows(2)
 
