@@ -64,8 +64,11 @@ const cuboidBoxMaterial=new THREE.MeshStandardMaterial({
     opacity: 0.5,
     side: THREE.DoubleSide
 })
+const cuboid=new THREE.Mesh(cuboidBoxGeo, cuboidBoxMaterial)
+cuboid.userData.randomID=38120
 
-
+const dimensionSelect=document.getElementById('selectBoxDimensions')
+dimensionSelect.style.display='none'
 
 const labelButton=document.getElementById('label')
 labelButton.addEventListener('click', function(){
@@ -110,6 +113,38 @@ displayButton.addEventListener('click', function(){
     updateAtomSizes()
 
 })
+
+let selectBoxWidth;
+let selectBoxHeight;
+let selectBoxDepth;
+
+let widthSpan = document.getElementById('xSliderValue');
+let heightSpan = document.getElementById('ySliderValue');
+let depthSpan = document.getElementById('zSliderValue');
+const xSlider = document.getElementById('Xslide');
+const ySlider = document.getElementById('Yslide');
+const zSlider = document.getElementById('Zslide');
+
+xSlider.addEventListener('input', function(e) {
+    selectBoxWidth = parseFloat(e.target.value);
+    widthSpan.innerHTML = `Width: ${selectBoxWidth}`;
+    cuboid.scale.x=selectBoxWidth
+
+});
+
+ySlider.addEventListener('input', function(e) {
+    selectBoxHeight = parseFloat(e.target.value);
+    heightSpan.innerHTML = `Height: ${selectBoxHeight}`;
+    cuboid.scale.y=selectBoxHeight
+
+});
+
+zSlider.addEventListener('input', function(e) {
+    selectBoxDepth = parseFloat(e.target.value);
+    depthSpan.innerHTML = `Depth: ${selectBoxDepth}`;
+    cuboid.scale.z=selectBoxDepth
+});
+
 
 
 const selectFileButton=document.getElementById('createFile')
@@ -161,7 +196,7 @@ camera.position.set(80,80,80)
 camera.lookAt(0,0,0)
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 const controls = new OrbitControls(camera, renderer.domElement);
-controls.enableDamping=true
+// controls.enableDamping=true
 controls.enablePan=true
 renderer.setSize(window.innerWidth, window.innerHeight);
 // renderer.setPixelRatio(devicePixelRatio);
@@ -953,58 +988,6 @@ function checkCuboidIntersection(cuboid, atoms) {
     }
 }
 
-let isCtrlPressed = false;
-let isDragging = false;
-let initialMouse = new THREE.Vector2();
-let initialSize = new THREE.Vector3();
-
-// Listen for keydown and keyup to track the `Ctrl` key
-window.addEventListener('keydown', (event) => {
-  if (event.key === 'Control') {
-    isCtrlPressed = true;
-    controls.enabled = false;  // Disable OrbitControls when Ctrl is held
-  }
-});
-
-window.addEventListener('keyup', (event) => {
-  if (event.key === 'Control') {
-    isCtrlPressed = false;
-    controls.enabled = true;  // Re-enable OrbitControls when Ctrl is released
-  }
-});
-
-// Mouse events for stretching the cuboid
-window.addEventListener('mousedown', (event) => {
-  if (isCtrlPressed) {
-    isDragging = true;
-    initialMouse.set(event.clientX, event.clientY);
-    initialSize.set(cuboid.scale.x, cuboid.scale.y, cuboid.scale.z);  // Store the initial size of the cuboid
-  }
-});
-
-window.addEventListener('mousemove', (event) => {
-  if (isDragging && isCtrlPressed) {
-    const deltaX = event.clientX - initialMouse.x;
-    const deltaY = event.clientY - initialMouse.y;
-    
-    // Stretch the cuboid based on mouse movement
-    cuboid.scale.set(
-      initialSize.x + deltaX * 0.01,  // Stretch in x-direction
-      initialSize.y + deltaY * 0.01,  // Stretch in y-direction
-    );
-  }
-});
-
-window.addEventListener('mouseup', () => {
-  isDragging = false;
-});
-
-window.addEventListener('wheel', function(e){
-    if (isCtrlPressed) {
-        const deltaZ = e.deltaY * 0.005;  // Use mouse wheel for z scaling
-        cuboid.scale.z += deltaZ;
-      }
-})
 
 function selectSpecificAtom(atom, newColor){
     atom.userData.selected=true
@@ -1023,11 +1006,39 @@ function checkSelectionBox(){
 }
 
 function createSelectionCube(x,y,z){
-    const cuboid=new THREE.Mesh(cuboidBoxGeo, cuboidBoxMaterial)
     cuboid.position.set(x,y,z)
-    cuboid.userData.id=
+    cuboid.userData.id=2
     scene.add(cuboid)
 }
+
+createSelectionCube(0,0,0)
+
+window.addEventListener('click', onMouseClick);
+
+function onMouseClick(event) {
+  // Convert mouse position to normalized device coordinates (-1 to +1)
+  mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+  mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+  // Perform raycasting
+  raycaster.setFromCamera(mouse, camera);
+
+  // Get objects intersected by the ray
+  const intersects = raycaster.intersectObjects(scene.children, true);
+
+  if (intersects.length > 0) {
+    // Log the clicked object
+    const object=intersects[0].object
+    console.log('Clicked object:', intersects[0].object);
+
+    if(object.userData.randomID==38120){
+        object.material.opacity=0.8
+        dimensionSelect.style.display='flex'
+
+    }
+  }
+}
+
 
 setActiveRows(2)
 
