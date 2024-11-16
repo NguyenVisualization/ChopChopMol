@@ -840,12 +840,16 @@ function removeFromRow(rowIndex,  text) {
     let row = table.rows[1];
 
     
-    let cell = table.rows[rowIndex].cells[2];
-    // Split cell contents by commas and filter out the text
-    if(cell.innerHTML){
-        cell.innerHTML = cell.innerHTML.replace(text,"")
-        if(containsOnlySpacesAndNoNumbers(cell.innerHTML)){
-            cell.innerHTML=""
+    let cell = table.rows[rowIndex].cells[2]; // target column 2 (index 2)
+            
+    if (cell && cell.innerHTML) {
+        // Only remove the exact match for 'text' from this cell
+        let regex = new RegExp("\\b" + text + "\\b", "g"); // Match whole word (word boundaries)
+        cell.innerHTML = cell.innerHTML.replace(regex, "").trim(); // Remove text and trim extra spaces
+        
+        // If the cell becomes empty or contains only spaces, clear it
+        if (containsOnlySpacesAndNoNumbers(cell.innerHTML)) {
+            cell.innerHTML = "";
         }
     }
 
