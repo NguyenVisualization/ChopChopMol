@@ -516,10 +516,11 @@ td {
 #newFrag:hover{
     
     background-color: #51ff00;
+    font-size: 15px;
 
 }
 #newFrag{
-    font-size: 15px;
+    font-size: 12px;
     position: relative;
     
 }
@@ -612,4 +613,24 @@ td {
 
 #selectAtomsInBox:hover{
     font-size: 15px;
+}
+
+
+
+#fragWindowControls{
+    justify-content: center;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+#makeBox{
+    font-size: 12px;
+}
+
+#makeBox:hover{
+    background-color: #00d5ff;
+    font-size: 15px;
+
+
 }
