@@ -986,7 +986,7 @@ function checkCuboidIntersection(cuboid, atoms) {
 
         // Check if the cuboid intersects with the atom sphere
         if (cuboidBox.intersectsSphere(atomSphere)) {
-            atom.material.color.set(0x00ff00)
+            selectSpecificAtom(atom, fragColors[workRow-1])
             console.log(`Cuboid intersects with atom ${i} (${atom.userData.id})`);
         }
     }
@@ -1042,6 +1042,7 @@ function onMouseClick(event) {
     }
   }
 }
+
 
 
 setActiveRows(2)
