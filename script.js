@@ -59,7 +59,7 @@ const cuboidBoxGeo=new THREE.BoxGeometry(1,1,1)
 const cuboidBoxMaterial=new THREE.MeshStandardMaterial({
     color: "yellow",
     transparent:true,
-    opacity: 0.5,
+    opacity: 0.2,
     side: THREE.DoubleSide
 })
 const cuboid=new THREE.Mesh(cuboidBoxGeo, cuboidBoxMaterial)
@@ -130,11 +130,17 @@ const xSlider = document.getElementById('Xslide');
 const ySlider = document.getElementById('Yslide');
 const zSlider = document.getElementById('Zslide');
 
+
+
 xSlider.addEventListener('input', function(e) {
     selectBoxWidth = parseFloat(e.target.value);
     widthSpan.innerHTML = `Width: ${selectBoxWidth}`;
     cuboid.scale.x=selectBoxWidth
 
+});
+
+xSlider.addEventListener('change', function(e) {
+    checkSelectionBox()
 });
 
 ySlider.addEventListener('input', function(e) {
@@ -144,10 +150,18 @@ ySlider.addEventListener('input', function(e) {
 
 });
 
+ySlider.addEventListener('change', function(e) {
+    checkSelectionBox()
+});
+
 zSlider.addEventListener('input', function(e) {
     selectBoxDepth = parseFloat(e.target.value);
     depthSpan.innerHTML = `Depth: ${selectBoxDepth}`;
     cuboid.scale.z=selectBoxDepth
+});
+
+zSlider.addEventListener('change', function(e) {
+    checkSelectionBox()
 });
 
 const selectFileButton=document.getElementById('createFile')
@@ -181,7 +195,6 @@ selectFileButton.addEventListener('click', function(){
 
 const selectAtomsInBox=document.getElementById('selectAtomsInBox')
 selectAtomsInBox.addEventListener('click', function(){
-    checkSelectionBox()
 })
 
 let inMainMenu=false
@@ -680,7 +693,6 @@ function selectAtom(select) {
             selectedAtom = selectedObject;
             let index = selectedAtoms.indexOf(selectedAtom);
 
-
             if(!makingSelectionBox){
                 if(index !== -1){
                     unSelectSpecificAtom(selectedAtom)
@@ -688,14 +700,8 @@ function selectAtom(select) {
                     removeFromRow(workRow, selectedAtom.userData.id)
                     getNumbersFromString(table.rows[workRow].cells[2].innerHTML)
                 }else{
-                    fragSelected[selectedAtom.userData.id]=selectedAtom.userData.id
-                    console.log(fragSelected)
-                    updateTable(workRow, selectedAtom.userData.id)
-                    // Store the selected atom
-                    selectedAtoms.push(selectedAtom)
+
                     selectedAtom.userData.originalColor = selectedAtom.material.color.getHex();
-    
-                    // Change color to red to indicate selection
                     selectSpecificAtom(selectedAtom, fragColors[workRow-1])
                     console.log("Atom selected and color changed to red");  
                 }
@@ -726,6 +732,8 @@ function unselectAllAtoms() {
     
     console.log("All atoms unselected");
 }
+
+
 
 let fileFromSelect=[]
 function createCustomFile(){
@@ -819,11 +827,13 @@ function editRow(rowIndex, column, text) {
 
     // Update the specified cell in the row (or add to it if it's not empty)
     let targetCell = row.cells[column - 1]; // target the correct cell
-    if (targetCell) {
-        if (targetCell.innerHTML) {
-            targetCell.innerHTML += (targetCell.innerHTML ? ' ' : '') + text; // Append the new value
-        } else {
-            targetCell.innerHTML = text; // Just set the value if the cell is empty
+    if(!targetCell.innerHTML.includes(text)){
+        if (targetCell) {
+            if (targetCell.innerHTML) {
+                targetCell.innerHTML += (targetCell.innerHTML ? ' ' : '') + text; // Append the new value
+            } else {
+                targetCell.innerHTML = text; // Just set the value if the cell is empty
+            }
         }
     }
 
@@ -984,6 +994,10 @@ function checkCuboidIntersection(cuboid, atoms) {
 }
 
 function selectSpecificAtom(atom, newColor){
+    fragSelected[atom.userData.id]=atom.userData.id
+    console.log(fragSelected)
+    updateTable(workRow, atom.userData.id)
+    selectedAtoms.push(atom)
     atom.userData.selected=true
     atom.material.color.set(new THREE.Color(newColor))
 }
@@ -1025,7 +1039,7 @@ function onMouseClick(event) {
     console.log('Clicked object:', intersects[0].object);
 
     if(object.userData.randomID==38120){
-        object.material.opacity=0.8
+        object.material.opacity=0.5
         dimensionSelect.style.display='flex'
 
     }
