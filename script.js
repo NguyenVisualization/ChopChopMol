@@ -794,7 +794,7 @@ function insertRow() {
     cell1.appendChild(checkbox);
 
     // Add text content to the second cell
-    cell2.innerHTML = `Frg ${fragNum}`;
+    cell2.innerHTML = fragNum;
 
     // Set the third cell as empty
     cell3.innerHTML = "";

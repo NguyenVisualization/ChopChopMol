@@ -447,7 +447,7 @@ body {
     overflow: auto;      /* Allows scrolling for long content */
     overflow-x: auto;
     background-color: #ffffff;
-    width: 500px;
+    width: 400px;
     min-height: 100vh;   /* Initial small height */
     height: 100vh;
     max-height: 400px;   /* Maximum height */
@@ -500,6 +500,8 @@ th {
 td {
     text-align: left;
     padding: 8px;
+
+    text-align: center;
 }
 
 /* tr:nth-child(even) {
