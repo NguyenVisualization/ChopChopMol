@@ -6,8 +6,6 @@ import {FontLoader} from 'jsm/loaders/FontLoader.js'
 import {TextGeometry} from 'jsm/geometries/TextGeometry.js'
 
 let atoms
-
-
 let workingRowArray=[1]
 let workRow=2
 let positionsX=[]
@@ -93,7 +91,6 @@ makeBox.addEventListener('click', function(){
     makeBox.classList.toggle('buttonSelected')
 })
 
-
 let fileName
 const pointSelectButton = document.getElementById('enableSelection');
 
@@ -153,8 +150,6 @@ zSlider.addEventListener('input', function(e) {
     cuboid.scale.z=selectBoxDepth
 });
 
-
-
 const selectFileButton=document.getElementById('createFile')
 selectFileButton.addEventListener('click', function(){
     if(selectedAtoms.length>0){
@@ -184,16 +179,12 @@ selectFileButton.addEventListener('click', function(){
 
 })
 
-
 const selectAtomsInBox=document.getElementById('selectAtomsInBox')
 selectAtomsInBox.addEventListener('click', function(){
     checkSelectionBox()
 })
 
-
 let inMainMenu=false
-
-
 
 const cameraButton=document.getElementById('camera')
 cameraButton.addEventListener('click', function(){
@@ -736,7 +727,6 @@ function unselectAllAtoms() {
     console.log("All atoms unselected");
 }
 
-
 let fileFromSelect=[]
 function createCustomFile(){
     console.log(selectedAtoms)
@@ -747,8 +737,6 @@ function createCustomFile(){
     console.log(fileFromSelect)
 }
 const creatFragButton=document.getElementById('newFrag')
-
-
 let fragNum=0
 let table = document.getElementById("fragTable");
 
@@ -756,8 +744,6 @@ creatFragButton.addEventListener('click', insertRow)
 
 insertRow()
 insertRow()
-
-
 
 function insertRow() {
     fragNum++;
@@ -806,7 +792,6 @@ function insertRow() {
     cell3.innerHTML = "";
 }
 
-
 function updateTable(row, update=''){
     editRow(row, 3, update)
 }
@@ -851,7 +836,6 @@ function editRow(rowIndex, column, text) {
     }
 }
 
-
 function removeFromRow(rowIndex,  text) {
 
     let row = table.rows[1];
@@ -879,7 +863,6 @@ function removeFromRow(rowIndex,  text) {
     }
 }
 
-
 function containsOnlySpacesAndNoNumbers(str) {
     return /^[ ]*$/.test(str) || /^[0-9\s]*$/.test(str) && str.trim().length === 0;
 }
@@ -890,8 +873,6 @@ function swapNthElement(array, newNumber, n) {
     }
     return array; // Return the modified array
 }
-
-
 // Select the table
 
 // Function to handle row click
@@ -929,17 +910,12 @@ window.addEventListener('click', function(){
     console.log(workingRowArray, workRow)
 })
 
-
 function getNumbersFromString(str) {
     atomsNumberArray=[]
     if (str.length > 0) {
         atomsNumberArray = str.split(' ').filter(item => item !== "").map(Number);
     }
 }
-
-// 12 13 4 3
-
-
 function hideAtomsInArray(arr) {
     console.log(arr)
     // Assuming arr is already an array of numbers
@@ -982,9 +958,7 @@ fragTableButton.addEventListener('click', function(){
 
 // Assuming cuboid and atoms are already created
 
-
 console.log(atoms)
-
 
 function checkCuboidIntersection(cuboid, atoms) {
     // Create a Box3 to represent the cuboid
@@ -1009,7 +983,6 @@ function checkCuboidIntersection(cuboid, atoms) {
     }
 }
 
-
 function selectSpecificAtom(atom, newColor){
     atom.userData.selected=true
     atom.material.color.set(new THREE.Color(newColor))
@@ -1032,8 +1005,6 @@ function createSelectionCube(x,y,z,size){
     cuboid.userData.id=2
     scene.add(cuboid)
 }
-
-
 
 window.addEventListener('click', onMouseClick);
 
@@ -1060,8 +1031,6 @@ function onMouseClick(event) {
     }
   }
 }
-
-
 
 setActiveRows(2)
 
