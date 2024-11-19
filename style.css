@@ -631,6 +631,8 @@ td {
 #makeBox:hover{
     background-color: #00d5ff;
     font-size: 15px;
+}
 
-
+.buttonSelected{
+    background-color: #008cff;
 }

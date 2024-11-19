@@ -85,6 +85,14 @@ labelButton.addEventListener('click', function(){
     }
 })
 
+let makingSelectionBox=false
+
+const makeBox=document.getElementById('makeBox')
+makeBox.addEventListener('click', function(){
+    makingSelectionBox=!makingSelectionBox
+    makeBox.classList.toggle('buttonSelected')
+})
+
 
 let fileName
 const pointSelectButton = document.getElementById('enableSelection');
@@ -177,6 +185,11 @@ selectFileButton.addEventListener('click', function(){
 })
 
 
+const selectAtomsInBox=document.getElementById('selectAtomsInBox')
+selectAtomsInBox.addEventListener('click', function(){
+    checkSelectionBox()
+})
+
 
 let inMainMenu=false
 
@@ -266,7 +279,6 @@ function loadNewMolecule(atomicData){
     console.log(atomicData)
     createBond(atomicData)
     atoms = atomVisuals[0].children; // Get atom meshes
-    createSelectionCube(0,0,0)
 }
 
 // Function to extract atomic data
@@ -678,22 +690,27 @@ function selectAtom(select) {
             let index = selectedAtoms.indexOf(selectedAtom);
 
 
-            if(index !== -1){
-                unSelectSpecificAtom(selectedAtom)
-                selectedAtoms.splice(index,1)
-                removeFromRow(workRow, selectedAtom.userData.id)
-                getNumbersFromString(table.rows[workRow].cells[2].innerHTML)
+            if(!makingSelectionBox){
+                if(index !== -1){
+                    unSelectSpecificAtom(selectedAtom)
+                    selectedAtoms.splice(index,1)
+                    removeFromRow(workRow, selectedAtom.userData.id)
+                    getNumbersFromString(table.rows[workRow].cells[2].innerHTML)
+                }else{
+                    fragSelected[selectedAtom.userData.id]=selectedAtom.userData.id
+                    console.log(fragSelected)
+                    updateTable(workRow, selectedAtom.userData.id)
+                    // Store the selected atom
+                    selectedAtoms.push(selectedAtom)
+                    selectedAtom.userData.originalColor = selectedAtom.material.color.getHex();
+    
+                    // Change color to red to indicate selection
+                    selectSpecificAtom(selectedAtom, fragColors[workRow-1])
+                    console.log("Atom selected and color changed to red");  
+                }
             }else{
-                fragSelected[selectedAtom.userData.id]=selectedAtom.userData.id
-                console.log(fragSelected)
-                updateTable(workRow, selectedAtom.userData.id)
-                // Store the selected atom
-                selectedAtoms.push(selectedAtom)
-                selectedAtom.userData.originalColor = selectedAtom.material.color.getHex();
-
-                // Change color to red to indicate selection
-                selectSpecificAtom(selectedAtom, fragColors[workRow-1])
-                console.log("Atom selected and color changed to red");  
+                createSelectionCube(selectedAtom.position.x,selectedAtom.position.y,selectedAtom.position.z, selectedAtom.geometry.parameters.radius*3)
+                console.log(selectedAtom.position.x,selectedAtom.position.y,selectedAtom.position.z,  selectedAtom.geometry.parameters.radius*3)
             }
         }
     } else {
@@ -1009,13 +1026,14 @@ function checkSelectionBox(){
     }
 }
 
-function createSelectionCube(x,y,z){
+function createSelectionCube(x,y,z,size){
     cuboid.position.set(x,y,z)
+    cuboid.scale.setScalar(size)
     cuboid.userData.id=2
     scene.add(cuboid)
 }
 
-createSelectionCube(0,0,0)
+
 
 window.addEventListener('click', onMouseClick);
 
