@@ -695,10 +695,8 @@ function selectAtom(select) {
 
             if(!makingSelectionBox){
                 if(index !== -1){
-                    unSelectSpecificAtom(selectedAtom)
-                    selectedAtoms.splice(index,1)
-                    removeFromRow(workRow, selectedAtom.userData.id)
-                    getNumbersFromString(table.rows[workRow].cells[2].innerHTML)
+                    unSelectSpecificAtom(selectedAtom, index)
+
                 }else{
 
                     selectedAtom.userData.originalColor = selectedAtom.material.color.getHex();
@@ -1002,9 +1000,12 @@ function selectSpecificAtom(atom, newColor){
     atom.material.color.set(new THREE.Color(newColor))
 }
 
-function unSelectSpecificAtom(atom){
+function unSelectSpecificAtom(atom, index){
     atom.userData.selected=true
     atom.material.color.set(new THREE.Color(atom.userData.originalColor))
+    selectedAtoms.splice(index,1)
+    removeFromRow(workRow, atom.userData.id)
+    getNumbersFromString(table.rows[workRow].cells[2].innerHTML)
 }
 
 function checkSelectionBox(){
@@ -1045,6 +1046,7 @@ function onMouseClick(event) {
     }
   }
 }
+
 
 setActiveRows(2)
 
