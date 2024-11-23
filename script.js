@@ -825,15 +825,16 @@ function editRow(rowIndex, column, text) {
 
     // Update the specified cell in the row (or add to it if it's not empty)
     let targetCell = row.cells[column - 1]; // target the correct cell
-    if(!targetCell.innerHTML.includes(text)){
+    if (!targetCell.innerHTML.split(' ').includes(text)) {
         if (targetCell) {
             if (targetCell.innerHTML) {
-                targetCell.innerHTML += (targetCell.innerHTML ? ' ' : '') + text; // Append the new value
+                targetCell.innerHTML += ' ' + text; // Append with a space
             } else {
-                targetCell.innerHTML = text; // Just set the value if the cell is empty
+                targetCell.innerHTML = text; // Set value if empty
             }
         }
     }
+    
 
     // Update the workingRowArray based on the row modification (swap)
     if (Array.isArray(workingRowArray)) {
