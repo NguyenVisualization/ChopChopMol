@@ -994,10 +994,10 @@ function checkCuboidIntersection(cuboid, atoms) {
         console.log(atom);
 
         // Create a Box3 for the atom based on its geometry
-        const atomBox = new THREE.Box3().setFromObject(atom);
+        const atomSphere=new THREE.Sphere(atom.position, atom.radius)
         const atomID=atom.userData.id
         // Check if the cuboid intersects with the atom's bounding box
-        if (cuboidBox.intersectsBox(atomBox)) {
+        if (cuboidBox.intersectsBox(atomSphere)) {
             if(!selectedByBox.includes(atomID)){
                 selectedByBox.push(atomID)
                 selectSpecificAtom(atom, fragColors[workRow - 1]);
