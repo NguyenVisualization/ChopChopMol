@@ -173,6 +173,10 @@ rotSlider.addEventListener('input', function(e) {
     cuboid.rotation.y=e.target.value
 });
 
+rotSlider.addEventListener('change', function(e) {
+    checkSelectionBox()
+});
+
 const selectFileButton=document.getElementById('createFile')
 selectFileButton.addEventListener('click', function(){
     if(selectedAtoms.length>0){
@@ -828,6 +832,8 @@ function editRow(rowIndex, column, text) {
                 if (containsOnlySpacesAndNoNumbers(cell.innerHTML)) {
                     cell.innerHTML = "";
                 }
+                // cell.innerHTML = sortNumbersInString(cell.innerHTML)
+
             }
         }
     }
@@ -841,6 +847,7 @@ function editRow(rowIndex, column, text) {
             } else {
                 targetCell.innerHTML = text; // Set value if empty
             }
+            // targetCell.innerHTML = sortNumbersInString(targetCell.innerHTML)
         }
     }
     
@@ -853,6 +860,14 @@ function editRow(rowIndex, column, text) {
         console.error('workingRowArray is not defined.');
     }
 }
+
+function sortNumbersInString(str) {
+    // Split the string into an array of numbers, sort it, and join it back into a string
+    return str.split(' ')
+              .map(Number)
+              .sort((a, b) => a - b)
+              .join(' ');
+  }
 
 function removeFromRow(rowIndex,  text) {
 
