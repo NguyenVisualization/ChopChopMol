@@ -832,7 +832,7 @@ function editRow(rowIndex, column, text) {
                 if (containsOnlySpacesAndNoNumbers(cell.innerHTML)) {
                     cell.innerHTML = "";
                 }
-                // cell.innerHTML = sortNumbersInString(cell.innerHTML)
+                cell.innerHTML = sortNumbersInString(cell.innerHTML)
 
             }
         }
@@ -847,7 +847,7 @@ function editRow(rowIndex, column, text) {
             } else {
                 targetCell.innerHTML = text; // Set value if empty
             }
-            // targetCell.innerHTML = sortNumbersInString(targetCell.innerHTML)
+            targetCell.innerHTML = sortNumbersInString(targetCell.innerHTML)
         }
     }
     
@@ -862,12 +862,21 @@ function editRow(rowIndex, column, text) {
 }
 
 function sortNumbersInString(str) {
-    // Split the string into an array of numbers, sort it, and join it back into a string
-    return str.split(' ')
-              .map(Number)
-              .sort((a, b) => a - b)
-              .join(' ');
-  }
+    // Debug: Log the input string
+    console.log('Input string to sortNumbersInString:', str);
+
+    if (!str || typeof str !== 'string') {
+        return ''; // Return empty if input is invalid
+    }
+
+    return str
+        .split(' ') // Split by spaces
+        .filter(item => item.trim() !== '' && !isNaN(Number(item))) // Remove empty and non-numeric values
+        .map(item => Number(item.trim())) // Convert valid strings to numbers
+        .sort((a, b) => a - b) // Sort in ascending order
+        .join(' '); // Rejoin into a single string
+}
+
 
 function removeFromRow(rowIndex,  text) {
 
