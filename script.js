@@ -27,6 +27,8 @@ let fragColors=[
 ]
 let atomsNumberArray=[]
 
+let selectedByBox=[]
+
 let cuboidBox
 let atomOptions
 let labelTrue=false
@@ -129,6 +131,8 @@ let depthSpan = document.getElementById('zSliderValue');
 const xSlider = document.getElementById('Xslide');
 const ySlider = document.getElementById('Yslide');
 const zSlider = document.getElementById('Zslide');
+const rotSlider = document.getElementById('rotSlide');
+
 
 
 
@@ -162,6 +166,11 @@ zSlider.addEventListener('input', function(e) {
 
 zSlider.addEventListener('change', function(e) {
     checkSelectionBox()
+});
+
+rotSlider.addEventListener('input', function(e) {
+
+    cuboid.rotation.y=e.target.value
 });
 
 const selectFileButton=document.getElementById('createFile')
@@ -971,26 +980,46 @@ console.log(atoms)
 
 function checkCuboidIntersection(cuboid, atoms) {
     // Create a Box3 to represent the cuboid
-    cuboidBox = new THREE.Box3().setFromObject(cuboid);
+    const cuboidBox = new THREE.Box3().setFromObject(cuboid);
 
-    // Loop through each atom in the atoms array
+    // Reset colors of all atoms to their original
+    // for (let i = 0; i < atoms.length; i++) {
+    //     const atom = atoms[i];
+    //     atom.material.color.set(atom.userData.originalColor);
+    // }
+
+    // Loop through each atom to check for intersection
     for (let i = 0; i < atoms.length; i++) {
         const atom = atoms[i];
-        atom.material.color.set(atom.userData.originalColor);
-    }
-    for (let i = 0; i < atoms.length; i++) {
-        const atom = atoms[i];
+        console.log(atom);
 
-        // Create a Sphere representing the atom's position and radius
-        const atomSphere = new THREE.Sphere(atom.position, atom.radius);
+        // Create a Box3 for the atom based on its geometry
+        const atomBox = new THREE.Box3().setFromObject(atom);
+        const atomID=atom.userData.id
+        // Check if the cuboid intersects with the atom's bounding box
+        if (cuboidBox.intersectsBox(atomBox)) {
+            if(!selectedByBox.includes(atomID)){
+                selectedByBox.push(atomID)
+                selectSpecificAtom(atom, fragColors[workRow - 1]);
+                console.log(`Cuboid intersects with atom ${i} (${atom.userData.id})`);
+            }
+        }else{
+            if(selectedByBox.includes(atomID)){
+                const index = selectedAtoms.indexOf(atom);
 
-        // Check if the cuboid intersects with the atom sphere
-        if (cuboidBox.intersectsSphere(atomSphere)) {
-            selectSpecificAtom(atom, fragColors[workRow-1])
-            console.log(`Cuboid intersects with atom ${i} (${atom.userData.id})`);
+                selectedByBox=removeValueFromArray(selectedByBox,atomID)
+                unSelectSpecificAtom(atom, index)
+            }
         }
+
     }
 }
+
+function removeValueFromArray(array, valueToRemove) {
+    return array.filter(item => item !== valueToRemove);
+}
+
+
 
 function selectSpecificAtom(atom, newColor){
     fragSelected[atom.userData.id]=atom.userData.id
