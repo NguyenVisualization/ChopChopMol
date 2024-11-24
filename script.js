@@ -56,6 +56,8 @@ scalarSpan.textContent=`Atom Size: ${scalar}`
 const clickSound=new Audio()
 clickSound.src='click.mp3'
 
+let table = document.getElementById("fragTable");
+
 const fileSelectButton=document.getElementsByClassName('file-label')[0]
 const cuboidBoxGeo=new THREE.BoxGeometry(1,1,1)
 const cuboidBoxMaterial=new THREE.MeshStandardMaterial({
@@ -133,7 +135,7 @@ const ySlider = document.getElementById('Yslide');
 const zSlider = document.getElementById('Zslide');
 const rotSlider = document.getElementById('rotSlide');
 
-
+let moleculeLoading=undefined
 
 
 xSlider.addEventListener('input', function(e) {
@@ -265,6 +267,8 @@ document.getElementById('fileInput').addEventListener('change', function(event) 
     fileName=fSB.files[0].name
     docName.value=fileName
     console.log(fileName)
+    clearTable()
+
     if (file) {
         const reader = new FileReader();
         reader.onload = function(e) {
@@ -280,6 +284,7 @@ document.getElementById('fileInput').addEventListener('change', function(event) 
 });
 
 function loadNewMolecule(atomicData){
+    moleculeLoading=true
     positionsX = [];
     positionsY = [];
     positionsZ = [];
@@ -288,7 +293,7 @@ function loadNewMolecule(atomicData){
     allAtomsSymbols = [];
     selectedAtoms = [];
     fileFromSelect = [];
-
+    
     clearScene()
     getAllAtoms(atomicData); // Call function to get all atom symbols after data is extracted
     console.log(allAtomsSymbols); // Log all atom symbols to the console
@@ -296,7 +301,10 @@ function loadNewMolecule(atomicData){
     console.log(atomicData)
     createBond(atomicData)
     atoms = atomVisuals[0].children; // Get atom meshes
+    moleculeLoading=false
 }
+
+
 
 // Function to extract atomic data
 function extractAtomicData(input) {
@@ -338,6 +346,17 @@ function getAllAtoms(atomicData) {
     }
 
     return allAtomsSymbols;
+}
+
+function clearTable() {
+    if (table.rows.length > 1) {
+        for (let i = 0; i < table.rows.length; i++) {
+            let cell = table.rows[i].cells[2];
+            if (cell) {
+                cell.innerHTML = '';
+            }
+        }
+    }
 }
 
 
@@ -434,8 +453,15 @@ function clearScene() {
 
 
     // Optionally, reset your atomVisuals array and any other data you need
+    positionsX = [];
+    positionsY = [];
+    positionsZ = [];
+    bondVisuals = [];
     atomVisuals = [];
     allAtomsSymbols = [];
+    selectedAtoms = [];
+    atomsNumberArray = [];
+
 }
 
 
@@ -743,7 +769,6 @@ function createCustomFile(){
 }
 const creatFragButton=document.getElementById('newFrag')
 let fragNum=0
-let table = document.getElementById("fragTable");
 
 creatFragButton.addEventListener('click', insertRow)
 
@@ -849,7 +874,6 @@ function editRow(rowIndex, column, text) {
 
 function sortNumbersInString(str) {
     // Debug: Log the input string
-    console.log('Input string to sortNumbersInString:', str);
 
     if (!str || typeof str !== 'string') {
         return ''; // Return empty if input is invalid
