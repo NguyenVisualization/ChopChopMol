@@ -414,6 +414,7 @@ function addToVisualizer(allAtomsSymbols, atomicData) {
 }
 
 
+
 let needsUpdate = true;  // Flag to track if the scene needs updating
 
 
