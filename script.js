@@ -344,85 +344,71 @@ function getAllAtoms(atomicData) {
 let atomGroup
 
 
-function addToVisualizer(allAtomsSymbols, atomicData){
+function addToVisualizer(allAtomsSymbols, atomicData) {
     centerMolecule(atomicData);
 
+    atomGroup = new THREE.Group();
 
-    atomGroup=new THREE.Group()
+    for (let i = 0; i < allAtomsSymbols.length; i++) {
+        const symbol = (atomicData[i].atomicSymbol).replace(/[^a-zA-Z]/g, '');
 
-    for(let i=0; i<allAtomsSymbols.length; i++){
-        const mySymbol =(atomicData[i].atomicSymbol).replace(/[^a-zA-Z]/g, '');
-        let colorH;
-        let radius;
-        fragSelected.push(i)
+        const color = atomOptions[symbol].color;
+        const radius = atomOptions[symbol].radius * scalar;
 
-        colorH = atomOptions[mySymbol].color;
-        radius = atomOptions[mySymbol].radius * scalar; // Apply updated scalar
+        const material = displayMode
+            ? new THREE.MeshStandardMaterial({
+                color,
+                metalness: 0.6,
+                roughness: 0.4,
+            })
+            : new THREE.MeshStandardMaterial({ color });
 
-        let atomMat
-        let atomGeo
+        const geometry = displayMode
+            ? new THREE.SphereGeometry(radius, 30, 30)
+            : new THREE.SphereGeometry(radius, 10, 10);
 
-        if(displayMode){
-            atomMat = new THREE.MeshStandardMaterial({color: colorH, 
-                metalness:0.6,
-                roughness: 0.4
-            });
-            atomGeo = new THREE.SphereGeometry(radius, 30, 30);
-
-        }else{
-            atomMat = new THREE.MeshStandardMaterial({color: colorH});
-            atomGeo = new THREE.SphereGeometry(radius, 10, 10);
-        }
-
-        const atomMesh = new THREE.Mesh(atomGeo, atomMat);
-
+        const atomMesh = new THREE.Mesh(geometry, material);
 
         // Set atom position using atomicData
         atomMesh.position.x = atomicData[i].coordinates.x * 4;
         atomMesh.position.y = atomicData[i].coordinates.y * 4;
         atomMesh.position.z = atomicData[i].coordinates.z * 4;
-        atomMesh.renderOrder=0
-        atomMesh.userData.id=i
-        atomMesh.userData.originalColor=new THREE.Color(colorH)
-        atomMesh.userData.selected=false
+
+        atomMesh.renderOrder = 0;
+        atomMesh.userData.id = i;
+        atomMesh.userData.originalColor = new THREE.Color(color);
+        atomMesh.userData.selected = false;
 
         // Add atom to the scene
-        if(!labelTrue){
+        if (!labelTrue) {
             atomGroup.add(atomMesh);
         }
 
-
-        if(labelTrue){
+        // Add label to the scene
+        if (labelTrue) {
             loader.load('Poppins-Bold.json', function (font) {
-                const textGeometry = new TextGeometry(mySymbol, {
-                    font: font,
+                const textGeometry = new TextGeometry(symbol, {
+                    font,
                     size: radius,
                     height: 0.2,
-                             
                 });
-            
+
                 // Create a material for the text
-                const textMaterial = new THREE.MeshBasicMaterial({color: colorH,});
-                
+                const textMaterial = new THREE.MeshBasicMaterial({ color });
+
                 // Create a mesh from the geometry and material
-                
-                // Position the text
-                // textMesh.position.set(0, 0, 0);
-                
-            
                 const textMesh = new THREE.Mesh(textGeometry, textMaterial);
-                textMesh.userData.isText=true
-                textMesh.position.set(atomMesh.position.x, atomMesh.position.y, atomMesh.position.z)
+                textMesh.userData.isText = true;
+                textMesh.position.set(atomMesh.position.x, atomMesh.position.y, atomMesh.position.z);
                 // Add the text mesh to the scene
-                textGeometry.center()
-                textMesh.renderOrder=999
-    
+                textGeometry.center();
+                textMesh.renderOrder = 999;
+
                 atomGroup.add(textMesh);
-                
             });
         }
 
-        scene.add(atomGroup)
+        scene.add(atomGroup);
         atomVisuals.push(atomGroup); // Store the updated atom
     }
 }
