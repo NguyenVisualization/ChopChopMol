@@ -285,15 +285,9 @@ document.getElementById('fileInput').addEventListener('change', function(event) 
 
 function loadNewMolecule(atomicData){
     moleculeLoading=true
-    positionsX = [];
-    positionsY = [];
-    positionsZ = [];
-    bondVisuals = [];
-    atomVisuals = [];
-    allAtomsSymbols = [];
-    selectedAtoms = [];
-    fileFromSelect = [];
     
+
+    resetVariables()
     clearScene()
     getAllAtoms(atomicData); // Call function to get all atom symbols after data is extracted
     console.log(allAtomsSymbols); // Log all atom symbols to the console
@@ -304,7 +298,17 @@ function loadNewMolecule(atomicData){
     moleculeLoading=false
 }
 
-
+function resetVariables(){
+    positionsX = [];
+    positionsY = [];
+    positionsZ = [];
+    bondVisuals = [];
+    atomVisuals = [];
+    allAtomsSymbols = [];
+    selectedAtoms = [];
+    fileFromSelect = [];
+    selectedByBox=[]
+}
 
 // Function to extract atomic data
 function extractAtomicData(input) {
@@ -1080,6 +1084,7 @@ function checkSelectionBox(){
 }
 
 function createSelectionCube(x,y,z,size){
+    selectedByBox=[]
     cuboid.position.set(x,y,z)
     cuboid.scale.setScalar(size)
     cuboid.userData.id=2
