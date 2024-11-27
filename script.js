@@ -56,6 +56,10 @@ scalarSpan.textContent=`Atom Size: ${scalar}`
 const clickSound=new Audio()
 clickSound.src='click.mp3'
 
+const directionX = new THREE.Vector3(1, 0, 0).normalize();
+const directionY = new THREE.Vector3(0, 1, 0).normalize();
+const directionZ = new THREE.Vector3(0, 0, 1).normalize();
+
 let table = document.getElementById("fragTable");
 
 const fileSelectButton=document.getElementsByClassName('file-label')[0]
@@ -243,6 +247,7 @@ let atomicData = []; // Declare atomicData globally so it can be accessed
 let atomVisuals=[]
 
 const rect = renderer.domElement.getBoundingClientRect();
+
 
 
 const lights=new THREE.DirectionalLight(0xffffff, 4)
@@ -1094,12 +1099,34 @@ function checkSelectionBox(){
     }
 }
 
-function createSelectionCube(x,y,z,size){
-    selectedByBox=[]
-    cuboid.position.set(x,y,z)
-    cuboid.scale.setScalar(size)
-    cuboid.userData.id=2
-    scene.add(cuboid)
+function createSelectionCube(x, y, z, size) {
+    selectedByBox = [];
+
+    cuboid.position.set(x, y, z);
+    cuboid.scale.setScalar(size);
+    cuboid.userData.id = 2;
+    scene.add(cuboid);
+
+    const directionX = new THREE.Vector3(1, 0, 0);
+    const directionY = new THREE.Vector3(0, 1, 0);
+    const directionZ = new THREE.Vector3(0, 0, 1);
+
+    const originX = new THREE.Vector3(x+(size/2), y, z);
+    const originY = new THREE.Vector3(x, y+(size/2), z);
+    const originZ = new THREE.Vector3(x, y, z+(size/2));
+
+    const color = 0x008cff; // Red color
+    const length = size * 0.5;
+    const headLength = 0.5;
+    const headWidth = 0.25;
+
+    const arrowHelperX = new THREE.ArrowHelper(directionX, originX, length, color, headLength, headWidth);
+    const arrowHelperY = new THREE.ArrowHelper(directionY, originY, length, color, headLength, headWidth);
+    const arrowHelperZ = new THREE.ArrowHelper(directionZ, originZ, length, color, headLength, headWidth);
+
+    scene.add(arrowHelperX);
+    scene.add(arrowHelperY);
+    scene.add(arrowHelperZ);
 }
 
 window.addEventListener('click', onMouseClick);
