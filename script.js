@@ -67,6 +67,7 @@ const cuboidBoxMaterial=new THREE.MeshStandardMaterial({
     side: THREE.DoubleSide
 })
 const cuboid=new THREE.Mesh(cuboidBoxGeo, cuboidBoxMaterial)
+const loadingAnimation=document.getElementById('loadingAnimation')
 cuboid.userData.randomID=38120
 
 const dimensionSelect=document.getElementById('selectBoxDimensions')
@@ -264,22 +265,29 @@ const fSB=document.getElementById('fileInput')
 // Listen for file selection
 document.getElementById('fileInput').addEventListener('change', function(event) {
     const file = event.target.files[0];
-    fileName=fSB.files[0].name
-    docName.value=fileName
-    console.log(fileName)
-    clearTable()
+    const fileName = fSB.files[0].name
+    docName.value = fileName;
+    console.log(fileName);
+    clearTable();
+    loadingAnimation.style.display = 'flex'; // Show animation immediately
 
     if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            const data = e.target.result;
-            atomicData = extractAtomicData(data); // Save extracted atomic data globally
-            loadNewMolecule(atomicData)
-            for(let i=0;i<atomicData.length;i++){
-                updateTable(1, i)
-            }
-        };  
-        reader.readAsText(file);
+        // Use setTimeout to allow the browser to render the loading animation
+        setTimeout(() => {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const data = e.target.result;
+                atomicData = extractAtomicData(data); // Save extracted atomic data globally
+                loadNewMolecule(atomicData);
+                for (let i = 0; i < atomicData.length; i++) {
+                    updateTable(1, i);
+                }
+                loadingAnimation.style.display = 'none';// Hide animation after processing
+            };  
+            reader.readAsText(file);
+        }, 10);
+    } else {
+        loadingAnimation.style.display = 'none';// Hide animation if no file is selected
     }
 });
 
@@ -296,6 +304,7 @@ function loadNewMolecule(atomicData){
     createBond(atomicData)
     atoms = atomVisuals[0].children; // Get atom meshes
     moleculeLoading=false
+    // loadingAnimation.style.display='none'
 }
 
 function resetVariables(){
@@ -891,6 +900,8 @@ function sortNumbersInString(str) {
         .sort((a, b) => a - b) // Sort in ascending order
         .join(' '); // Rejoin into a single string
 }
+
+
 
 
 function removeFromRow(rowIndex,  text) {

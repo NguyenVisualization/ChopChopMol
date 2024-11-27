@@ -638,3 +638,8 @@ td {
 .buttonSelected{
     background-color: #008cff;
 }
+
+#loadingAnimation{
+    background-color: none;
+}
+
