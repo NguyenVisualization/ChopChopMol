@@ -725,35 +725,37 @@ function selectAtom(select) {
     const intersects = raycaster.intersectObjects(atomVisuals, true); // 'true' to check child meshes in the atomGroup
     console.log(selectedAtoms)
 
-    if (intersects.length > 0) {
-        const selectedObject = intersects[0].object;
-
-
-        console.log("Selected Object:", selectedObject); // Debug log to check if an atom is clicked
-
-
-        // Check if an atom was clicked
-        if (selectedObject) {
-            selectedAtom = selectedObject;
-            let index = selectedAtoms.indexOf(selectedAtom);
-
-            if(!makingSelectionBox){
-                if(index !== -1){
-                    unSelectSpecificAtom(selectedAtom, index)
-
+    if(selecting){
+        if (intersects.length > 0) {
+            const selectedObject = intersects[0].object;
+    
+    
+            console.log("Selected Object:", selectedObject); // Debug log to check if an atom is clicked
+    
+    
+            // Check if an atom was clicked
+            if (selectedObject) {
+                selectedAtom = selectedObject;
+                let index = selectedAtoms.indexOf(selectedAtom);
+    
+                if(!makingSelectionBox){
+                    if(index !== -1){
+                        unSelectSpecificAtom(selectedAtom, index)
+    
+                    }else{
+    
+                        selectedAtom.userData.originalColor = selectedAtom.material.color.getHex();
+                        selectSpecificAtom(selectedAtom, fragColors[workRow-1])
+                        console.log("Atom selected and color changed to red");  
+                    }
                 }else{
-
-                    selectedAtom.userData.originalColor = selectedAtom.material.color.getHex();
-                    selectSpecificAtom(selectedAtom, fragColors[workRow-1])
-                    console.log("Atom selected and color changed to red");  
+                    createSelectionCube(selectedAtom.position.x,selectedAtom.position.y,selectedAtom.position.z, selectedAtom.geometry.parameters.radius*3)
+                    console.log(selectedAtom.position.x,selectedAtom.position.y,selectedAtom.position.z,  selectedAtom.geometry.parameters.radius*3)
                 }
-            }else{
-                createSelectionCube(selectedAtom.position.x,selectedAtom.position.y,selectedAtom.position.z, selectedAtom.geometry.parameters.radius*3)
-                console.log(selectedAtom.position.x,selectedAtom.position.y,selectedAtom.position.z,  selectedAtom.geometry.parameters.radius*3)
             }
+        } else {
+            console.log("No atom selected");
         }
-    } else {
-        console.log("No atom selected");
     }
 }
 
@@ -1101,32 +1103,30 @@ function checkSelectionBox(){
 
 function createSelectionCube(x, y, z, size) {
     selectedByBox = [];
-
+    const selectionGroup = new THREE.Group();
     cuboid.position.set(x, y, z);
     cuboid.scale.setScalar(size);
     cuboid.userData.id = 2;
-    scene.add(cuboid);
-
+    selectionGroup.add(cuboid);
     const directionX = new THREE.Vector3(1, 0, 0);
     const directionY = new THREE.Vector3(0, 1, 0);
     const directionZ = new THREE.Vector3(0, 0, 1);
 
-    const originX = new THREE.Vector3(x+(size/2), y, z);
-    const originY = new THREE.Vector3(x, y+(size/2), z);
-    const originZ = new THREE.Vector3(x, y, z+(size/2));
+    const origin = new THREE.Vector3(x, y, z);
 
     const color = 0x008cff; // Red color
-    const length = size * 0.5;
+    const length = size;
     const headLength = 0.5;
     const headWidth = 0.25;
 
-    const arrowHelperX = new THREE.ArrowHelper(directionX, originX, length, color, headLength, headWidth);
-    const arrowHelperY = new THREE.ArrowHelper(directionY, originY, length, color, headLength, headWidth);
-    const arrowHelperZ = new THREE.ArrowHelper(directionZ, originZ, length, color, headLength, headWidth);
+    const arrowHelperX = new THREE.ArrowHelper(directionX, origin, length, color, headLength, headWidth);
+    const arrowHelperY = new THREE.ArrowHelper(directionY, origin, length, color, headLength, headWidth);
+    const arrowHelperZ = new THREE.ArrowHelper(directionZ, origin, length, color, headLength, headWidth);
 
-    scene.add(arrowHelperX);
-    scene.add(arrowHelperY);
-    scene.add(arrowHelperZ);
+    selectionGroup.add(arrowHelperX);
+    selectionGroup.add(arrowHelperY);
+    selectionGroup.add(arrowHelperZ);
+    scene.add(selectionGroup);
 }
 
 window.addEventListener('click', onMouseClick);
