@@ -83,11 +83,14 @@
     <script type="module" src="script.js"></script>
     <div id="selectBoxDimensions">
       <div class="sliderItem">
-        <label for="Xslide"><span id="xSliderValue">X: 1</span></label>
+        <label for="Xslide">
+          <span id="xSliderValue">X: </span>
+          <input type="number"  value="1" class="numberInput"></input>
+        </label>
         <input type="range" id="Xslide" step="0.1" value="1" max="20">
       </div>
       <div class="sliderItem">
-        <label for="Yslide"><span id="ySliderValue">Y: 1</span1></label>
+        <label for="Yslide"><span id="ySliderValue">Y: 1</span></label>
         <input type="range" id="Yslide" step="0.1" value="1" max="20">
       </div>  
       <div class="sliderItem">
