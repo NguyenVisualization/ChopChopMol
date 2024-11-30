@@ -48,6 +48,35 @@ scalarSlider.addEventListener('input', function(){
     scalarSpan.textContent=`Atom Size: ${scalar}`
 })
 
+class NumberInput {
+    constructor(selector) {
+        this.inputs = document.querySelectorAll(selector);
+        this.init();
+    }
+
+    // Initialize event listeners for each number input field
+    init() {
+        this.inputs.forEach(input => {
+            input.addEventListener('input', () => {
+                this.adjustWidth(input);
+            });
+
+            // Initialize width when the page loads (in case there's a pre-filled value)
+            this.adjustWidth(input);
+        });
+    }
+
+    // Adjust the width of the input based on its value
+    adjustWidth(input) {
+        const length = input.value.length;
+        input.style.width = `${length + 3}ch`; // +1 gives a small buffer to avoid cutting off numbers
+    }
+}
+
+// Initialize the NumberInput class for all inputs with the 'numberInput' class
+document.addEventListener('DOMContentLoaded', () => {
+    new NumberInput('.numberInput');
+});
 let mouseOnButton=false
 
 const scalarSpan=document.getElementById('scalarValue')
@@ -151,9 +180,9 @@ let moleculeLoading=undefined
 
 xSlider.addEventListener('input', function(e) {
     selectBoxWidth = parseFloat(e.target.value);
-    widthSpan.innerHTML = `X: ${selectBoxWidth}`;
+    widthSpan.value = selectBoxWidth;
     cuboid.scale.x=selectBoxWidth
-
+    NumberInput.adjustWidth(selectBoxWidth);
 });
 
 xSlider.addEventListener('change', function(e) {
@@ -383,35 +412,9 @@ function clearTable() {
     }
 }
 
-class NumberInput {
-    constructor(selector) {
-        this.inputs = document.querySelectorAll(selector);
-        this.init();
-    }
 
-    // Initialize event listeners for each number input field
-    init() {
-        this.inputs.forEach(input => {
-            input.addEventListener('input', () => {
-                this.adjustWidth(input);
-            });
 
-            // Initialize width when the page loads (in case there's a pre-filled value)
-            this.adjustWidth(input);
-        });
-    }
 
-    // Adjust the width of the input based on its value
-    adjustWidth(input) {
-        const length = input.value.length;
-        input.style.width = `${length + 2}ch`; // +1 gives a small buffer to avoid cutting off numbers
-    }
-}
-
-// Initialize the NumberInput class for all inputs with the 'numberInput' class
-document.addEventListener('DOMContentLoaded', () => {
-    new NumberInput('.numberInput');
-});
 
 
 let atomGroup

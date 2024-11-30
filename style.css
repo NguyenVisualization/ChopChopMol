@@ -577,7 +577,7 @@ td {
     justify-content: center;
     border-radius: 10px;
     background-color: #ffffff;
-    width: auto;
+    width: 300px;
     position: absolute;
     bottom: 0%;
     left: 0%;
@@ -647,9 +647,25 @@ td {
 }
 
 .numberInput{
-    width: fit-content;
-    min-width: 20px;
+    width: auto;
+    min-width: 10px;
     padding: 5px;
-    text-align: center;
-    width: 30px;
+    /* display: flex; */
+    /* flex-direction: row; */
+    gap: 20px;
+    /* text-align: center; */
+    width: 20px;
+    transition: width 0.1s ease
+}
+
+.enterValue{
+    display: flex;
+    flex-direction: row;
+    gap: 0px;
+    
+    align-items: center;
+}
+
+#xSliderValue{
+    font-size: 16px;
 }
