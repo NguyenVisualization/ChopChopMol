@@ -56,9 +56,15 @@ scalarSpan.textContent=`Atom Size: ${scalar}`
 const clickSound=new Audio()
 clickSound.src='click.mp3'
 
+const color = 0x008cff; // Red color
+const headLength = 0.5;
+const headWidth = 0.25;
 const directionX = new THREE.Vector3(1, 0, 0).normalize();
 const directionY = new THREE.Vector3(0, 1, 0).normalize();
 const directionZ = new THREE.Vector3(0, 0, 1).normalize();
+const arrowHelperX = new THREE.ArrowHelper(directionX, new THREE.Vector3(0, 0, 0), 3, color, headLength, headWidth);
+const arrowHelperY = new THREE.ArrowHelper(directionY, new THREE.Vector3(0, 0, 0), 3, color, headLength, headWidth);
+const arrowHelperZ = new THREE.ArrowHelper(directionZ, new THREE.Vector3(0, 0, 0), 3, color, headLength, headWidth);
 
 let table = document.getElementById("fragTable");
 
@@ -145,7 +151,7 @@ let moleculeLoading=undefined
 
 xSlider.addEventListener('input', function(e) {
     selectBoxWidth = parseFloat(e.target.value);
-    widthSpan.innerHTML = `Width: ${selectBoxWidth}`;
+    widthSpan.innerHTML = `X: ${selectBoxWidth}`;
     cuboid.scale.x=selectBoxWidth
 
 });
@@ -156,7 +162,7 @@ xSlider.addEventListener('change', function(e) {
 
 ySlider.addEventListener('input', function(e) {
     selectBoxHeight = parseFloat(e.target.value);
-    heightSpan.innerHTML = `Height: ${selectBoxHeight}`;
+    heightSpan.innerHTML = `Y: ${selectBoxHeight}`;
     cuboid.scale.y=selectBoxHeight
 
 });
@@ -167,7 +173,7 @@ ySlider.addEventListener('change', function(e) {
 
 zSlider.addEventListener('input', function(e) {
     selectBoxDepth = parseFloat(e.target.value);
-    depthSpan.innerHTML = `Depth: ${selectBoxDepth}`;
+    depthSpan.innerHTML = `Z: ${selectBoxDepth}`;
     cuboid.scale.z=selectBoxDepth
 });
 
@@ -1108,25 +1114,41 @@ function createSelectionCube(x, y, z, size) {
     cuboid.scale.setScalar(size);
     cuboid.userData.id = 2;
     selectionGroup.add(cuboid);
-    const directionX = new THREE.Vector3(1, 0, 0);
-    const directionY = new THREE.Vector3(0, 1, 0);
-    const directionZ = new THREE.Vector3(0, 0, 1);
 
     const origin = new THREE.Vector3(x, y, z);
-
-    const color = 0x008cff; // Red color
     const length = size;
-    const headLength = 0.5;
-    const headWidth = 0.25;
 
-    const arrowHelperX = new THREE.ArrowHelper(directionX, origin, length, color, headLength, headWidth);
-    const arrowHelperY = new THREE.ArrowHelper(directionY, origin, length, color, headLength, headWidth);
-    const arrowHelperZ = new THREE.ArrowHelper(directionZ, origin, length, color, headLength, headWidth);
+    setArrowOriginAndLength(arrowHelperX, origin, length);
+    setArrowOriginAndLength(arrowHelperY, origin, length);
+    setArrowOriginAndLength(arrowHelperZ, origin, length);     
 
     selectionGroup.add(arrowHelperX);
     selectionGroup.add(arrowHelperY);
     selectionGroup.add(arrowHelperZ);
     scene.add(selectionGroup);
+}
+
+
+function setArrowOriginAndLength(arrowHelper, newOrigin, newLength) {
+    // Ensure newOrigin is a THREE.Vector3 instance
+    if (!(newOrigin instanceof THREE.Vector3)) {
+        console.error('newOrigin must be an instance of THREE.Vector3');
+        return;
+    }
+
+    // Set the new origin
+    arrowHelper.position.copy(newOrigin);
+
+    // Update the length by scaling the line and cone components
+    const originalLength = arrowHelper.line.scale.y;
+
+    if (originalLength) {
+        const scale = newLength / originalLength;
+        arrowHelper.line.scale.set(1, scale, 1);
+        arrowHelper.cone.position.y = newLength;
+    } else {
+        console.error('Failed to retrieve original length of arrowHelper');
+    }
 }
 
 window.addEventListener('click', onMouseClick);
