@@ -181,7 +181,27 @@ widthSpan.addEventListener('input', function(e) {
     selectBoxWidth = parseFloat(e.target.value);
     widthSpan.value = selectBoxWidth;
     cuboid.scale.x=selectBoxWidth
+    xSlider.value=selectBoxWidth
     NumberInput.adjustWidth(selectBoxWidth);
+    checkSelectionBox()
+});
+
+heightSpan.addEventListener('input', function(e) {
+    selectBoxHeight = parseFloat(e.target.value);
+    heightSpan.value = selectBoxHeight;
+    cuboid.scale.y=selectBoxHeight
+    ySlider.value=selectBoxHeight
+    NumberInput.adjustWidth(selectBoxHeight);
+    checkSelectionBox()
+});
+
+depthSpan.addEventListener('input', function(e) {
+    selectBoxDepth = parseFloat(e.target.value);
+    depthSpan.value = selectBoxDepth;
+    cuboid.scale.z=selectBoxDepth
+    zSlider.value=selectBoxDepth
+    NumberInput.adjustWidth(selectBoxDepth);
+    checkSelectionBox()
 });
 
 xSlider.addEventListener('input', function(e) {
@@ -197,9 +217,9 @@ xSlider.addEventListener('change', function(e) {
 
 ySlider.addEventListener('input', function(e) {
     selectBoxHeight = parseFloat(e.target.value);
-    heightSpan.innerHTML = `Y: ${selectBoxHeight}`;
+    heightSpan.value = selectBoxHeight;
     cuboid.scale.y=selectBoxHeight
-
+    NumberInput.adjustWidth(selectBoxWidth);
 });
 
 ySlider.addEventListener('change', function(e) {
@@ -208,8 +228,9 @@ ySlider.addEventListener('change', function(e) {
 
 zSlider.addEventListener('input', function(e) {
     selectBoxDepth = parseFloat(e.target.value);
-    depthSpan.innerHTML = `Z: ${selectBoxDepth}`;
+    depthSpan.value = selectBoxDepth;
     cuboid.scale.z=selectBoxDepth
+    NumberInput.adjustWidth(selectBoxWidth);
 });
 
 zSlider.addEventListener('change', function(e) {
