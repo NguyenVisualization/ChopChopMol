@@ -177,6 +177,12 @@ const rotSlider = document.getElementById('rotSlide');
 
 let moleculeLoading=undefined
 
+widthSpan.addEventListener('input', function(e) {
+    selectBoxWidth = parseFloat(e.target.value);
+    widthSpan.value = selectBoxWidth;
+    cuboid.scale.x=selectBoxWidth
+    NumberInput.adjustWidth(selectBoxWidth);
+});
 
 xSlider.addEventListener('input', function(e) {
     selectBoxWidth = parseFloat(e.target.value);
