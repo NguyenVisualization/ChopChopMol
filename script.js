@@ -73,10 +73,15 @@ class NumberInput {
     }
 }
 
+
 // Initialize the NumberInput class for all inputs with the 'numberInput' class
-document.addEventListener('DOMContentLoaded', () => {
-    new NumberInput('.numberInput');
-});
+
+let numberInputInstance = new NumberInput('.numberInput');
+
+
+function adjustInputWidth(inputElement) {
+    numberInputInstance.adjustWidth(inputElement);
+}
 let mouseOnButton=false
 
 const scalarSpan=document.getElementById('scalarValue')
@@ -182,7 +187,7 @@ widthSpan.addEventListener('input', function(e) {
     widthSpan.value = selectBoxWidth;
     cuboid.scale.x=selectBoxWidth
     xSlider.value=selectBoxWidth
-    NumberInput.adjustWidth(selectBoxWidth);
+    adjustInputWidth(widthSpan);
     checkSelectionBox()
 });
 
@@ -191,7 +196,7 @@ heightSpan.addEventListener('input', function(e) {
     heightSpan.value = selectBoxHeight;
     cuboid.scale.y=selectBoxHeight
     ySlider.value=selectBoxHeight
-    NumberInput.adjustWidth(selectBoxHeight);
+    adjustInputWidth(heightSpan);
     checkSelectionBox()
 });
 
@@ -200,7 +205,7 @@ depthSpan.addEventListener('input', function(e) {
     depthSpan.value = selectBoxDepth;
     cuboid.scale.z=selectBoxDepth
     zSlider.value=selectBoxDepth
-    NumberInput.adjustWidth(selectBoxDepth);
+    adjustInputWidth(depthSpan);
     checkSelectionBox()
 });
 
@@ -208,7 +213,7 @@ xSlider.addEventListener('input', function(e) {
     selectBoxWidth = parseFloat(e.target.value);
     widthSpan.value = selectBoxWidth;
     cuboid.scale.x=selectBoxWidth
-    NumberInput.adjustWidth(selectBoxWidth);
+    adjustInputWidth(widthSpan);
 });
 
 xSlider.addEventListener('change', function(e) {
@@ -219,7 +224,8 @@ ySlider.addEventListener('input', function(e) {
     selectBoxHeight = parseFloat(e.target.value);
     heightSpan.value = selectBoxHeight;
     cuboid.scale.y=selectBoxHeight
-    NumberInput.adjustWidth(selectBoxWidth);
+    adjustInputWidth(heightSpan);
+
 });
 
 ySlider.addEventListener('change', function(e) {
@@ -230,7 +236,8 @@ zSlider.addEventListener('input', function(e) {
     selectBoxDepth = parseFloat(e.target.value);
     depthSpan.value = selectBoxDepth;
     cuboid.scale.z=selectBoxDepth
-    NumberInput.adjustWidth(selectBoxWidth);
+    adjustInputWidth(depthSpan);
+
 });
 
 zSlider.addEventListener('change', function(e) {
@@ -688,6 +695,7 @@ window.addEventListener('resize', () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
+    resetRaycaster();
 });
 
 const selectionBox = document.createElement('div');
@@ -1164,6 +1172,7 @@ function unSelectSpecificAtom(atom, index){
 function checkSelectionBox(){
     if(atoms){
         checkCuboidIntersection(cuboid, atoms)
+        console.log('no')
     }
 }
 
@@ -1237,6 +1246,9 @@ function onMouseClick(event) {
   }
 }
 
+function resetRaycaster() {
+    raycaster.setFromCamera(mouse, camera);
+}
 
 setActiveRows(2)
 
