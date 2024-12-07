@@ -12,6 +12,8 @@ let positionsX=[]
 let positionsY=[]
 let positionsZ=[]
 let bondVisuals = [];  // Array to store bond lines
+let atomGroup=null
+
 
 let fragColors=[
     '#a8ff8b',
@@ -245,7 +247,6 @@ zSlider.addEventListener('change', function(e) {
 });
 
 rotSlider.addEventListener('input', function(e) {
-
     cuboid.rotation.y=e.target.value
 });
 
@@ -339,6 +340,7 @@ const fSB=document.getElementById('fileInput')
 // Listen for file selection
 document.getElementById('fileInput').addEventListener('change', function(event) {
     const file = event.target.files[0];
+    console.log(file)
     const fileName = fSB.files[0].name
     docName.value = fileName;
     console.log(fileName);
@@ -380,6 +382,7 @@ function loadNewMolecule(atomicData){
     moleculeLoading=false
     // loadingAnimation.style.display='none'
 }
+
 
 function resetVariables(){
     positionsX = [];
@@ -451,7 +454,6 @@ function clearTable() {
 
 
 
-let atomGroup
 
 
 function addToVisualizer(allAtomsSymbols, atomicData) {
@@ -771,12 +773,14 @@ function animate(){
     controls.update();
     
     // Make sure all text meshes face the camera
-    if(atomGroup){
-        atomGroup.children.forEach(child => {
-            if (child.userData.isText) {
-                child.lookAt(camera.position);
-            }
-        });
+    if(typeof atomGroup !== "undefined"){
+        if(atomGroup){
+            atomGroup.children.forEach(child => {
+                if (child.userData.isText) {
+                    child.lookAt(camera.position);
+                }
+            });
+        }
     }
 }
 
