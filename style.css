@@ -197,7 +197,7 @@ body {
 
     width: 30px;
     height: 30px;
-    background-image: url('cursor2.png');
+    background-image: url('images/cursor2.png');
     background-size: 50%, 50%;
     background-position: center;
     background-repeat: no-repeat;
@@ -224,7 +224,7 @@ body {
 
     width: 30px;
     height: 30px;
-    background-image: url('cursorSelect.png');
+    background-image: url('images/cursorSelect.png');
     background-repeat: no-repeat;
     background-position: center;
     background-size: 50%, 50%;

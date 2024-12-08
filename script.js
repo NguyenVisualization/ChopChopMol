@@ -325,7 +325,7 @@ const ambiLights=new THREE.AmbientLight(0xffffff, 2)
 scene.add(lights)
 scene.add(ambiLights)
 
-fetch('options.json')
+fetch('data/options.json')
   .then(response => response.json())  // Parse the JSON file
   .then(data => {
     atomOptions=data;  // Use the data here
@@ -386,9 +386,11 @@ const randomMolecules=[
     'acetone.xyz',
     'benzene.xyz',
     'glycerol.xyz',
+    'hexane.xyz',
+    'water.xyz'
 ]
-
-const url = `./${randomMolecules[Math.floor(Math.random() * randomMolecules.length)]}`;
+const moleculeFolder='./molecules/'
+const url = `${moleculeFolder}${randomMolecules[Math.floor(Math.random() * randomMolecules.length)]}`;
 console.log(url)
 
 fetch(url)
@@ -528,7 +530,7 @@ function addToVisualizer(allAtomsSymbols, atomicData) {
 
         // Add label to the scene
         if (labelTrue) {
-            loader.load('Poppins-Bold.json', function (font) {
+            loader.load('data/Poppins-Bold.json', function (font) {
                 const textGeometry = new TextGeometry(symbol, {
                     font,
                     size: radius,
