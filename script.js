@@ -382,6 +382,36 @@ function loadNewMolecule(atomicData){
     moleculeLoading=false
     // loadingAnimation.style.display='none'
 }
+const randomMolecules=[
+    'acetone.xyz',
+    'benzene.xyz',
+    'glycerol.xyz',
+]
+
+const url = `./${randomMolecules[Math.floor(Math.random() * randomMolecules.length)]}`;
+console.log(url)
+
+fetch(url)
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.text(); // Assuming it's a text file. Use response.blob() for binary files.
+    })
+    .then(fileContent => {
+        console.log('File content:', fileContent);
+        
+        // Directly process the file content without using FileReader
+        atomicData = extractAtomicData(fileContent); // Save extracted atomic data globally
+        loadNewMolecule(atomicData);
+        for (let i = 0; i < atomicData.length; i++) {
+            updateTable(1, i);
+        }
+        loadingAnimation.style.display = 'none'; // Hide animation after processing
+    })
+    .catch(error => {
+        console.error('There was a problem with the fetch operation:', error);
+    });
 
 
 function resetVariables(){
