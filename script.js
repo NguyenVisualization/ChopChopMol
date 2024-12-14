@@ -1147,13 +1147,8 @@ console.log(atoms)
 
 function checkCuboidIntersection(cuboid, atoms) {
     // Create a Box3 to represent the cuboid
+    cuboid.updateMatrixWorld(true);
     const cuboidBox = new THREE.Box3().setFromObject(cuboid);
-
-    // Reset colors of all atoms to their original
-    // for (let i = 0; i < atoms.length; i++) {
-    //     const atom = atoms[i];
-    //     atom.material.color.set(atom.userData.originalColor);
-    // }
 
     // Loop through each atom to check for intersection
     for (let i = 0; i < atoms.length; i++) {
