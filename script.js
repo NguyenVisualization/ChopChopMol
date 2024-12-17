@@ -1146,36 +1146,41 @@ fragTableButton.addEventListener('click', function(){
 console.log(atoms)
 
 function checkCuboidIntersection(cuboid, atoms) {
-    // Create a Box3 to represent the cuboid
+    // Update the cuboid's matrix world to reflect the latest transformations
     cuboid.updateMatrixWorld(true);
+
+    // Create a Box3 to represent the cuboid
     const cuboidBox = new THREE.Box3().setFromObject(cuboid);
+
+    // Visualize the bounding box (optional, for debugging)
 
     // Loop through each atom to check for intersection
     for (let i = 0; i < atoms.length; i++) {
-        const atom = atoms[i];
-        console.log(atom);
+        const atom = atoms[i];aa
+        console.log(`Checking atom ${i}:`, atom);
 
-        // Create a Box3 for the atom based on its geometry
-        const atomSphere=new THREE.Sphere(atom.position, atom.geometry.parameters.radius)
-        const atomID=atom.userData.id
+        // Create a Sphere for the atom based on its geometry
+        const atomSphere = new THREE.Sphere(atom.position, atom.geometry.parameters.radius);
+        const atomID = atom.userData.id;
+
         // Check if the cuboid intersects with the atom's bounding box
         if (cuboidBox.intersectsSphere(atomSphere)) {
-            if(!selectedByBox.includes(atomID)){
-                selectedByBox.push(atomID)
+            if (!selectedByBox.includes(atomID)) {
+                selectedByBox.push(atomID);
                 selectSpecificAtom(atom, fragColors[workRow - 1]);
                 console.log(`Cuboid intersects with atom ${i} (${atom.userData.id})`);
             }
-        }else{
-            if(selectedByBox.includes(atomID)){
+        } else {
+            if (selectedByBox.includes(atomID)) {
                 const index = selectedAtoms.indexOf(atom);
 
-                selectedByBox=removeValueFromArray(selectedByBox,atomID)
-                unSelectSpecificAtom(atom, index)
+                selectedByBox = removeValueFromArray(selectedByBox, atomID);
+                unSelectSpecificAtom(atom, index);
             }
         }
-
     }
 }
+
 
 function removeValueFromArray(array, valueToRemove) {
     return array.filter(item => item !== valueToRemove);
