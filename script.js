@@ -1156,7 +1156,7 @@ function checkCuboidIntersection(cuboid, atoms) {
 
     // Loop through each atom to check for intersection
     for (let i = 0; i < atoms.length; i++) {
-        const atom = atoms[i];aa
+        const atom = atoms[i];
         console.log(`Checking atom ${i}:`, atom);
 
         // Create a Sphere for the atom based on its geometry
