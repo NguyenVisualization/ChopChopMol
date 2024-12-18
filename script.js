@@ -1151,6 +1151,8 @@ function checkCuboidIntersection(cuboid, atoms) {
 
     // Create a Box3 to represent the cuboid
     const cuboidBox = new THREE.Box3().setFromObject(cuboid);
+    const cuboidHelper=new THREE.BoxHelper(cuboid, 0x00ff00);
+    scene.add(cuboidHelper)
 
     // Visualize the bounding box (optional, for debugging)
 
