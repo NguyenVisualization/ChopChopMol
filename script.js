@@ -50,6 +50,21 @@ scalarSlider.addEventListener('input', function(){
     scalarSpan.textContent=`Atom Size: ${scalar}`
 })
 
+const loader = new FontLoader();
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(10, w/h, 0.1, 10000)
+camera.position.set(80,80,80)
+camera.lookAt(0,0,0)
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+const controls = new OrbitControls(camera, renderer.domElement);
+// controls.enableDamping=true
+controls.enablePan=true
+renderer.setSize(window.innerWidth, window.innerHeight);
+// renderer.setPixelRatio(devicePixelRatio);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));  // Limit pixel ratio for performance
+
+document.body.appendChild(renderer.domElement);
+
 class NumberInput {
     constructor(selector) {
         this.inputs = document.querySelectorAll(selector);
@@ -184,6 +199,14 @@ const rotSlider = document.getElementById('rotSlide');
 
 let moleculeLoading=undefined
 
+const selectBoxSliders = document.querySelectorAll('.selectBoxSlider');
+
+// Add an event listener to each element
+selectBoxSliders.forEach(slider => {
+  slider.addEventListener('change', checkSelectionBox);
+});
+
+
 widthSpan.addEventListener('input', function(e) {
     selectBoxWidth = parseFloat(e.target.value);
     widthSpan.value = selectBoxWidth;
@@ -192,6 +215,15 @@ widthSpan.addEventListener('input', function(e) {
     adjustInputWidth(widthSpan);
     checkSelectionBox()
 });
+
+function updateSelectionBoxInput(){
+    selectBoxWidth = parseFloat(e.target.value);
+    widthSpan.value = selectBoxWidth;
+    cuboid.scale.x=selectBoxWidth
+    xSlider.value=selectBoxWidth
+    adjustInputWidth(widthSpan);
+    checkSelectionBox()
+}
 
 heightSpan.addEventListener('input', function(e) {
     selectBoxHeight = parseFloat(e.target.value);
@@ -218,10 +250,6 @@ xSlider.addEventListener('input', function(e) {
     adjustInputWidth(widthSpan);
 });
 
-xSlider.addEventListener('change', function(e) {
-    checkSelectionBox()
-});
-
 ySlider.addEventListener('input', function(e) {
     selectBoxHeight = parseFloat(e.target.value);
     heightSpan.value = selectBoxHeight;
@@ -230,9 +258,6 @@ ySlider.addEventListener('input', function(e) {
 
 });
 
-ySlider.addEventListener('change', function(e) {
-    checkSelectionBox()
-});
 
 zSlider.addEventListener('input', function(e) {
     selectBoxDepth = parseFloat(e.target.value);
@@ -242,17 +267,12 @@ zSlider.addEventListener('input', function(e) {
 
 });
 
-zSlider.addEventListener('change', function(e) {
-    checkSelectionBox()
-});
 
 rotSlider.addEventListener('input', function(e) {
     cuboid.rotation.y=e.target.value
 });
 
-rotSlider.addEventListener('change', function(e) {
-    checkSelectionBox()
-});
+
 
 const selectFileButton=document.getElementById('createFile')
 selectFileButton.addEventListener('click', function(){
@@ -296,20 +316,7 @@ cameraButton.addEventListener('click', function(){
 
 let fragSelected=[]
 
-const loader = new FontLoader();
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(10, w/h, 0.1, 10000)
-camera.position.set(80,80,80)
-camera.lookAt(0,0,0)
-const renderer = new THREE.WebGLRenderer({ antialias: true });
-const controls = new OrbitControls(camera, renderer.domElement);
-// controls.enableDamping=true
-controls.enablePan=true
-renderer.setSize(window.innerWidth, window.innerHeight);
-// renderer.setPixelRatio(devicePixelRatio);
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));  // Limit pixel ratio for performance
 
-document.body.appendChild(renderer.domElement);
 
 let allAtomsSymbols = [];
 let atomicData = []; // Declare atomicData globally so it can be accessed
@@ -415,7 +422,6 @@ fetch(url)
         console.error('There was a problem with the fetch operation:', error);
     });
 
-
 function resetVariables(){
     positionsX = [];
     positionsY = [];
@@ -480,13 +486,6 @@ function clearTable() {
         }
     }
 }
-
-
-
-
-
-
-
 
 function addToVisualizer(allAtomsSymbols, atomicData) {
     centerMolecule(atomicData);
@@ -557,9 +556,6 @@ function addToVisualizer(allAtomsSymbols, atomicData) {
     }
 }
 
-
-
-let needsUpdate = true;  // Flag to track if the scene needs updating
 
 
 function clearScene() {
